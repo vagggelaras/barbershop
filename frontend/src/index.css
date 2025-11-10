@@ -1,0 +1,21 @@
+body {
+  margin: 0;
+  font-family: "Julius Sans One", sans-serif;
+  font-weight: 800;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+main {
+  margin: auto;
+  width: 70%;
+  height: 80vh;
+  margin-top: 5vh;
+  border: 2px solid black;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
