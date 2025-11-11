@@ -1,13 +1,18 @@
 import { useState, useRef, useEffect } from "react"
-import Navigation from "./components/Navigation"
-import ServicesSection from "./components/ServicesSection"
-import BarbersSection from "./components/BarbersSection"
-import MonthDayHourSelection from "./components/MonthDayHourSelection"
-import Confirmation from "./components/Confirmation"
-import Recap from "./components/Recap"
-import SignUpForm from './components/SignUpForm'
+import Navigation from "./BookNowComponents/Navigation"
+import ServicesSection from "./BookNowComponents/ServicesSection"
+import BarbersSection from "./BookNowComponents/BarbersSection"
+import MonthDayHourSelection from "./BookNowComponents/MonthDayHourSelection"
+import Confirmation from "./BookNowComponents/Confirmation"
+import Recap from "./BookNowComponents/Recap"
+import SignUpForm from './BookNowComponents/SignUpForm'
 
-import FloatingChatButton from './components/Chatbot/FloatingChatButton'
+import Scissors3D from './HomePageComponents/Scissors3D'
+import LightRays from './HomePageComponents/LightRays'
+import TextType from './HomePageComponents/TextType'
+import Threads from './HomePageComponents/Threads'
+
+import FloatingChatButton from './BookNowComponents/Chatbot/FloatingChatButton'
 
 export default function App() {
 
@@ -136,12 +141,50 @@ export default function App() {
         : null
       }
 
+      {activeButton === 0 ?
+        <div style={{ position: 'relative', width: '100%', height: '80vh' }}>
+          <Scissors3D />
+          <TextType
+            text={["Welcome to ZEN Hair & Beauty Spa!", "Your Perfect Look Awaits!", "Book Your Appointment Today!"]}
+            as="p"
+            typingSpeed={90}
+            deletingSpeed={50}
+            pauseDuration={2000}
+            loop={true}
+            showCursor={true}
+            className="homepage-text"
+          />
+          <Threads
+            amplitude={1.7}
+            distance={0.3}
+            enableMouseInteraction={false}
+          />
+        </div>
+        : null
+      }
+
       <FloatingChatButton
         services={services}
         barbers={barbers}
         dataLoading={dataLoading}
         onBookingComplete={handleChatbotBooking}
       />
+
+      <LightRays
+        raysOrigin="top-center"
+        raysColor="#ffffffff"
+        raysSpeed={1}
+        lightSpread={0.8}
+        rayLength={2}
+        fadeDistance={0.5}
+        saturation={0.4}
+        followMouse={true}
+        mouseInfluence={.03}
+        noiseAmount={0.05}
+        distortion={0}
+        className="custom-rays"
+      />
+    
     </>
   )
 }
