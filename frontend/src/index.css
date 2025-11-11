@@ -19,4 +19,5 @@ main {
   margin-top: 5vh;
   border: 2px solid black;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: white;
 }
