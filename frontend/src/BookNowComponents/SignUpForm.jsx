@@ -28,7 +28,7 @@ export default function SignUpForm(props){
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
-
+// console.log(e)
         if(activeTab === 'signup'){
             try {
                 const response = await fetch(`${API_URL}/users`, {
@@ -50,6 +50,29 @@ export default function SignUpForm(props){
             } catch (error) {
                 console.log('Error:', error)
             }
+            try {
+                const response = await fetch(`${API_URL}/users/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: formData.email })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    sessionStorage.setItem('user', JSON.stringify(data.user))
+                    setFormData({ ...formData, email: '' })
+                    props.setUserLoggedIn(true)
+                } else {
+                    console.log('Δεν βρέθηκε χρήστης με αυτό το email')
+                }
+                console.log(sessionStorage)
+            } catch (error) {
+                console.log('Σφάλμα: ' + error.message);
+            }
+
         }
         
         if(activeTab === 'login'){
@@ -71,7 +94,7 @@ export default function SignUpForm(props){
                 } else {
                     console.log('Δεν βρέθηκε χρήστης με αυτό το email')
                 }
-                // console.log(sessionStorage)
+                console.log(sessionStorage)
             } catch (error) {
                 console.log('Σφάλμα: ' + error.message);
             }

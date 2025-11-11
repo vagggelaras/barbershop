@@ -41,40 +41,50 @@ export const sendMessageToGemini = async (messages, services, barbers) => {
   RULES:
   - Speak naturally and friendly in English
   - Ask ONE question at a time
-  - Confirm each choice
+  - Confirm each choice and immediately ask the next question
   - The shop is closed on Sundays and Mondays
   - Hours: 9:00-20:00 (Wednesday until 14:00, Saturday until 16:00)
-  - When you have ALL information, call the book_appointment function
 
-  IMPORTANT: Only call the function when you have collected ALL required information!`;
+  IMPORTANT FUNCTION CALLING RULES:
+  - **ALWAYS** provide a text response along with your function call
+  - After each answer, call book_appointment with the data you collected AND ask the next question in your text response
+  - Example: User says "haircut" → Call book_appointment(service:"Men's Haircut") AND respond with "Great! Men's Haircut it is. Which barber would you like?"
+  - Pass only the fields you have collected so far
+  - When you have ALL 4 pieces of information, set complete:true
 
-        // ✨ Function declaration με dynamic services
+  RESPONSE FORMAT: Text response + function call together, ALWAYS!`;
+
+        // ✨ Function declaration με dynamic services - ALL FIELDS OPTIONAL για progressive updates
         const bookAppointmentFunction = {
             name: 'book_appointment',
-            description: 'Books a barbershop appointment when all required information is collected',
+            description: 'Reports booking progress. Call this EVERY TIME you collect new information (service, barber, date, or time). Set complete:true only when you have ALL 4 pieces.',
             parameters: {
                 type: 'object',
                 properties: {
                     service: {
                         type: 'string',
-                        description: 'The service name',
+                        description: 'The service name (if collected)',
                         enum: services
                     },
                     barber: {
                         type: 'string',
-                        description: 'The barber name',
+                        description: 'The barber name (if collected)',
                         enum: barbers
                     },
                     date: {
                         type: 'string',
-                        description: 'The appointment date in YYYY-MM-DD format'
+                        description: 'The appointment date in YYYY-MM-DD format (if collected)'
                     },
                     time: {
                         type: 'string',
-                        description: 'The appointment time in HH:MM format'
+                        description: 'The appointment time in HH:MM format (if collected)'
+                    },
+                    complete: {
+                        type: 'boolean',
+                        description: 'Set to true ONLY when you have ALL 4 pieces of information'
                     }
                 },
-                required: ['service', 'barber', 'date', 'time']
+                required: [] // NO required fields - όλα optional για progressive updates
             }
     };
 
@@ -101,7 +111,7 @@ export const sendMessageToGemini = async (messages, services, barbers) => {
     }, 3, 1000); // 3 retries, starting with 1 second delay
 };
 
-// Extract function call from response
+// Extract function call from response - supports partial data
 export const extractFunctionCall = (response) => {
     try {
         // Function calls βρίσκονται στα candidates[0].content.parts
@@ -111,10 +121,8 @@ export const extractFunctionCall = (response) => {
         const functionCallPart = parts.find(part => part.functionCall);
 
         if (functionCallPart && functionCallPart.functionCall.name === 'book_appointment') {
-            return {
-                complete: true,
-                ...functionCallPart.functionCall.args
-            };
+            // Επιστρέφουμε όλα τα args (συμπεριλαμβανομένου του complete αν υπάρχει)
+            return functionCallPart.functionCall.args || {};
         }
 
         return null;

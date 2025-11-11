@@ -44,7 +44,7 @@ export default function App() {
   const [barbers, setBarbers] = useState([])
   const [dataLoading, setDataLoading] = useState(true)
 
-  // Fetch services ΚΑΙ personnel μόνο μία φορά όταν φορτώνει η εφαρμογή
+  // Fetch services και personnel μόνο μία φορά όταν φορτώνει η εφαρμογή
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -83,6 +83,48 @@ export default function App() {
 
     fetchData()
   }, [])
+
+  // Progressive callbacks για chatbot - καλούνται καθώς συλλέγονται δεδομένα
+  const handleChatbotServiceSelected = async (serviceName) => {
+    console.log("Chatbot selected service:", serviceName)
+    try {
+      const response = await fetch(`${API_URL}/services`)
+      const servicesData = await response.json()
+      const selectedService = servicesData.find(
+        service => service.name.toLowerCase() === serviceName.toLowerCase()
+      )
+
+      setServiceSelected(serviceName)
+      setServiceDuration(selectedService?.duration || null)
+      setServicePrice(selectedService?.price || null)
+    } catch (error) {
+      console.error('Error setting service:', error)
+    }
+  }
+
+  const handleChatbotBarberSelected = (barberName) => {
+    console.log("Chatbot selected barber:", barberName)
+    setBarberSelected(barberName)
+  }
+
+  const handleChatbotDateSelected = (date) => {
+    console.log("Chatbot selected date:", date)
+    // Μετατροπή από YYYY-MM-DD σε DD-MM-YYYY
+    const [year, month, day] = date.split('-')
+    const formattedDate = `${day}-${month}-${year}`
+
+    // Υπολογισμός weekDay
+    const dateObj = new Date(date)
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    weekDay.current = days[dateObj.getDay()]
+
+    setDateSelected(formattedDate)
+  }
+
+  const handleChatbotTimeSelected = (time) => {
+    console.log("Chatbot selected time:", time)
+    setTimeSelected(time)
+  }
 
   // Handle booking completion από το chatbot
   const handleChatbotBooking = async (bookingData) => {
@@ -143,10 +185,19 @@ export default function App() {
       }
 
       {activeButton === 0 ?
-        <div style={{ position: 'relative', width: '100%', height: '80vh' }}>
+        <div style={{
+          position: 'absolute',
+          width: '100%',
+          top:'0',
+          height: '100vh',
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(${process.env.PUBLIC_URL}/backgroundImg2.avif)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}>
           <Scissors3D />
           <TextType
-            text={["Welcome to ZEN Hair & Beauty Spa!", "Your Perfect Look Awaits!", "Book Your Appointment Today!"]}
+            text={["Welcome to ZEN Hair & Beauty Spa", "Your Perfect Look Awaits", "Book Your Appointment Today"]}
             as="p"
             typingSpeed={90}
             deletingSpeed={50}
@@ -155,21 +206,20 @@ export default function App() {
             showCursor={true}
             className="homepage-text"
           />
-          <Threads
-            amplitude={1.7}
-            distance={0.3}
-            enableMouseInteraction={false}
-          />
         </div>
         : null
       }
 
-      <FloatingChatButton
+      {userLoggedIn ? <FloatingChatButton
         services={services}
         barbers={barbers}
         dataLoading={dataLoading}
+        onServiceSelected={handleChatbotServiceSelected}
+        onBarberSelected={handleChatbotBarberSelected}
+        onDateSelected={handleChatbotDateSelected}
+        onTimeSelected={handleChatbotTimeSelected}
         onBookingComplete={handleChatbotBooking}
-      />
+      /> : null}
 
       <LightRays
         raysOrigin="top-center"

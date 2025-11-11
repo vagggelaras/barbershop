@@ -3,7 +3,17 @@ import MessageList from './MessageList';
 import ChatInput from './ChatInput';
 import { sendMessageToGemini, extractFunctionCall } from '../../services/geminiService';
 
-export default function ChatWindow({ onClose, onBookingComplete, services, barbers, dataLoading }) {
+export default function ChatWindow({
+    onClose,
+    onServiceSelected,
+    onBarberSelected,
+    onDateSelected,
+    onTimeSelected,
+    onBookingComplete,
+    services,
+    barbers,
+    dataLoading
+}) {
     // Όλα τα μηνύματα (bot + user)
     const [messages, setMessages] = useState([
         {
@@ -16,6 +26,14 @@ export default function ChatWindow({ onClose, onBookingComplete, services, barbe
 
     // true = περιμένουμε απάντηση από Gemini
     const [isLoading, setIsLoading] = useState(false);
+
+    // Κρατάμε track τι έχουμε ήδη καλέσει για να μην ξανακαλέσουμε
+    const [calledCallbacks, setCalledCallbacks] = useState({
+        service: false,
+        barber: false,
+        date: false,
+        time: false
+    });
 
     // Όταν ο χρήστης στέλνει μήνυμα
     const handleSendMessage = async (userMessage) => {
@@ -45,8 +63,70 @@ export default function ChatWindow({ onClose, onBookingComplete, services, barbe
             const updatedMessages = [...messages, newUserMessage];
             const response = await sendMessageToGemini(updatedMessages, services, barbers);
 
+            // DEBUG: Δες τι επιστρέφει το Gemini
+            console.log("Gemini full response:", response);
+            console.log("Gemini response content:", JSON.stringify(response.candidates?.[0]?.content, null, 2));
+            console.log("Response parts:", response.candidates?.[0]?.content?.parts);
+
             // 3. Έλεγξε αν υπάρχει function call
             const functionCallData = extractFunctionCall(response);
+            console.log("Extracted function call data:", functionCallData);
+
+            // Καλούμε progressive callbacks για νέα δεδομένα
+            if (functionCallData) {
+                // Έλεγχος αν έχουμε service και δεν το έχουμε ξανακαλέσει
+                if (functionCallData.service && !calledCallbacks.service && onServiceSelected) {
+                    console.log("Calling onServiceSelected:", functionCallData.service);
+                    onServiceSelected(functionCallData.service);
+                    setCalledCallbacks(prev => ({ ...prev, service: true }));
+                }
+
+                // Έλεγχος αν έχουμε barber και δεν το έχουμε ξανακαλέσει
+                if (functionCallData.barber && !calledCallbacks.barber && onBarberSelected) {
+                    console.log("Calling onBarberSelected:", functionCallData.barber);
+                    onBarberSelected(functionCallData.barber);
+                    setCalledCallbacks(prev => ({ ...prev, barber: true }));
+                }
+
+                // Έλεγχος αν έχουμε date και δεν το έχουμε ξανακαλέσει
+                if (functionCallData.date && !calledCallbacks.date && onDateSelected) {
+                    console.log("Calling onDateSelected:", functionCallData.date);
+                    onDateSelected(functionCallData.date);
+                    setCalledCallbacks(prev => ({ ...prev, date: true }));
+                }
+
+                // Έλεγχος αν έχουμε time και δεν το έχουμε ξανακαλέσει
+                if (functionCallData.time && !calledCallbacks.time && onTimeSelected) {
+                    console.log("Calling onTimeSelected:", functionCallData.time);
+                    onTimeSelected(functionCallData.time);
+                    setCalledCallbacks(prev => ({ ...prev, time: true }));
+                }
+            }
+
+            // Εξαγωγή bot text response (μπορεί να είναι σε διαφορετικό part από το functionCall)
+            const parts = response.candidates?.[0]?.content?.parts || [];
+            const textPart = parts.find(part => part.text);
+
+            // Αν δεν υπάρχει text αλλά υπάρχει functionCall, φτιάξε custom follow-up message
+            let botText = textPart?.text;
+
+            if (!botText && functionCallData && !functionCallData.complete) {
+                // Δημιουργία custom follow-up based on τι έχουμε ΗΔΗ συλλέξει (using calledCallbacks)
+                if (!calledCallbacks.service || (functionCallData.service && !calledCallbacks.barber)) {
+                    // Μόλις πήραμε service, ρώτα για barber
+                    botText = `Great! ${functionCallData.service || 'Service selected'}. Which barber would you like? (${barbers.join(', ')})`;
+                } else if (!calledCallbacks.date || (functionCallData.barber && !calledCallbacks.date)) {
+                    // Μόλις πήραμε barber, ρώτα για date
+                    botText = `Perfect! ${functionCallData.barber || 'Barber selected'}. What date would you like? (Format: DD-MM-YYYY, we're closed Sundays & Mondays)`;
+                } else if (!calledCallbacks.time || (functionCallData.date && !calledCallbacks.time)) {
+                    // Μόλις πήραμε date, ρώτα για time
+                    botText = `Got it! What time works for you? (9:00-20:00, Wed until 14:00, Sat until 16:00)`;
+                } else {
+                    botText = "Got it! ✓";
+                }
+            } else if (!botText) {
+                botText = "I'm sorry, I didn't understand that.";
+            }
 
             if (functionCallData?.complete) {
                 // ✅ Booking complete!
@@ -66,9 +146,7 @@ export default function ChatWindow({ onClose, onBookingComplete, services, barbe
                     onBookingComplete(functionCallData);
                 }, 2000);
             } else {
-                // ❌ Δεν έχουμε όλα τα στοιχεία, απλή απάντηση
-                const botText = response.candidates?.[0]?.content?.parts?.[0]?.text || "I'm sorry, I didn't understand that.";
-
+                // Progressive update ή συνηθισμένη απάντηση
                 const botResponse = {
                     id: Date.now() + 1,
                     role: 'bot',

@@ -1,3 +1,5 @@
+import "../styles/Recap.css"
+
 export default function Recap(props){
     return(
         <aside>

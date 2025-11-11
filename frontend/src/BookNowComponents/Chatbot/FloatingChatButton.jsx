@@ -1,7 +1,16 @@
 import { useState } from 'react'
 import ChatWindow from './ChatWindow'
 
-export default function FloatingChatButton({ services, barbers, dataLoading, onBookingComplete }) {
+export default function FloatingChatButton({
+  services,
+  barbers,
+  dataLoading,
+  onServiceSelected,
+  onBarberSelected,
+  onDateSelected,
+  onTimeSelected,
+  onBookingComplete
+}) {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const handleBookingComplete = (bookingData) => {
@@ -20,6 +29,10 @@ export default function FloatingChatButton({ services, barbers, dataLoading, onB
       {isChatOpen ? (
         <ChatWindow
           onClose={() => setIsChatOpen(false)}
+          onServiceSelected={onServiceSelected}
+          onBarberSelected={onBarberSelected}
+          onDateSelected={onDateSelected}
+          onTimeSelected={onTimeSelected}
           onBookingComplete={handleBookingComplete}
           services={services}
           barbers={barbers}

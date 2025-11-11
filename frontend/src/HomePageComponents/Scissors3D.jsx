@@ -24,10 +24,12 @@ function RotatingScissors() {
         }
     }, [scene])
 
-    // Αυτόματη περιστροφή - απαλή περιστροφή γύρω από τον Y άξονα
-    useFrame(() => {
+    // Περιστροφή μπρος-πίσω (oscillating rotation)
+    useFrame(({ clock }) => {
         if (meshRef.current) {
-            meshRef.current.rotation.y += 0.005
+            // Χρησιμοποιούμε sin για smooth back-and-forth rotation
+            const time = clock.getElapsedTime()
+            meshRef.current.rotation.y = Math.sin(time * 0.3) * Math.PI * .2 // Περιστρέφεται μπρος-πίσω
         }
     })
 
@@ -37,7 +39,7 @@ function RotatingScissors() {
             object={scene}
             scale={16}
             position={[4, -1, -2]}
-            rotation={[0, 1, .9]} // Μύτη προς τα πάνω
+            rotation={[0, 1, .8]} // Αρχική θέση
         />
     )
 }
