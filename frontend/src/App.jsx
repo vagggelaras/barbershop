@@ -10,7 +10,7 @@ import SignUpForm from './BookNowComponents/SignUpForm'
 import Scissors3D from './HomePageComponents/Scissors3D'
 import LightRays from './HomePageComponents/LightRays'
 import TextType from './HomePageComponents/TextType'
-import Threads from './HomePageComponents/Threads'
+// import Threads from './HomePageComponents/Threads'
 
 import FloatingChatButton from './BookNowComponents/Chatbot/FloatingChatButton'
 import API_URL from './config'
@@ -195,17 +195,34 @@ export default function App() {
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
         }}>
-          <Scissors3D />
-          <TextType
-            text={["Welcome to ZEN Hair & Beauty Spa", "Your Perfect Look Awaits", "Book Your Appointment Today"]}
-            as="p"
-            typingSpeed={90}
-            deletingSpeed={50}
-            pauseDuration={2000}
-            loop={true}
-            showCursor={true}
-            className="homepage-text"
+          <LightRays
+            raysOrigin="top-center"
+            raysColor="#000000"
+            raysSpeed={1}
+            lightSpread={0.8}
+            rayLength={2}
+            fadeDistance={0.5}
+            saturation={0.4}
+            followMouse={true}
+            mouseInfluence={.01}
+            noiseAmount={0.05}
+            distortion={0}
           />
+          <div style={{ position: 'relative', zIndex: 2 }}>
+            <Scissors3D />
+          </div>
+          <div style={{ position: 'relative', zIndex: 3 }}>
+            <TextType
+              text={["Welcome to ZEN Hair & Beauty Spa", "Your Perfect Look Awaits", "Book Your Appointment Today"]}
+              as="p"
+              typingSpeed={90}
+              deletingSpeed={50}
+              pauseDuration={2000}
+              loop={true}
+              showCursor={true}
+              className="homepage-text"
+            />
+          </div>
         </div>
         : null
       }
