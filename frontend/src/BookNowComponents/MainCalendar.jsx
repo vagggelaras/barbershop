@@ -4,6 +4,7 @@ import Timeline from "./Timeline"
 import Confirmation from "./Confirmation"
 import 'react-calendar/dist/Calendar.css'
 import "../styles/MainCalendar.css"
+import API_URL from '../config'
 
 export default function MainCalendar(props){
 
@@ -19,7 +20,7 @@ export default function MainCalendar(props){
     useEffect(() => {
         const fetchClosedDays = async () => {
             try {
-                const response = await fetch('http://localhost:5000/closedDays')
+                const response = await fetch(`${API_URL}/closedDays`)
                 const data = await response.json()
                 setClosedDays(data)
             } catch (error) {

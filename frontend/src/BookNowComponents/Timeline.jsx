@@ -1,6 +1,7 @@
 import '../styles/Timeline.css'
 // import moment, { weekdays } from 'moment'
 import { useState, useEffect } from 'react'
+import API_URL from '../config'
 
 export default function Timeline(props){
     // console.log(props)
@@ -18,7 +19,7 @@ export default function Timeline(props){
     useEffect(() => {
         const fetchClosedDays = async () => {
             try {
-                const response = await fetch('http://localhost:5000/personnel')
+                const response = await fetch(`${API_URL}/personnel`)
                 const data = await response.json()
                 setBarbers(data)
             } catch (error) {

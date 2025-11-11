@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import API_URL from '../config'
 
 export default function Confirmation(props) {
     const userData = JSON.parse(sessionStorage.getItem('user') || '{}')
@@ -7,7 +8,7 @@ export default function Confirmation(props) {
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                const response = await fetch('http://localhost:5000/services')
+                const response = await fetch(`${API_URL}/services`)
                 const data = await response.json()
 
                 if (Array.isArray(data)) {
@@ -41,7 +42,7 @@ export default function Confirmation(props) {
         console.log("Sending appointment:", appointmentData) // Debug
 
         try {
-            const response = await fetch('http://localhost:5000/appointments', {
+            const response = await fetch(`${API_URL}/appointments`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

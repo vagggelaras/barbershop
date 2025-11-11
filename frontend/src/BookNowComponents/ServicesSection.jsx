@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import "../styles/ServicesSection.css"
+import API_URL from '../config'
 
 export default function ServicesSection(props){
 
@@ -8,7 +9,7 @@ export default function ServicesSection(props){
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                const response = await fetch('http://localhost:5000/services')
+                const response = await fetch(`${API_URL}/services`)
                 const data = await response.json()
                 setServicesList(data)
             } catch (error) {

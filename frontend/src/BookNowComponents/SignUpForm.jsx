@@ -1,8 +1,9 @@
 import "../styles/SignUpForm.css"
 import { useState} from "react"
+import API_URL from '../config'
 
 export default function SignUpForm(props){
-    
+
     const [activeTab, setActiveTab] = useState('signup')
     const [translate, setTranslate] = useState('0%')
     const [formData, setFormData] = useState({
@@ -30,7 +31,7 @@ export default function SignUpForm(props){
 
         if(activeTab === 'signup'){
             try {
-                const response = await fetch('http://localhost:5000/users', {
+                const response = await fetch(`${API_URL}/users`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -53,7 +54,7 @@ export default function SignUpForm(props){
         
         if(activeTab === 'login'){
             try {
-                const response = await fetch('http://localhost:5000/users/login', {
+                const response = await fetch(`${API_URL}/users/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

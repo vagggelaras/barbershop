@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import API_URL from '../config'
 
 export default function BarbersSection(props){
 
@@ -7,7 +8,7 @@ export default function BarbersSection(props){
     useEffect(() => {
         const fetchPersonnel = async () => {
             try {
-                const response = await fetch('http://localhost:5000/personnel')
+                const response = await fetch(`${API_URL}/personnel`)
                 const data = await response.json()
                 setPersonnelList(data)
             } catch (error) {

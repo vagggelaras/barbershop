@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import API_URL from '../config'
 
 export default function MonthDaySelection(props) {
 
@@ -49,7 +50,7 @@ export default function MonthDaySelection(props) {
     useEffect(() => {
         const fetchClosedDays = async () => {
             try {
-                const response = await fetch('http://localhost:5000/closedDays')
+                const response = await fetch(`${API_URL}/closedDays`)
                 const data = await response.json()
                 setClosedDaysList(data)
             } catch (error) {
@@ -68,7 +69,7 @@ export default function MonthDaySelection(props) {
             const formattedDate = `${day}-${month}-${year}`
 
             try {
-                const url = `http://localhost:5000/appointments/${props.barberSelected}/${formattedDate}`
+                const url = `${API_URL}/appointments/${props.barberSelected}/${formattedDate}`
                 const response = await fetch(url)
                 const data = await response.json()
 

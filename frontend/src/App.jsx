@@ -13,6 +13,7 @@ import TextType from './HomePageComponents/TextType'
 import Threads from './HomePageComponents/Threads'
 
 import FloatingChatButton from './BookNowComponents/Chatbot/FloatingChatButton'
+import API_URL from './config'
 
 export default function App() {
 
@@ -49,8 +50,8 @@ export default function App() {
       try {
         // Fetch και τα δύο παράλληλα
         const [servicesResponse, personnelResponse] = await Promise.all([
-          fetch('http://localhost:5000/services'),
-          fetch('http://localhost:5000/personnel')
+          fetch(`${API_URL}/services`),
+          fetch(`${API_URL}/personnel`)
         ])
 
         const servicesData = await servicesResponse.json()
@@ -88,7 +89,7 @@ export default function App() {
     console.log("handleChatbotBooking called with:", bookingData);
     try {
       // 1. Fetch το service για να πάρουμε το duration
-      const response = await fetch('http://localhost:5000/services')
+      const response = await fetch(`${API_URL}/services`)
       const servicesData = await response.json()
 
       const selectedService = servicesData.find(
