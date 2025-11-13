@@ -1,17 +1,6 @@
 import "../styles/Recap.css"
 
 export default function Recap(props){
-    // Calculate weekday from dateSelected (format: DD-MM-YYYY)
-    const getWeekDayFromDate = (dateString) => {
-        if (!dateString) return ''
-        const [day, month, year] = dateString.split('-')
-        const date = new Date(year, month - 1, day)
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-        return days[date.getDay()]
-    }
-
-    const weekDayName = getWeekDayFromDate(props.dateSelected)
-
     return(
         <aside className="recapContainer">
             <div className="recapHeader">

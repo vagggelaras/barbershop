@@ -180,7 +180,7 @@ export default function App() {
           <main>
             {renderComponentInBookNow()}
           </main>
-          <Recap serviceSelected={serviceSelected} barberSelected={barberSelected} dateSelected={dateSelected} timeSelected={timeSelected} weekDay={weekDay.current}/>
+          {serviceSelected && <Recap serviceSelected={serviceSelected} barberSelected={barberSelected} dateSelected={dateSelected} timeSelected={timeSelected} weekDay={weekDay.current}/>}
         </div>)
         : null
       }

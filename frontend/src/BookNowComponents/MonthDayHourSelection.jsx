@@ -10,16 +10,6 @@ export default function MonthDaySelection(props) {
     const [closedDaysList, setClosedDaysList] = useState([])
     const [bookedTimeSlots, setBookedTimeSlots] = useState([])
 
-    // Helper function για να βρει την επόμενη ανοιχτή ημέρα
-    const getNextOpenDay = (date) => {
-        let newDate = new Date(date)
-        // Skip Sunday (0) και Monday (1)
-        while (newDate.getDay() === 0 || newDate.getDay() === 1) {
-            newDate.setDate(newDate.getDate() + 1)
-        }
-        return newDate
-    }
-
     const [d, setD] = useState(() => {
         const today = new Date()
         today.setHours(0, 0, 0, 0)
@@ -143,28 +133,6 @@ export default function MonthDaySelection(props) {
         })
     }
 
-    function handlePreviousDay() {
-        setD(prev => {
-            let newDate = new Date(prev)
-            do {
-                newDate.setDate(newDate.getDate() - 1)
-            } while (isClosedDay(newDate))
-
-            return newDate
-        })
-    }
-
-    function handleNextDay() {
-        setD(prev => {
-            let newDate = new Date(prev)
-            do {
-                newDate.setDate(newDate.getDate() + 1)
-            } while (isClosedDay(newDate))
-
-            return newDate
-        })
-    }
-
     function handleContinue() {
         const day = String(d.getDate()).padStart(2, '0')
         const month = String(d.getMonth() + 1).padStart(2, '0')
@@ -176,14 +144,6 @@ export default function MonthDaySelection(props) {
         props.weekDay.current = days[d.getDay()]
 
         props.setDateSelected(formattedDate)
-    }
-
-    function showWeekDay(date) {
-        // Set the weekDay name
-        props.weekDay.current = weekDay[date.getDay()]
-
-        // Return the day name and date
-        return `${weekDay[date.getDay()]} ${d.getDate()}`
     }
 
     function handleTimeSlotClick(slot) {
@@ -313,34 +273,3 @@ export default function MonthDaySelection(props) {
         </div>
     )
 }
-
-{/* <div className="calendarSection">
-    <div className="monthPicker">
-        <button onClick={handlePreviousMonth}>-</button>
-        <h2>{monthName} {currentMonth.getFullYear()}</h2>
-        <button onClick={handleNextMonth}>+</button>
-    </div>
-
-    <div className="weekDays">
-        {generateWeekDays()}
-    </div>
-
-    <div className="calendar">
-        {generateDays()}
-    </div>
-
-    <div className="timeSlotsSection">
-        // <h3>Available Times</h3> }
-        <div className="timeSlots">
-            {freeTimeSlots.map(slot => (
-                <button
-                    key={slot}
-                    className={`timeSlot ${timeSelected_ === formatTimeSlot(slot) ? 'selected' : ''}`}
-                    onClick={() => handleTimeSlotClick(slot)}
-                >
-                    {formatTimeSlot(slot)}
-                </button>
-            ))}
-        </div>
-    </div>
-</div> */}
