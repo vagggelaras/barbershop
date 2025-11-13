@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react"
 import API_URL from '../config'
+import "../styles/MonthDayHourSelection.css"
 
 export default function MonthDaySelection(props) {
 
     const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    const weekDay = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    // const weekDay = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",]
+    const weekDay = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su",]
     const [closedDaysList, setClosedDaysList] = useState([])
     const [bookedTimeSlots, setBookedTimeSlots] = useState([])
 
@@ -18,17 +20,22 @@ export default function MonthDaySelection(props) {
         return newDate
     }
 
-    const [d, setD] = useState(() => getNextOpenDay(new Date()))
-    const monthName = month[d.getMonth()]
+    const [d, setD] = useState(() => {
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+        return today
+    })
+    const [currentMonth, setCurrentMonth] = useState(new Date())
+    const monthName = month[currentMonth.getMonth()]
     const startHour = 9
     let endHour = 20
     const availableTimeSlots = []
     const [timeSelected_, setTimeSelected_] = useState()
 
     //set end less than 20 if wensday or saturday
-    if (d.getDay() === 3) {
+    if (d && d.getDay() === 3) {
         endHour = 14
-    } else if (d.getDay() === 6) {
+    } else if (d && d.getDay() === 6) {
         endHour = 16
     }
 
@@ -121,7 +128,7 @@ export default function MonthDaySelection(props) {
     }
 
     function handlePreviousMonth() {
-        setD(prev => {
+        setCurrentMonth(prev => {
             const newDate = new Date(prev)
             newDate.setMonth(prev.getMonth() - 1)
             return newDate
@@ -129,7 +136,7 @@ export default function MonthDaySelection(props) {
     }
 
     function handleNextMonth() {
-        setD(prev => {
+        setCurrentMonth(prev => {
             const newDate = new Date(prev)
             newDate.setMonth(prev.getMonth() + 1)
             return newDate
@@ -163,6 +170,11 @@ export default function MonthDaySelection(props) {
         const month = String(d.getMonth() + 1).padStart(2, '0')
         const year = d.getFullYear()
         const formattedDate = `${day}-${month}-${year}`
+
+        // Update weekDay before setting the date
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+        props.weekDay.current = days[d.getDay()]
+
         props.setDateSelected(formattedDate)
     }
 
@@ -184,28 +196,151 @@ export default function MonthDaySelection(props) {
         props.setTimeSelected()
     }
 
+    function generateWeekDays(){
+        return weekDay.map((day,index) => {
+            return(
+                <p>{day}</p>
+            )
+        })
+    }
+
+    function generateDays() {
+        const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate()
+        const firstDayOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay()
+
+        // Adjust για να ξεκινάει η εβδομάδα από Δευτέρα (0 = Δευτέρα, 6 = Κυριακή)
+        const adjustedFirstDay = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1
+
+        const days = []
+
+        // Σημερινή ημερομηνία (χωρίς ώρα)
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+
+        // Προσθήκη κενών cells για τις μέρες πριν ξεκινήσει ο μήνας
+        for (let i = 0; i < adjustedFirstDay; i++) {
+            days.push(<div key={`empty-${i}`} className="calendar-day empty"></div>)
+        }
+
+        // Προσθήκη των ημερών του μήνα
+        for (let day = 1; day <= daysInMonth; day++) {
+            const currentDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
+            currentDate.setHours(0, 0, 0, 0)
+
+            const isClosed = isClosedDay(currentDate)
+            const isPast = currentDate < today
+            const isSelected = d && d.getDate() === day && d.getMonth() === currentMonth.getMonth() && d.getFullYear() === currentMonth.getFullYear()
+            const isDisabled = isClosed || isPast
+
+            const handleDayClick = () => {
+                if (!isDisabled) {
+                    const dayFormatted = String(currentDate.getDate()).padStart(2, '0')
+                    const monthFormatted = String(currentDate.getMonth() + 1).padStart(2, '0')
+                    const yearFormatted = currentDate.getFullYear()
+                    const formattedDate = `${dayFormatted}-${monthFormatted}-${yearFormatted}`
+                    console.log(formattedDate)
+                    setD(currentDate)
+                }
+            }
+
+            days.push(
+                <div
+                    key={day}
+                    className={`calendar-day ${isDisabled ? 'closed' : ''} ${isSelected ? 'selected' : ''} ${isPast ? 'past' : ''}`}
+                    onClick={handleDayClick}
+                >
+                    {day}
+                </div>
+            )
+        }
+
+        return days
+    }
+
+    const getFormattedSelectedDate = () => {
+        const day = String(d.getDate()).padStart(2, '0')
+        const month = String(d.getMonth() + 1).padStart(2, '0')
+        const year = d.getFullYear()
+        return `${day}-${month}-${year}`
+    }
+
     return (
-        <>
-        <button onClick={() => goBack()}>Back</button>
-            <h2>{monthName} {d.getFullYear()}</h2>
-            <button onClick={handlePreviousMonth}>-</button>
-            <button onClick={handleNextMonth}>+</button>
+        <div className="malakia" style={{ width: "100%", height: '100%', backgroundColor:"#776262"}}>
+        <section className="datePickerContainer">
+            <button className="backButton" onClick={() => goBack()}>Back</button>
 
-            <h2>{showWeekDay(d)}</h2>
-            <button onClick={handlePreviousDay}>-</button>
-            <button onClick={handleNextDay}>+</button>
+            <div className="mainContainer">
+                <div className="calendar">
+                    <div className="monthPicker">
+                        <button onClick={handlePreviousMonth}>{"<"}</button>
+                        <h2>{monthName} {currentMonth.getFullYear()}</h2>
+                        <button onClick={handleNextMonth}>{">"}</button>
+                    </div>
 
-            <div>
-                <h3>Available Times:</h3>
-                {freeTimeSlots.map(slot => (
-                    <button key={slot} onClick={() => handleTimeSlotClick(slot)}>
-                        {formatTimeSlot(slot)}
-                    </button>
-                ))}
+                    <div className="weekDays">
+                        {generateWeekDays()}
+                    </div>
+
+                    <div className="days">
+                        {generateDays()}
+                    </div>
+                </div>
+                <div className="timeSlotsSection">
+                    <div className="timeSlots">
+                        {freeTimeSlots.map(slot => (
+                            <button
+                                key={slot}
+                                className={`timeSlot ${timeSelected_ === formatTimeSlot(slot) ? 'selected' : ''}`}
+                                onClick={() => handleTimeSlotClick(slot)}
+                            >
+                                {formatTimeSlot(slot)}
+                            </button>
+                        ))}
+                    </div>
+                </div>
             </div>
 
-            <hr style={{margin:"10px"}}></hr>
-            {timeSelected_ ? <button onClick={handleContinue}>Continue</button> : null}
-        </>
+            
+
+            <div className="footer">
+                <button onClick={() => goBack()}>Cancel</button>
+                <div>
+                    <span>{getFormattedSelectedDate()}</span>
+                    <button onClick={handleContinue} disabled={!timeSelected_}>Schedule</button>
+                </div>
+            </div>
+        </section>
+        </div>
     )
 }
+
+{/* <div className="calendarSection">
+    <div className="monthPicker">
+        <button onClick={handlePreviousMonth}>-</button>
+        <h2>{monthName} {currentMonth.getFullYear()}</h2>
+        <button onClick={handleNextMonth}>+</button>
+    </div>
+
+    <div className="weekDays">
+        {generateWeekDays()}
+    </div>
+
+    <div className="calendar">
+        {generateDays()}
+    </div>
+
+    <div className="timeSlotsSection">
+        // <h3>Available Times</h3> }
+        <div className="timeSlots">
+            {freeTimeSlots.map(slot => (
+                <button
+                    key={slot}
+                    className={`timeSlot ${timeSelected_ === formatTimeSlot(slot) ? 'selected' : ''}`}
+                    onClick={() => handleTimeSlotClick(slot)}
+                >
+                    {formatTimeSlot(slot)}
+                </button>
+            ))}
+        </div>
+    </div>
+</div> */}

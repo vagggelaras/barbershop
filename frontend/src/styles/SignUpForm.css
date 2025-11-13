@@ -3,12 +3,12 @@
     background-color: white;
     position: absolute;
     width: 60%;
-    top:20%;
+    /* top:20%; */
     left: 20%;
     height: 60vh;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
     flex-direction: column;
 }
 

@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
 import API_URL from '../config'
+import "../styles/BarberSection.css"
 
 export default function BarbersSection(props){
-
+console.log(props.serviceSelected)
     const [personnelList, setPersonnelList] = useState([])
-// console.log(personnelList)
+console.log(personnelList)
     useEffect(() => {
         const fetchPersonnel = async () => {
             try {
@@ -19,8 +20,18 @@ export default function BarbersSection(props){
     }, [])
 
     function showPersonnel(){
+        const colors = ['#606D75', '#C05252', '#556B2F', '#483D8B', '#B8860B', '#43351B'];
+
         return personnelList.map((employe, index) => {
-            return <button key={index} value={employe.name} onClick={e => selectBarberClicked(e)}>{employe.name}</button>
+            return employe.services.includes(props.serviceSelected) ?
+
+            <button key={index} value={employe.name} onClick={e => selectBarberClicked(e)} className="barberCard">
+                <div className="employeBackground" style={{ backgroundColor: colors[index % colors.length] }}></div>
+                <img className="employePhoto" src={employe.photo}></img>
+                <h2 className="employeName">{employe.name}</h2>
+            </button>
+
+            : null
         })
     }
 
@@ -29,8 +40,8 @@ export default function BarbersSection(props){
     }
 
     return(
-        <section className="personnelSection">
-            <button onClick={() => props.setServiceSelected()}>Back</button>
+        <section className="personnelContainer">
+            <button className="backButton" onClick={() => props.setServiceSelected()}>Back</button>
             {showPersonnel()}
         </section>
     )

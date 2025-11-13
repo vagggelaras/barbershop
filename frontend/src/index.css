@@ -4,7 +4,7 @@ body {
   font-weight: 800;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: black;
+  background-color: #D3DAD9;
 }
 
 code {
@@ -12,12 +12,29 @@ code {
     monospace;
 }
 
+.bookingContainer {
+  position: absolute;
+  z-index: 10;
+  top: 13vh;
+  left: 5%;
+  right: 5%;
+  display: flex;
+  /* justify-content: center; */
+  gap: 20px;
+  align-items: center;
+}
+
 main {
-  margin: auto;
-  width: 70%;
+  flex: 1;
   height: 80vh;
-  margin-top: 5vh;
-  border: 2px solid black;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background-color: #776262;
+}
+
+aside {
+  flex-shrink: 0;
 }

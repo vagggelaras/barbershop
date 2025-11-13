@@ -1,0 +1,198 @@
+.homePageContainer{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('../../../public/backgroundImg2.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    overflow-x: hidden;
+}
+
+.textContainer{
+    /* border: 1px solid red; */
+    width: 50%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+}
+
+.text-type {
+    display: inline-block;
+    white-space: pre-wrap;
+}
+
+.text-type__cursor {
+    margin-left: 0.25rem;
+    display: inline-block;
+    opacity: 1;
+}
+
+.text-type__cursor--hidden {
+    display: none;
+}
+
+.homepage-text {
+    color: white;
+    font-size: 4rem;
+    z-index: 5;
+    width: 100%;
+    line-height: 1.2;
+}
+
+.textContainer button {
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* Styling */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+    color: white;
+    padding: 1rem 3rem;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.textContainer button:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transform: translateX(-50%) translateY(-3px);
+}
+
+.textContainer button:active {
+    transform: translateX(-50%) translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .homepage-text {
+        font-size: 3.5rem;
+    }
+
+    .textContainer button {
+        font-size: 1.3rem;
+        padding: 0.9rem 2.5rem;
+    }
+
+    /* Scale down 3D scissors slightly */
+    .homePageContainer > div:last-child {
+        transform: scale(0.85);
+    }
+}
+
+@media (max-width: 1200px) {
+    .textContainer {
+        width: 55%;
+    }
+
+    .homepage-text {
+        font-size: 3.2rem;
+    }
+
+    /* Scale down 3D scissors more */
+    .homePageContainer > div:last-child {
+        transform: scale(0.7);
+    }
+}
+
+@media (max-width: 1024px) {
+    .homePageContainer {
+        flex-direction: column;
+        justify-content: center;
+        gap: 2rem;
+        padding: 2rem;
+    }
+
+    .textContainer {
+        width: 90%;
+        height: auto;
+        min-height: 300px;
+    }
+
+    .homepage-text {
+        font-size: 3rem;
+        text-align: center;
+    }
+
+    .textContainer button {
+        font-size: 1.2rem;
+        padding: 0.8rem 2rem;
+        bottom: 0;
+        position: static;
+        margin-top: 2rem;
+        transform: none;
+        left: auto;
+    }
+
+    /* Hide 3D Scissors on tablets and smaller for better layout */
+    .homePageContainer > div:last-child {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .homePageContainer {
+        padding: 1rem;
+    }
+
+    .textContainer {
+        width: 95%;
+        min-height: 250px;
+    }
+
+    .homepage-text {
+        font-size: 2.2rem;
+    }
+
+    .textContainer button {
+        font-size: 1.1rem;
+        padding: 0.7rem 1.8rem;
+        letter-spacing: 1.5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .textContainer {
+        width: 95%;
+        min-height: 200px;
+    }
+
+    .homepage-text {
+        font-size: 1.8rem;
+        line-height: 1.3;
+    }
+
+    .textContainer button {
+        font-size: 1rem;
+        padding: 0.6rem 1.5rem;
+        letter-spacing: 1px;
+    }
+}
+
+@media (max-width: 375px) {
+    .homepage-text {
+        font-size: 1.5rem;
+    }
+
+    .textContainer button {
+        font-size: 0.9rem;
+        padding: 0.5rem 1.2rem;
+    }
+}

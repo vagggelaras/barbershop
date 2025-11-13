@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import API_URL from '../config'
+import "../styles/Confirmation.css"
 
 export default function Confirmation(props) {
     const userData = JSON.parse(sessionStorage.getItem('user') || '{}')
@@ -67,28 +68,58 @@ export default function Confirmation(props) {
     }
 
     return (
-        <div>
-            <button onClick={() => props.setDateSelected("")}>Back</button>
-            <h2>Confirmation</h2>
+        <div className="confirmationContainer">
+            <button className="backButton" onClick={() => props.setDateSelected("")}>Back</button>
 
-            <div>
-                <h3>Customer Details:</h3>
-                <p><strong>Name:</strong> {userData.name || 'N/A'}</p>
-                <p><strong>Email:</strong> {userData.email || 'N/A'}</p>
-                <p><strong>Phone:</strong> {userData.phone || 'N/A'}</p>
+            <h2 className="confirmationTitle">Confirmation</h2>
+
+            <div className="detailsWrapper">
+                <div className="detailsSection">
+                    <h3>Customer Details</h3>
+                    <div className="detailItem">
+                        <span className="label">Name:</span>
+                        <span className="value">{userData.name || 'N/A'}</span>
+                    </div>
+                    <div className="detailItem">
+                        <span className="label">Email:</span>
+                        <span className="value">{userData.email || 'N/A'}</span>
+                    </div>
+                    <div className="detailItem">
+                        <span className="label">Phone:</span>
+                        <span className="value">{userData.phone || 'N/A'}</span>
+                    </div>
+                </div>
+
+                <div className="detailsSection">
+                    <h3>Appointment Details</h3>
+                    <div className="detailItem">
+                        <span className="label">Barber:</span>
+                        <span className="value">{props.barberSelected}</span>
+                    </div>
+                    <div className="detailItem">
+                        <span className="label">Service:</span>
+                        <span className="value">{props.serviceSelected}</span>
+                    </div>
+                    <div className="detailItem">
+                        <span className="label">Duration:</span>
+                        <span className="value">{props.serviceDuration} hour</span>
+                    </div>
+                    <div className="detailItem">
+                        <span className="label">Price:</span>
+                        <span className="value">€{servicePrice !== null ? servicePrice : 'Loading...'}</span>
+                    </div>
+                    <div className="detailItem">
+                        <span className="label">Date:</span>
+                        <span className="value">{props.dateSelected}</span>
+                    </div>
+                    <div className="detailItem">
+                        <span className="label">Time:</span>
+                        <span className="value">{props.timeSelected}</span>
+                    </div>
+                </div>
             </div>
 
-            <div>
-                <h3>Appointment Details:</h3>
-                <p><strong>Barber:</strong> {props.barberSelected}</p>
-                <p><strong>Service:</strong> {props.serviceSelected}</p>
-                <p><strong>Duration:</strong> {props.serviceDuration} hour</p>
-                <p><strong>Price:</strong> €{servicePrice !== null ? servicePrice : 'Loading...'}</p>
-                <p><strong>Date:</strong> {props.dateSelected}</p>
-                <p><strong>Time:</strong> {props.timeSelected}</p>
-            </div>
-
-            <button onClick={handleConfirmAppointment}>Confirm Appointment</button>
+            <button className="confirmButton" onClick={handleConfirmAppointment}>Confirm Appointment</button>
         </div>
     )
 }

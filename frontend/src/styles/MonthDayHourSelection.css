@@ -1,0 +1,289 @@
+.malakia{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    width: "100%"; height: '100%'; background-color:"#776262"
+}
+
+.datePickerContainer{
+    width: 63%;
+    height: 63%;
+    display: flex;
+    flex-direction: column;
+    padding: 1%;
+    background: linear-gradient(135deg, #2E2D32 0%, #1a1a1a 100%);
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mainContainer{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    gap: 15px;
+}
+
+.calendar{
+    height: 100%;
+    width: 80%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.monthPicker{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 15%;
+}
+
+.monthPicker button {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    color: #E8E8E8;
+    transition: all 0.3s ease;
+}
+
+.monthPicker button:hover {
+    background: linear-gradient(135deg, rgba(119, 98, 98, 0.5) 0%, rgba(119, 98, 98, 0.3) 100%);
+    border-color: #776262;
+    color: #E8E8E8;
+    box-shadow: 0 0 15px rgba(119, 98, 98, 0.5);
+}
+
+.monthPicker h2 {
+    margin: 0;
+    color: #E8E8E8;
+    font-size: 18px;
+}
+
+.weekDays{
+    height: 10%;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    align-items: center;
+    text-align: center;
+}
+
+.weekDays p {
+    margin: 0;
+    color: rgba(232, 232, 232, 0.6);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.days{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    text-align: center;
+    height: 75%;
+    gap: 4px;
+}
+
+.calendar-day{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #E8E8E8;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.calendar-day:hover:not(.closed):not(.empty) {
+    /* background: linear-gradient(135deg, rgba(119, 98, 98, 0.4) 0%, rgba(119, 98, 98, 0.2) 100%); */
+    border-color: #776262;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(119, 98, 98, 0.5);
+}
+
+.calendar-day.closed {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+    color: rgba(232, 232, 232, 0.3);
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+
+.calendar-day.selected {
+    background: linear-gradient(135deg, #776262 0%, #675252 100%);
+    color: white;
+    border-color: #776262;
+    font-weight: bold;
+    box-shadow: 0 0 20px rgba(119, 98, 98, 0.6), 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.calendar-day.empty {
+    background-color: transparent !important;
+    background: none;
+    cursor: default;
+    border: none;
+}
+
+.timeSlotsSection{
+    width: 20%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+    border-radius: 8px;
+    padding: 10px;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.timeSlots {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.timeSlot {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 500;
+    color: #E8E8E8;
+    transition: all 0.3s ease;
+}
+
+.timeSlot:hover {
+    background: linear-gradient(135deg, rgba(119, 98, 98, 0.4) 0%, rgba(119, 98, 98, 0.2) 100%);
+    border-color: #776262;
+    color: #E8E8E8;
+    box-shadow: 0 0 15px rgba(119, 98, 98, 0.5);
+}
+
+.timeSlot.selected {
+    background: linear-gradient(135deg, #776262 0%, #675252 100%);
+    color: white;
+    border-color: #776262;
+    font-weight: bold;
+    box-shadow: 0 0 20px rgba(119, 98, 98, 0.6), 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.footer{
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 1%;
+}
+
+.footer > button {
+    padding: 12px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    color: #E8E8E8;
+}
+
+.footer > button:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.footer > div {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.footer div span {
+    font-weight: 600;
+    color: #E8E8E8;
+    font-size: 14px;
+}
+
+.footer div button {
+    padding: 12px 20px;
+    border: 1px solid #776262;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #776262 0%, #675252 100%);
+    color: white;
+}
+
+.footer div button:hover {
+    background: linear-gradient(135deg, #877272 0%, #776262 100%);
+    box-shadow: 0 0 20px rgba(119, 98, 98, 0.6), 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.footer div button:disabled {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: rgba(232, 232, 232, 0.3);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.footer div button:disabled:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    box-shadow: none;
+}
+
+/* Custom scrollbar για dark theme */
+.timeSlotsSection::-webkit-scrollbar {
+    width: 8px;
+}
+
+.timeSlotsSection::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.timeSlotsSection::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #776262 0%, #675252 100%);
+    border-radius: 10px;
+}
+
+.timeSlotsSection::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #877272 0%, #776262 100%);
+}
+
+.backButton {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #E8E8E8;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.backButton:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}

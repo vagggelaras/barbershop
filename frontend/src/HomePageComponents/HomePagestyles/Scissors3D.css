@@ -1,0 +1,9 @@
+.scissors-container {
+    width: 40%;
+    height: 80vh;
+}
+
+.scissors-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}

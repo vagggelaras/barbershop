@@ -22,13 +22,23 @@ export default function ServicesSection(props){
 
     function showServices() {
         return servicesList.map((service, index) => {
-            return <button key={index} id={index} onClick={e => selectServiceClicked(e)} value={service.name}>
-                {service.name}
+            return (
+            <button key={index} className="serviceCard" id={index} onClick={e => selectServiceClicked(e)} value={service.name}>
+                <div className="serviceImgContainer">
+                    <img className="serviceImg serviceImg-default" id={index} value={service.name} src="./balayageBefore.jpg" alt={service.name}></img>
+                    <img className="serviceImg serviceImg-hover" id={index} value={service.name} src="./balayageAfter.jpg" alt={service.name}></img>
+                </div>
+                <div className="serviceDesciption">
+                    <h3>{service.name}</h3>
+                    <h2>Select</h2>
+                </div>
+
             </button>
-        })
+        )})
     }
 
     function selectServiceClicked(e){
+        // console.log(e.target.id)
         // console.log(servicesList[e.target.id].duration)
         props.setServiceSelected(e.target.value)
         props.setServiceDuration(servicesList[e.target.id].duration)
@@ -41,8 +51,11 @@ export default function ServicesSection(props){
 
     return(
         <>
-            <button onClick={() => removeUser()}>Back</button>
-            {showServices()}
+            <button className="backButton" onClick={() => removeUser()}>Back</button>
+            <section className="servicesContainer">
+                {showServices()}
+            </section>
+            
         </>
     )
 

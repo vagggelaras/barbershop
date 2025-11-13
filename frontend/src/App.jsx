@@ -7,9 +7,10 @@ import Confirmation from "./BookNowComponents/Confirmation"
 import Recap from "./BookNowComponents/Recap"
 import SignUpForm from './BookNowComponents/SignUpForm'
 
-import Scissors3D from './HomePageComponents/Scissors3D'
+import HomePageMain from './HomePageComponents/HomePageMain'
+
 import LightRays from './HomePageComponents/LightRays'
-import TextType from './HomePageComponents/TextType'
+
 // import Threads from './HomePageComponents/Threads'
 
 import FloatingChatButton from './BookNowComponents/Chatbot/FloatingChatButton'
@@ -34,7 +35,7 @@ export default function App() {
   function renderComponentInBookNow() {
     if (dateSelected) return <Confirmation setDateSelected={setDateSelected} dateSelected={dateSelected}barberSelected={barberSelected}serviceSelected={serviceSelected}serviceDuration={serviceDuration}servicePrice={servicePrice}weekDay={weekDay}timeSelected={timeSelected}/>
     if (barberSelected) return <MonthDayHourSelection setBarberSelected={setBarberSelected} setDateSelected={setDateSelected} setTimeSelected={setTimeSelected} weekDay={weekDay} barberSelected={barberSelected} serviceDuration={serviceDuration} />
-    if (serviceSelected) return <BarbersSection setBarberSelected={setBarberSelected} setServiceSelected={setServiceSelected}/>
+    if (serviceSelected) return <BarbersSection setBarberSelected={setBarberSelected} setServiceSelected={setServiceSelected} serviceSelected={serviceSelected}/>
     if (userLoggedIn) return <ServicesSection setServiceSelected={setServiceSelected} setServiceDuration={setServiceDuration} setServicePrice={setServicePrice} setUserLoggedIn={setUserLoggedIn}/>
     return <SignUpForm userLoggedIn={userLoggedIn} setUserLoggedIn={setUserLoggedIn} />
   }
@@ -175,55 +176,19 @@ export default function App() {
       />
 
       {activeButton === 1 ?
-        (<>
-        <main>
-          {renderComponentInBookNow()}
-        </main>
-        {!dateSelected && <Recap serviceSelected={serviceSelected} barberSelected={barberSelected}/>}
-        </>)
+        (<div className="bookingContainer">
+          <main>
+            {renderComponentInBookNow()}
+          </main>
+          <Recap serviceSelected={serviceSelected} barberSelected={barberSelected} dateSelected={dateSelected} timeSelected={timeSelected} weekDay={weekDay.current}/>
+        </div>)
         : null
       }
 
       {activeButton === 0 ?
-        <div style={{
-          position: 'absolute',
-          width: '100%',
-          top:'0',
-          height: '100vh',
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(${process.env.PUBLIC_URL}/backgroundImg2.avif)`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}>
-          <LightRays
-            raysOrigin="top-center"
-            raysColor="#000000"
-            raysSpeed={1}
-            lightSpread={0.8}
-            rayLength={2}
-            fadeDistance={0.5}
-            saturation={0.4}
-            followMouse={true}
-            mouseInfluence={.01}
-            noiseAmount={0.05}
-            distortion={0}
-          />
-          <div style={{ position: 'relative', zIndex: 2 }}>
-            <Scissors3D />
-          </div>
-          <div style={{ position: 'relative', zIndex: 3 }}>
-            <TextType
-              text={["Welcome to ZEN Hair & Beauty Spa", "Your Perfect Look Awaits", "Book Your Appointment Today"]}
-              as="p"
-              typingSpeed={90}
-              deletingSpeed={50}
-              pauseDuration={2000}
-              loop={true}
-              showCursor={true}
-              className="homepage-text"
-            />
-          </div>
-        </div>
+        <>
+          {<HomePageMain setActiveButton={setActiveButton}/>}    
+        </>
         : null
       }
 
