@@ -27,7 +27,7 @@ console.log(personnelList)
 
             <button key={index} value={employe.name} onClick={e => selectBarberClicked(e)} className="barberCard">
                 <div className="employeBackground" style={{ backgroundColor: colors[index % colors.length] }}></div>
-                <img className="employePhoto" src={employe.photo} alt={`${employe.name} - barber photo`} />
+                <img className="employePhoto" src={employe.photo} alt={employe.name} />
                 <h2 className="employeName">{employe.name}</h2>
             </button>
 
