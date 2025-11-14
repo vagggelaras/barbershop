@@ -18,7 +18,7 @@ import API_URL from './config'
 
 export default function App() {
 
-  const [activeButton, setActiveButton] = useState(0)
+  const [activeButton, setActiveButton] = useState(1)
   const [userLoggedIn, setUserLoggedIn] = useState(sessionStorage.length)
   const [serviceSelected, setServiceSelected] = useState(null)
   const [serviceDuration, setServiceDuration] = useState(null)

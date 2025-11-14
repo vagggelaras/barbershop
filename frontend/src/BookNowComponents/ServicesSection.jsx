@@ -44,6 +44,8 @@ export default function ServicesSection(props){
     function showServices() {
         return servicesList.map((service, index) => {
             const isTouched = touchedCard === index
+            const imgName = service.name.replace(/ /g, '').replace(/'/g, "")
+            // console.log(imgName)
             return (
             <button
                 key={index}
@@ -53,8 +55,8 @@ export default function ServicesSection(props){
                 value={service.name}
             >
                 <div className="serviceImgContainer">
-                    <img className="serviceImg serviceImg-default" id={index} value={service.name} src="./balayageBefore.jpg" alt={service.name}></img>
-                    <img className="serviceImg serviceImg-hover" id={index} value={service.name} src="./balayageAfter.jpg" alt={service.name}></img>
+                    <img className="serviceImg serviceImg-default" id={index} value={service.name} src={`./${imgName}Before.jpg`} alt={service.name}></img>
+                        <img className="serviceImg serviceImg-hover" id={index} value={service.name} src={`./${imgName}After.jpg`} alt={service.name}></img>
                 </div>
                 <div className="serviceDesciption">
                     <h3>{service.name}</h3>

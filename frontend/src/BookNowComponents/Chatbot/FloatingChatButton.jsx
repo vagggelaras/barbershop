@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import ChatWindow from './ChatWindow'
+import "./AIStyle.css"
 
 export default function FloatingChatButton({
   services,
@@ -41,29 +42,11 @@ export default function FloatingChatButton({
       ) : (
         <button
           onClick={() => setIsChatOpen(true)}
-          style={styles.button}
+          className={'aiIcon'}
         >
-          💬
+          Ask AI
         </button>
       )}
     </>
   );
 }
-
-const styles = {
-  button: {
-    position: 'fixed',      
-    bottom: '20px',         
-    right: '20px',          
-    width: '60px',
-    height: '60px',
-    borderRadius: '50%',    
-    background: '#007bff',  
-    color: 'white',
-    border: 'none',
-    fontSize: '28px',
-    cursor: 'pointer',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.3)', 
-    zIndex: 999,           
-  }
-};
