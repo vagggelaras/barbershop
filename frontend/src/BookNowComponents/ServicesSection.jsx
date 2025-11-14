@@ -5,6 +5,7 @@ import API_URL from '../config'
 export default function ServicesSection(props){
 
     const [servicesList, setServicesList] = useState([])
+    const [touchedCard, setTouchedCard] = useState(null)
 
     useEffect(() => {
         const fetchServices = async () => {
@@ -18,40 +19,80 @@ export default function ServicesSection(props){
         }
         fetchServices()
     }, [])
+
+    // Reset touched state on scroll (mobile UX improvement)
+    useEffect(() => {
+        const handleScroll = () => {
+            if (touchedCard !== null) {
+                setTouchedCard(null)
+            }
+        }
+
+        const container = document.querySelector('.servicesContainer')
+        if (container) {
+            container.addEventListener('scroll', handleScroll)
+        }
+
+        return () => {
+            if (container) {
+                container.removeEventListener('scroll', handleScroll)
+            }
+        }
+    }, [touchedCard])
 // console.log(servicesList)
 
     function showServices() {
         return servicesList.map((service, index) => {
+            const isTouched = touchedCard === index
             return (
-            <button key={index} className="serviceCard" id={index} onClick={e => selectServiceClicked(e)} value={service.name}>
+            <button
+                key={index}
+                className={`serviceCard ${isTouched ? 'touched' : ''}`}
+                id={index}
+                onClick={e => handleCardClick(e, index)}
+                value={service.name}
+            >
                 <div className="serviceImgContainer">
                     <img className="serviceImg serviceImg-default" id={index} value={service.name} src="./balayageBefore.jpg" alt={service.name}></img>
                     <img className="serviceImg serviceImg-hover" id={index} value={service.name} src="./balayageAfter.jpg" alt={service.name}></img>
                 </div>
                 <div className="serviceDesciption">
                     <h3>{service.name}</h3>
-                    <h2>Select</h2>
+                    <h2>{isTouched ? 'Confirm' : 'Select'}</h2>
                 </div>
 
             </button>
         )})
     }
 
-    function selectServiceClicked(e){
-        // console.log(e.target.id)
-        // console.log(servicesList[e.target.id].duration)
-        props.setServiceSelected(e.target.value)
-        props.setServiceDuration(servicesList[e.target.id].duration)
+    function handleCardClick(e, index) {
+        // Έλεγχος αν είναι mobile (touch device)
+        const isMobile = window.matchMedia('(max-width: 1024px)').matches
+
+        if (isMobile) {
+            // Αν η κάρτα είναι ήδη touched, επιβεβαιώνουμε την επιλογή
+            if (touchedCard === index) {
+                selectServiceClicked(e, index)
+            } else {
+                // Αλλιώς, κάνουμε set το touched state
+                setTouchedCard(index)
+            }
+        } else {
+            // Desktop: κατευθείαν επιλογή
+            selectServiceClicked(e, index)
+        }
     }
 
-    function removeUser(){
-        sessionStorage.clear()
-        props.setUserLoggedIn(sessionStorage.length)
+    function selectServiceClicked(e, index) {
+        const serviceIndex = index !== undefined ? index : e.target.id
+        props.setServiceSelected(e.target.value)
+        props.setServiceDuration(servicesList[serviceIndex].duration)
+        // Reset touched state
+        setTouchedCard(null)
     }
 
     return(
         <>
-            <button className="backButton" onClick={() => removeUser()}>Back</button>
             <section className="servicesContainer">
                 {showServices()}
             </section>

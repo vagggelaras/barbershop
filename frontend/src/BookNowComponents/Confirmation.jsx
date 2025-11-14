@@ -40,7 +40,7 @@ export default function Confirmation(props) {
             userPhone: userData.phone
         }
 
-        console.log("Sending appointment:", appointmentData) // Debug
+        // console.log("Sending appointment:", appointmentData) // Debug
 
         try {
             const response = await fetch(`${API_URL}/appointments`, {
@@ -54,7 +54,7 @@ export default function Confirmation(props) {
             const data = await response.json()
 
             if (response.ok) {
-                console.log("Appointment created successfully:", data)
+                // console.log("Appointment created successfully:", data)
                 alert("Το ραντεβού σας επιβεβαιώθηκε!")
                 // redirect ή reset την κατάσταση
             } else {
@@ -65,6 +65,8 @@ export default function Confirmation(props) {
             console.error('Error:', error)
             alert("Σφάλμα σύνδεσης. Παρακαλώ δοκιμάστε ξανά.")
         }
+        props.setActiveButton(0)
+        props.resetAllSelected()
     }
 
     return (

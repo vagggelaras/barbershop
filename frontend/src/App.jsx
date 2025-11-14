@@ -10,7 +10,7 @@ import SignUpForm from './BookNowComponents/SignUpForm'
 import HomePageMain from './HomePageComponents/HomePageMain'
 
 import LightRays from './HomePageComponents/LightRays'
-
+import UserIcon from "./HomePageComponents/UserIcon"
 // import Threads from './HomePageComponents/Threads'
 
 import FloatingChatButton from './BookNowComponents/Chatbot/FloatingChatButton'
@@ -18,7 +18,7 @@ import API_URL from './config'
 
 export default function App() {
 
-  const [activeButton, setActiveButton] = useState(1)
+  const [activeButton, setActiveButton] = useState(0)
   const [userLoggedIn, setUserLoggedIn] = useState(sessionStorage.length)
   const [serviceSelected, setServiceSelected] = useState(null)
   const [serviceDuration, setServiceDuration] = useState(null)
@@ -32,11 +32,17 @@ export default function App() {
     setActiveButton(number)
   }
 
+  function resetAllSelected(){
+    setServiceSelected(null)
+    setBarberSelected(null)
+    setDateSelected(null)
+  }
+
   function renderComponentInBookNow() {
-    if (dateSelected) return <Confirmation setDateSelected={setDateSelected} dateSelected={dateSelected}barberSelected={barberSelected}serviceSelected={serviceSelected}serviceDuration={serviceDuration}servicePrice={servicePrice}weekDay={weekDay}timeSelected={timeSelected}/>
+    if (dateSelected) return <Confirmation resetAllSelected={() => resetAllSelected()} setActiveButton={setActiveButton} setDateSelected={setDateSelected} dateSelected={dateSelected}barberSelected={barberSelected}serviceSelected={serviceSelected}serviceDuration={serviceDuration}servicePrice={servicePrice}weekDay={weekDay}timeSelected={timeSelected}/>
     if (barberSelected) return <MonthDayHourSelection setBarberSelected={setBarberSelected} setDateSelected={setDateSelected} setTimeSelected={setTimeSelected} weekDay={weekDay} barberSelected={barberSelected} serviceDuration={serviceDuration} />
     if (serviceSelected) return <BarbersSection setBarberSelected={setBarberSelected} setServiceSelected={setServiceSelected} serviceSelected={serviceSelected}/>
-    if (userLoggedIn) return <ServicesSection setServiceSelected={setServiceSelected} setServiceDuration={setServiceDuration} setServicePrice={setServicePrice} setUserLoggedIn={setUserLoggedIn}/>
+    if (userLoggedIn) return <ServicesSection setServiceSelected={setServiceSelected} setServiceDuration={setServiceDuration} setServicePrice={setServicePrice} />
     return <SignUpForm userLoggedIn={userLoggedIn} setUserLoggedIn={setUserLoggedIn} />
   }
 
@@ -169,10 +175,17 @@ export default function App() {
     }
   }
 
+  function logOutUser(){
+    sessionStorage.clear()
+    setUserLoggedIn(sessionStorage.length)
+  }
+
   return (
     <>
       <Navigation
         onButtonClick={handleNavClick}
+        userLoggedIn={userLoggedIn}
+        logOutUser={logOutUser}
       />
 
       {activeButton === 1 ?
@@ -180,7 +193,7 @@ export default function App() {
           <main>
             {renderComponentInBookNow()}
           </main>
-          {serviceSelected && <Recap serviceSelected={serviceSelected} barberSelected={barberSelected} dateSelected={dateSelected} timeSelected={timeSelected} weekDay={weekDay.current}/>}
+          {serviceSelected && !dateSelected && <Recap serviceSelected={serviceSelected} barberSelected={barberSelected} dateSelected={dateSelected} timeSelected={timeSelected} weekDay={weekDay.current}/>}
         </div>)
         : null
       }
@@ -192,16 +205,23 @@ export default function App() {
         : null
       }
 
-      {userLoggedIn ? <FloatingChatButton
-        services={services}
-        barbers={barbers}
-        dataLoading={dataLoading}
-        onServiceSelected={handleChatbotServiceSelected}
-        onBarberSelected={handleChatbotBarberSelected}
-        onDateSelected={handleChatbotDateSelected}
-        onTimeSelected={handleChatbotTimeSelected}
-        onBookingComplete={handleChatbotBooking}
-      /> : null}
+      {userLoggedIn ? 
+      <>
+        <FloatingChatButton
+          services={services}
+          barbers={barbers}
+          dataLoading={dataLoading}
+          onServiceSelected={handleChatbotServiceSelected}
+          onBarberSelected={handleChatbotBarberSelected}
+          onDateSelected={handleChatbotDateSelected}
+          onTimeSelected={handleChatbotTimeSelected}
+          onBookingComplete={handleChatbotBooking}
+        /> 
+        <UserIcon 
+          logOutUser={() => logOutUser()}
+        />
+      </>
+      : null}
 
       <LightRays
         raysOrigin="top-center"

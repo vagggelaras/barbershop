@@ -34,8 +34,26 @@ export default function MonthDaySelection(props) {
         availableTimeSlots.push(i)
     }
 
-    // Φιλτράρισμα για διαθέσιμα slots
-    const freeTimeSlots = availableTimeSlots.filter(slot => !bookedTimeSlots.includes(slot))
+    // Το serviceDuration έρχεται σε ώρες από τη βάση (π.χ. 3 = 3 ώρες)
+    const serviceDurationInHours = props.serviceDuration || 0
+
+    // console.log('Service Duration (hours from DB):', props.serviceDuration)
+    // console.log('End Hour:', endHour)
+
+    // Φιλτράρισμα για slots που έχουν αρκετό χρόνο μέχρι το κλείσιμο
+    const validTimeSlots = availableTimeSlots.filter(slot => {
+        // Έλεγχος αν το slot + η διάρκεια της υπηρεσίας είναι πριν το κλείσιμο
+        const canFit = (slot + serviceDurationInHours) <= endHour
+        // if (slot >= 17) {
+        //     console.log(`Slot ${slot}: ${slot} + ${serviceDurationInHours} = ${slot + serviceDurationInHours}, endHour: ${endHour}, canFit: ${canFit}`)
+        // }
+        return canFit
+    })
+
+    // console.log('Valid time slots:', validTimeSlots)
+
+    // Φιλτράρισμα για διαθέσιμα slots (όχι κλεισμένα)
+    const freeTimeSlots = validTimeSlots.filter(slot => !bookedTimeSlots.includes(slot))
 
     // Μετατροπή αριθμού σε string format (10 -> "10:00", 10.5 -> "10:30")
     function formatTimeSlot(slot) {

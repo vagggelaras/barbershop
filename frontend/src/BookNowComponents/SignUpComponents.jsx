@@ -33,6 +33,20 @@ export const Container = styled.div`
   width: 60%;
   left: 20%;
   min-height: 60vh;
+
+  /* Tablet */
+  @media (max-width: 1024px) {
+    width: 80%;
+    left: 10%;
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    width: 95%;
+    left: 2.5%;
+    min-height: 70vh;
+    border-radius: 10px;
+  }
 `;
 
 export const SignUpContainer = styled.div`
@@ -76,12 +90,32 @@ export const Form = styled.form`
   padding: 0 50px;
   height: 100%;
   text-align: center;
+
+  /* Tablet */
+  @media (max-width: 1024px) {
+    padding: 0 35px;
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    padding: 0 20px;
+  }
 `;
 
 export const Title = styled.h1`
   font-weight: bold;
   margin: 0;
   color: #D3DAD9;
+
+  /* Tablet */
+  @media (max-width: 1024px) {
+    font-size: 1.8rem;
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
 `;
 
 export const Input = styled.input`
@@ -103,6 +137,13 @@ export const Input = styled.input`
     outline: none;
     border: 1px solid rgba(255, 255, 255, 0.4);
     background: rgba(255, 255, 255, 0.15);
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    padding: 14px 15px;
+    font-size: 16px; /* Prevents zoom on iOS */
+    margin: 6px 0;
   }
 `;
 
@@ -136,6 +177,20 @@ export const Button = styled.button`
   &:focus {
     outline: none;
   }
+
+  /* Tablet */
+  @media (max-width: 1024px) {
+    padding: 12px 35px;
+    font-size: 13px;
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    padding: 14px 30px;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    width: 100%;
+  }
 `;
 
 export const GhostButton = styled(Button)`
@@ -145,6 +200,12 @@ export const GhostButton = styled(Button)`
   &:hover {
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid white;
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    width: auto;
+    padding: 12px 25px;
   }
 `;
 
@@ -202,6 +263,16 @@ export const OverlayPanel = styled.div`
   width: 50%;
   transform: translateX(0);
   transition: transform 0.6s ease-in-out;
+
+  /* Tablet */
+  @media (max-width: 1024px) {
+    padding: 0 25px;
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    padding: 0 15px;
+  }
 `;
 
 export const LeftOverlayPanel = styled(OverlayPanel)`
@@ -221,4 +292,18 @@ export const Paragraph = styled.p`
   letter-spacing: 0.5px;
   margin: 20px 0 30px;
   color: #D3DAD9;
+
+  /* Tablet */
+  @media (max-width: 1024px) {
+    font-size: 14px;
+    line-height: 22px;
+    margin: 15px 0 25px;
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    font-size: 13px;
+    line-height: 20px;
+    margin: 12px 0 20px;
+  }
 `;
