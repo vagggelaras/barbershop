@@ -53,7 +53,20 @@ export default function MonthDaySelection(props) {
     // console.log('Valid time slots:', validTimeSlots)
 
     // Φιλτράρισμα για διαθέσιμα slots (όχι κλεισμένα)
-    const freeTimeSlots = validTimeSlots.filter(slot => !bookedTimeSlots.includes(slot))
+    // Ελέγχουμε αν ΟΛΑ τα slots που χρειάζεται η υπηρεσία είναι ελεύθερα
+    const freeTimeSlots = validTimeSlots.filter(slot => {
+        // Υπολογισμός πόσα 30λεπτα slots χρειάζεται η υπηρεσία
+        const slotsNeeded = serviceDurationInHours / 0.5
+
+        // Έλεγχος αν όλα τα απαιτούμενα slots είναι ελεύθερα
+        for (let i = 0; i < slotsNeeded; i++) {
+            const requiredSlot = slot + (i * 0.5)
+            if (bookedTimeSlots.includes(requiredSlot)) {
+                return false // Αν κάποιο slot είναι κρατημένο, δεν εμφανίζουμε αυτό το start time
+            }
+        }
+        return true // Όλα τα slots είναι ελεύθερα
+    })
 
     // Μετατροπή αριθμού σε string format (10 -> "10:00", 10.5 -> "10:30")
     function formatTimeSlot(slot) {
@@ -227,7 +240,8 @@ export default function MonthDaySelection(props) {
                     className={`calendar-day ${isDisabled ? 'closed' : ''} ${isSelected ? 'selected' : ''} ${isPast ? 'past' : ''}`}
                     onClick={handleDayClick}
                 >
-                    {day}
+                    <span className="day-number">{day}</span>
+                    {isSelected && !isDisabled && <span className="available-slots">{freeTimeSlots.length}</span>}
                 </div>
             )
         }

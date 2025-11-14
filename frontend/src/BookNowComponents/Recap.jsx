@@ -3,38 +3,23 @@ import "../styles/Recap.css"
 export default function Recap(props){
     return(
         <aside className="recapContainer">
-            <div className="recapHeader">
-                <h3>Your Selection</h3>
-            </div>
 
             <div className="recapContent">
+                
+                <h3>Your selection </h3>
+
                 {props.serviceSelected && (
                     <div className="recapItem">
-                        <span className="recapLabel">Service</span>
-                        <span className="recapValue">{props.serviceSelected}</span>
+                        <h3 className="recapValue">{props.serviceSelected + " >"}</h3>
                     </div>
                 )}
 
                 {props.barberSelected && (
                     <div className="recapItem">
-                        <span className="recapLabel">Barber</span>
-                        <span className="recapValue">{props.barberSelected}</span>
+                        <h3 className="recapValue">{props.barberSelected}</h3>
                     </div>
                 )}
 
-                {/* {props.dateSelected && (
-                    <div className="recapItem">
-                        <span className="recapLabel">Date</span>
-                        <span className="recapValue">{weekDayName} {props.dateSelected}</span>
-                    </div>
-                )}
-
-                {props.timeSelected && (
-                    <div className="recapItem">
-                        <span className="recapLabel">Time</span>
-                        <span className="recapValue">{props.timeSelected}</span>
-                    </div>
-                )} */}
             </div>
         </aside>
     )

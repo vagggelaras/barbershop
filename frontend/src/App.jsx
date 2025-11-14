@@ -176,6 +176,10 @@ export default function App() {
   }
 
   function logOutUser(){
+    setActiveButton(0)
+    setBarberSelected(null)
+    setServiceSelected(null)
+    setDateSelected(null)
     sessionStorage.clear()
     setUserLoggedIn(sessionStorage.length)
   }
@@ -193,11 +197,11 @@ export default function App() {
           <main>
             {renderComponentInBookNow()}
           </main>
-          {serviceSelected && !dateSelected && <Recap serviceSelected={serviceSelected} barberSelected={barberSelected} dateSelected={dateSelected} timeSelected={timeSelected} weekDay={weekDay.current}/>}
+          
         </div>)
         : null
       }
-
+      {activeButton===1 && serviceSelected && !dateSelected && <Recap serviceSelected={serviceSelected} barberSelected={barberSelected} dateSelected={dateSelected} timeSelected={timeSelected} weekDay={weekDay.current} />}
       {activeButton === 0 ?
         <>
           {<HomePageMain setActiveButton={setActiveButton}/>}    

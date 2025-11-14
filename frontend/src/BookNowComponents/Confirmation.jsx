@@ -29,6 +29,9 @@ export default function Confirmation(props) {
     }, [props.serviceSelected])
 
     async function handleConfirmAppointment() {
+        // Μετατροπή duration από ώρες σε λεπτά (3 ώρες = 180 λεπτά)
+        const durationInMinutes = props.serviceDuration * 60
+
         const appointmentData = {
             date: props.dateSelected,
             time: props.timeSelected,
@@ -36,7 +39,7 @@ export default function Confirmation(props) {
             userEmail: userData.email,
             userName: userData.name,
             barberName: props.barberSelected,
-            duration: props.serviceDuration,
+            duration: durationInMinutes,
             userPhone: userData.phone
         }
 

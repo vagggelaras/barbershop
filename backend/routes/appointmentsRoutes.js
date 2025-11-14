@@ -3,7 +3,7 @@ import { specificBarberDateAppointments, createAppointment } from '../controller
 
 const router = express.Router()
 
-router.get('/appointments/:barber/:date', specificBarberDateAppointments)      
+router.get('/appointments/:barber/:date', specificBarberDateAppointments)
 router.post('/appointments', createAppointment)
 
 export default router
