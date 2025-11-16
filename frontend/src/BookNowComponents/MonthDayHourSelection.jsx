@@ -13,7 +13,13 @@ export default function MonthDaySelection(props) {
     const [d, setD] = useState(() => {
         const today = new Date()
         today.setHours(0, 0, 0, 0)
-        return today
+
+        // Αν η σημερινή μέρα είναι κλειστή (Κυριακή=0 ή Δευτέρα=1), βρες την επόμενη ανοιχτή
+        let selectedDate = new Date(today)
+        while (selectedDate.getDay() === 0 || selectedDate.getDay() === 1) {
+            selectedDate.setDate(selectedDate.getDate() + 1)
+        }
+        return selectedDate
     })
     const [currentMonth, setCurrentMonth] = useState(new Date())
     const monthName = month[currentMonth.getMonth()]

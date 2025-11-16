@@ -209,6 +209,7 @@
     justify-content: space-between;
     gap: 15px;
     margin-top: 1%;
+    /* background-color: #222224; */
 }
 
 .footer > button {
@@ -320,8 +321,8 @@
     }
 
     .datePickerContainer {
-        width: 90%;
-        height: 80%;
+        width: 95%;
+        height: 95%;
     }
 
     .backButton {
@@ -338,7 +339,7 @@
 
     .datePickerContainer {
         width: 95%;
-        height: 85%;
+        height: 95%;
     }
 
     .mainContainer {
@@ -370,7 +371,7 @@
         flex-direction: row;
         gap: 10px;
         height: auto;
-        padding: 10px 0;
+        /* padding: 10px 0; */
     }
 
     .footer > button {
@@ -402,8 +403,7 @@
 
 @media (max-width: 480px) {
     .datePickerContainer {
-        width: 98%;
-        padding: 2%;
+        width: 95%;
     }
 
     .timeSlots {
@@ -434,23 +434,22 @@
     }
 
     .footer {
+        margin-top: 1.5%;
         flex-direction: row;
         gap: 12px;
-        padding: 12px 0;
+        width: 100%;
+        /* margin-left: 5%; */
+        /* padding: 12px 0; */
     }
 
-    .footer > button {
-        flex: 1;
-        padding: 16px 12px;
-        font-size: 15px;
-        font-weight: 700;
-        max-height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center
+    .footer>button {
+        padding: 2px 0px;
+        font-size: 16px;
+        border-radius: 8px;
     }
 
     .footer > div {
+        max-height: 40px;
         flex: 1;
         gap: 0;
     }
@@ -459,30 +458,8 @@
         display: none;
     }
 
-    .footer>div>button {
-        padding: 16px 12px;
-        font-size: 15px;
-        font-weight: 700;
-        width: 100%;
-        
-    }
-}
-
-@media (max-width: 430px) {
-    .footer {
-        gap: 10px;
-        padding: 12px 0;
-        max-height: 8vh;
-    }
-
-    .footer > button {
-        padding: 18px 10px;
-        font-size: 16px;
-        border-radius: 8px;
-    }
-
     .footer div button {
-        padding: 18px 10px;
+        padding: 2px 0px;
         font-size: 16px;
         border-radius: 8px;
         max-height: 40px;
@@ -491,3 +468,22 @@
         justify-content: center
     }
 }
+
+/* @media (max-width: 430px) {
+
+    .footer > button {
+        padding: 2px 0px;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+
+    .footer div button {
+        padding: 2px 0px;
+        font-size: 16px;
+        border-radius: 8px;
+        max-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center
+    }
+} */

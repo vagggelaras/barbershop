@@ -1,40 +1,18 @@
 .recapContainer {
     border-radius: 12px;
     position: absolute;
-    top:10vh;
-    display: flex;
-    flex-direction: column;
+    top:10.5vh;
     left:5%;
-}
-
-.recapHeader {
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.recapHeader h3 {
-    margin: 0;
-    color: black;
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-align: center;
-}
-
-.recapContent {
+    width: 90%;
     display: flex;
     flex-direction: row;
-    gap: 5px;
     align-items: center;
-    justify-content: center;
-    padding: 4px;
-    font-size: 1rem;
+    justify-content: flex-start;
+    gap:2%
 }
-
-.recapContent>h3 {
-    padding-right: 5px;
+.recapContainer > h3{
     border-right: 1px solid black;
+    padding-right: 2%;
 }
 
 .recapItem {
@@ -67,89 +45,12 @@
     padding: 20px;
 }
 
-/* Responsive Design */
-/* @media (max-width: 1024px) {
-    .recapContainer {
-        width: 100%;
-        max-width: 100%;
-        min-width: auto;
-        padding: 12px 15px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        border-radius: 0 0 12px 12px;
-        z-index: 200;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
-        background: transparent;
-        top: 5.5vh;
-        box-shadow: none;
-        border: none;
+@media (max-width: 640px){
+    .recapContainer{
+        top:11vh
     }
-
-    .recapHeader {
-        display: none;
-    }
-
-    .recapHeader h3 {
-        font-size: 16px;
-    }
-
-    .recapContent {
-        flex-direction: row;
-        overflow-x: auto;
-        padding-bottom: 5px;
-    }
-
-    .recapContent::-webkit-scrollbar {
-        height: 4px;
-    }
-
-    .recapContent::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
-    .recapContent::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 2px;
-    }
-
-    .recapItem {
-        padding: 10px 12px;
-        min-width: 140px;
-        flex-shrink: 0;
-        background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(45, 45, 50, 0.9) 50%, rgba(35, 35, 40, 0.95) 100%);;
-    }
-
-    .recapLabel {
-        font-size: 10px;
-    }
-
-    .recapValue {
-        font-size: 14px;
+    
+    .recapContainer>*{
+        font-size: 0.7rem;
     }
 }
-
-@media (max-width: 768px) {
-
-    .recapHeader h3 {
-        font-size: 14px;
-    }
-
-    .recapContent {
-        gap: 8px;
-    }
-
-    .recapItem {
-        padding: 8px 10px;
-        min-width: 120px;
-    }
-
-    .recapLabel {
-        font-size: 9px;
-    }
-
-    .recapValue {
-        font-size: 13px;
-    }
-} */
