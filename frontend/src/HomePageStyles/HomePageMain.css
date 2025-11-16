@@ -3,7 +3,7 @@
     width: 100%;
     top: 0;
     height: 100vh;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('../../../public/backgroundImg2.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('../../public/backgroundImg2.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

@@ -49,7 +49,7 @@ const styles = {
     input: {
         flex: 1,
         padding: '10px',
-        border: '1px solid #ddd',
+        border: '1px solid #c9a961',
         borderRadius: '20px',
         fontSize: '14px',
         outline: 'none'
@@ -57,7 +57,7 @@ const styles = {
     button: {
         padding: '10px 15px',
         border: 'none',
-        background: '#007bff',
+        background: '#c9a961',
         color: 'white',
         borderRadius: '50%',
         cursor: 'pointer',

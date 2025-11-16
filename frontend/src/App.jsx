@@ -14,6 +14,7 @@ import UserIcon from "./HomePageComponents/UserIcon"
 // import Threads from './HomePageComponents/Threads'
 
 import FloatingChatButton from './BookNowComponents/Chatbot/FloatingChatButton'
+import Recommendations from './RecommendationsComponents/Recommendations'
 import API_URL from './config'
 
 export default function App() {
@@ -49,6 +50,7 @@ export default function App() {
   // State για services και barbers για chatbot
   const [services, setServices] = useState([])
   const [barbers, setBarbers] = useState([])
+  const [barbersData, setBarbersData] = useState([]) // Full data with services
   const [dataLoading, setDataLoading] = useState(true)
 
   // Fetch services και personnel μόνο μία φορά όταν φορτώνει η εφαρμογή
@@ -69,10 +71,16 @@ export default function App() {
         setServices(serviceNames)
 
         // Παίρνουμε τα ονόματα των ACTIVE barbers
-        const barberNames = personnelData
-          .filter(person => person.isActive)
-          .map(person => person.name)
+        const activeBarbers = personnelData.filter(person => person.isActive)
+        const barberNames = activeBarbers.map(person => person.name)
         setBarbers(barberNames)
+
+        // Αποθηκεύουμε τα full data με τις υπηρεσίες κάθε barber
+        const barbersWithServices = activeBarbers.map(person => ({
+          name: person.name,
+          services: person.services || []
+        }))
+        setBarbersData(barbersWithServices)
 
         setDataLoading(false)
       } catch (error) {
@@ -188,6 +196,7 @@ export default function App() {
     <>
       <Navigation
         onButtonClick={handleNavClick}
+        activeButton={activeButton}
         userLoggedIn={userLoggedIn}
         logOutUser={logOutUser}
       />
@@ -201,11 +210,32 @@ export default function App() {
         </div>)
         : null
       }
-      {activeButton===1 && serviceSelected && !dateSelected && <Recap serviceSelected={serviceSelected} barberSelected={barberSelected} dateSelected={dateSelected} timeSelected={timeSelected} weekDay={weekDay.current} />}
+      
+      {activeButton === 1 && serviceSelected && !dateSelected && <Recap serviceSelected={serviceSelected} barberSelected={barberSelected} dateSelected={dateSelected} timeSelected={timeSelected} weekDay={weekDay.current} />}
+      
       {activeButton === 0 ?
         <>
-          {<HomePageMain setActiveButton={setActiveButton}/>}    
+          {<HomePageMain setActiveButton={setActiveButton}/>}
+          <LightRays
+            raysOrigin="top-center"
+            raysColor="#ffffffff"
+            raysSpeed={1}
+            lightSpread={0.8}
+            rayLength={2}
+            fadeDistance={0.5}
+            saturation={0.4}
+            followMouse={true}
+            mouseInfluence={.03}
+            noiseAmount={0.05}
+            distortion={0}
+            className="custom-rays"
+          />
         </>
+        : null
+      }
+
+      {activeButton === 3 ?
+        <Recommendations />
         : null
       }
 
@@ -214,6 +244,7 @@ export default function App() {
         <FloatingChatButton
           services={services}
           barbers={barbers}
+          barbersData={barbersData}
           dataLoading={dataLoading}
           onServiceSelected={handleChatbotServiceSelected}
           onBarberSelected={handleChatbotBarberSelected}
@@ -226,21 +257,6 @@ export default function App() {
         />
       </>
       : null}
-
-      <LightRays
-        raysOrigin="top-center"
-        raysColor="#ffffffff"
-        raysSpeed={1}
-        lightSpread={0.8}
-        rayLength={2}
-        fadeDistance={0.5}
-        saturation={0.4}
-        followMouse={true}
-        mouseInfluence={.03}
-        noiseAmount={0.05}
-        distortion={0}
-        className="custom-rays"
-      />
     
     </>
   )

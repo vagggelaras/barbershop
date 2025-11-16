@@ -1,4 +1,4 @@
-import './HomePagestyles/HomePageMain.css'
+import '../HomePageStyles/HomePageMain.css'
 import TextType from './TextType'
 import Scissors3D from './Scissors3D'
 

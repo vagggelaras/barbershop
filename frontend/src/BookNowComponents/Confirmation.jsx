@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import API_URL from '../config'
-import "../styles/Confirmation.css"
+import "../BookNowStyles/Confirmation.css"
 
 export default function Confirmation(props) {
     const userData = JSON.parse(sessionStorage.getItem('user') || '{}')

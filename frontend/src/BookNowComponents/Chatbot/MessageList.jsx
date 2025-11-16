@@ -24,9 +24,9 @@ export default function MessageList({ messages, isLoading }) {
                     <div
                         style={{
                             ...styles.bubble,
-                            // User: μπλε, Bot: γκρι
-                            background: message.role === 'user' ? '#007bff' : '#f0f0f0',
-                            color: message.role === 'user' ? 'white' : 'black'
+                            // User: σκούρο γκρι, Bot: ανοιχτό γκρι
+                            background: message.role === 'user' ? '#333333' : '#f5f5f5',
+                            color: message.role === 'user' ? 'white' : '#1a1a1a'
                         }}
                     >
                         {message.text}
@@ -37,7 +37,7 @@ export default function MessageList({ messages, isLoading }) {
             {/* Typing indicator όταν περιμένουμε απάντηση */}
             {isLoading && (
                 <div style={{ ...styles.messageContainer, alignItems: 'flex-start' }}>
-                    <div style={{ ...styles.bubble, background: '#f0f0f0' }}>
+                    <div style={{ ...styles.bubble, background: '#f5f5f5', color: '#1a1a1a' }}>
                         Typing...
                     </div>
                 </div>
@@ -68,6 +68,7 @@ const styles = {
         borderRadius: '18px',
         wordWrap: 'break-word',
         fontSize: '14px',
-        lineHeight: '1.4'
+        lineHeight: '1.4',
+        whiteSpace: 'pre-line'
     }
 };

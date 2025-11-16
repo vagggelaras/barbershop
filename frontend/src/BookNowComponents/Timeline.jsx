@@ -1,4 +1,4 @@
-import '../styles/Timeline.css'
+import '../BookNowStyles/Timeline.css'
 // import moment, { weekdays } from 'moment'
 import { useState, useEffect } from 'react'
 import API_URL from '../config'

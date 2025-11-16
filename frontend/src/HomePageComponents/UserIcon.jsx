@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import './HomePagestyles/UserIcon.css'
+import '../HomePageStyles/UserIcon.css'
 
 export default function UserIcon(props){
     const [dropdownOpen, setDropdownOpen] = useState(false)

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import "../styles/ServicesSection.css"
+import "../BookNowStyles/ServicesSection.css"
 import API_URL from '../config'
 
 export default function ServicesSection(props){

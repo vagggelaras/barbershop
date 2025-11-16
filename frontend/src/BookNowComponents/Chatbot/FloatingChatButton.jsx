@@ -5,6 +5,7 @@ import "./AIStyle.css"
 export default function FloatingChatButton({
   services,
   barbers,
+  barbersData,
   dataLoading,
   onServiceSelected,
   onBarberSelected,
@@ -37,6 +38,7 @@ export default function FloatingChatButton({
           onBookingComplete={handleBookingComplete}
           services={services}
           barbers={barbers}
+          barbersData={barbersData}
           dataLoading={dataLoading}
         />
       ) : (

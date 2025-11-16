@@ -1,4 +1,4 @@
-import "../styles/Recap.css"
+import "../BookNowStyles/Recap.css"
 
 export default function Recap(props){
     return(

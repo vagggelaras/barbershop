@@ -2,7 +2,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { useGLTF, PerspectiveCamera } from '@react-three/drei'
 import { useRef, useEffect } from 'react'
 import * as THREE from 'three'
-import './HomePagestyles/Scissors3D.css'
+import '../HomePageStyles/Scissors3D.css'
 
 function RotatingScissors() {
     const { scene } = useGLTF('/scissors.glb')

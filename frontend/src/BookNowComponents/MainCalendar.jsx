@@ -3,7 +3,7 @@ import Calendar from 'react-calendar'
 import Timeline from "./Timeline"
 import Confirmation from "./Confirmation"
 import 'react-calendar/dist/Calendar.css'
-import "../styles/MainCalendar.css"
+import "../BookNowStyles/MainCalendar.css"
 import API_URL from '../config'
 
 export default function MainCalendar(props){

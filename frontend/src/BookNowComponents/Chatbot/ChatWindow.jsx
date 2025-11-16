@@ -12,6 +12,7 @@ export default function ChatWindow({
     onBookingComplete,
     services,
     barbers,
+    barbersData,
     dataLoading
 }) {
     // Όλα τα μηνύματα (bot + user)
@@ -61,7 +62,7 @@ export default function ChatWindow({
         try {
             // 2. Στείλε στο Gemini
             const updatedMessages = [...messages, newUserMessage];
-            const response = await sendMessageToGemini(updatedMessages, services, barbers);
+            const response = await sendMessageToGemini(updatedMessages, services, barbers, barbersData);
 
             // DEBUG: Δες τι επιστρέφει το Gemini
             console.log("Gemini full response:", response);
@@ -208,7 +209,7 @@ const styles = {
         justifyContent: 'space-between',
         alignItems: 'center',
         fontWeight: 'bold',
-        background: '#007bff',
+        background: '#1a1a1a',
         color: 'white',
         borderRadius: '10px 10px 0 0'
     },

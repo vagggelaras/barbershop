@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import API_URL from '../config'
-import "../styles/MonthDayHourSelection.css"
+import "../BookNowStyles/MonthDayHourSelection.css"
 
 export default function MonthDaySelection(props) {
 

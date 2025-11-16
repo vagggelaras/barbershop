@@ -1,9 +1,9 @@
 import { useState } from "react"
-import "../styles/Navigation.css"
+import "../BookNowStyles/Navigation.css"
 
 export default function Navigation(props){
 
-    const {onButtonClick, userLoggedIn, logOutUser} = props
+    const {onButtonClick, activeButton, userLoggedIn, logOutUser} = props
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
     const handleMenuClick = (number) => {
@@ -30,6 +30,7 @@ export default function Navigation(props){
                     <span></span>
                     <span></span>
                     <span></span>
+                    <span></span>
                 </button>
                 
                 <div className="navLogo">
@@ -38,9 +39,10 @@ export default function Navigation(props){
 
                 {/* Desktop Menu */}
                 <div className="navMenu">
-                    <button onClick={() => onButtonClick(0)}>home</button>
-                    <button onClick={() => onButtonClick(1)}>book now</button>
-                    <button onClick={() => onButtonClick(2)}>services</button>
+                    <button onClick={() => onButtonClick(0)} className={activeButton === 0 ? 'active' : ''}>home</button>
+                    <button onClick={() => onButtonClick(1)} className={activeButton === 1 ? 'active' : ''}>book now</button>
+                    <button onClick={() => onButtonClick(2)} className={activeButton === 2 ? 'active' : ''}>services</button>
+                    <button onClick={() => onButtonClick(3)} className={activeButton === 3 ? 'active' : ''}>recommendations</button>
                 </div>
 
                 <div className="empty placeholder"></div>
@@ -58,9 +60,10 @@ export default function Navigation(props){
             {/* Mobile Menu Popup */}
             <div className={`mobileMenu ${mobileMenuOpen ? 'open' : ''}`}>
                 <button className="exitMobileMenu" onClick={() => setMobileMenuOpen(false)}>{"<"}</button>
-                <button onClick={() => handleMenuClick(0)}>home</button>
-                <button onClick={() => handleMenuClick(1)}>book now</button>
-                <button onClick={() => handleMenuClick(2)}>services</button>
+                <button onClick={() => handleMenuClick(0)} className={activeButton === 0 ? 'active' : ''}>home</button>
+                <button onClick={() => handleMenuClick(1)} className={activeButton === 1 ? 'active' : ''}>book now</button>
+                <button onClick={() => handleMenuClick(2)} className={activeButton === 2 ? 'active' : ''}>services</button>
+                <button onClick={() => handleMenuClick(3)} className={activeButton === 3 ? 'active' : ''}>recommendations</button>
 
                 {/* User Menu - Only show when logged in */}
                 {userLoggedIn ? (

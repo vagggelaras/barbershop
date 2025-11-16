@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import API_URL from '../config'
-import "../styles/BarberSection.css"
+import "../BookNowStyles/BarberSection.css"
 
 export default function BarbersSection(props){
 // console.log(props.serviceSelected)

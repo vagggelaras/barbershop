@@ -1,4 +1,4 @@
-import "../styles/SignUpForm.css"
+import "../BookNowStyles/SignUpForm.css"
 import { useState} from "react"
 import API_URL from '../config'
 
