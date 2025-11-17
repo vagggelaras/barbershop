@@ -1,0 +1,113 @@
+.settingsContainer {
+    width: 90%;
+    height: 80vh;
+    left: 5%;
+    position: absolute;
+    top: 12vh;
+    
+    border-radius: 12px;
+    /* border: 1px solid red; */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+.userInfoContainer {
+    padding: 3rem;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    border-radius: 12px;
+    margin: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.userInfoContainer h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+    color: #ffffff;
+    letter-spacing: 0.05em;
+}
+
+.userInfoItem {
+    margin-bottom: 1.8rem;
+}
+
+.userInfoItem label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #888;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.userInfoItem p {
+    font-size: 1.1rem;
+    color: #ffffff;
+    margin: 0;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.userInfoItem input {
+    width: 100%;
+    padding: 0.9rem;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: #ffffff;
+    transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+}
+
+.userInfoItem input:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.userInfoItem input::placeholder {
+    color: #666;
+}
+
+.saveButton {
+    margin-top: 2rem;
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    background: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.05em;
+}
+
+.saveButton:hover:not(:disabled) {
+    background: #e0e0e0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.saveButton:disabled {
+    background: #444;
+    color: #888;
+    cursor: not-allowed;
+}
+
+.saveMessage {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    font-size: 0.95rem;
+    color: #4caf50;
+    font-weight: 500;
+}
+
+.userCardContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

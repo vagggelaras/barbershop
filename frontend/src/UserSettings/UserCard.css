@@ -1,0 +1,118 @@
+.userCardWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    padding-top: 2rem;
+}
+
+.lanyardString {
+    width: 4px;
+    height: 80px;
+    background: linear-gradient(to bottom, #888, #666);
+    border-radius: 2px;
+}
+
+.userCard {
+    position: relative;
+    width: 280px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        0 10px 20px rgba(0, 0, 0, 0.3);
+    animation: swing 3s ease-in-out infinite;
+    transform-origin: top center;
+}
+
+@keyframes swing {
+    0%, 100% {
+        transform: rotate(-2deg);
+    }
+    50% {
+        transform: rotate(2deg);
+    }
+}
+
+.cardClip {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 30px;
+    background: #888;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.cardClip::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 10px;
+    background: #666;
+    border-radius: 2px;
+}
+
+.cardContent {
+    text-align: center;
+    color: white;
+}
+
+.cardLogo {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cardLogo svg {
+    width: 35px;
+    height: 35px;
+    color: #fff;
+}
+
+.cardName {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+    color: #fff;
+}
+
+.cardInfo {
+    margin-bottom: 1.5rem;
+}
+
+.cardEmail {
+    font-size: 0.9rem;
+    color: #ccc;
+    margin: 0.3rem 0;
+    word-break: break-all;
+}
+
+.cardPhone {
+    font-size: 0.9rem;
+    color: #ccc;
+    margin: 0.3rem 0;
+}
+
+.cardBadge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    background: linear-gradient(135deg, #ffd700 0%, #ffb300 100%);
+    color: #1a1a1a;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    border-radius: 20px;
+}

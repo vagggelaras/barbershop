@@ -5,6 +5,7 @@ import '../HomePageStyles/BounceCards.css';
 export default function BounceCards({
     className = '',
     images = [],
+    names = [],
     containerWidth = 400,
     containerHeight = 400,
     animationDelay = 0.5,
@@ -121,8 +122,14 @@ export default function BounceCards({
                         }}
                         onMouseEnter={() => pushSiblings(idx)}
                         onMouseLeave={resetSiblings}
+                        onClick={() => console.log("A")}
                     >
                         <img className="image" src={src} alt={`card-${idx}`} />
+                        {names[idx] && (
+                            <div className="barber-name">
+                                <h3>{names[idx]}</h3>
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>

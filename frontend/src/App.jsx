@@ -9,8 +9,8 @@ import SignUpForm from './BookNowComponents/SignUpForm'
 
 import HomePageMain from './HomePageComponents/HomePageMain'
 import LightRays from './HomePageComponents/LightRays'
-import UserIcon from "./HomePageComponents/UserIcon"
-import BounceCards from './HomePageComponents/BounceCards'
+
+import CardStack from './HomePageComponents/CardStack'
 import './HomePageStyles/BounceCards.css'
 
 import FloatingChatButton from './BookNowComponents/Chatbot/FloatingChatButton'
@@ -20,8 +20,11 @@ import useSmoothScroll from './hooks/useSmoothScroll'
 import useBookingData from './hooks/useBookingData'
 import useChatbotData from './hooks/useChatbotData'
 
+import UserIcon from "./UserSettings/UserIcon"
+import UserSettings from "./UserSettings/UserSettings"
+
 export default function App() {
-  const [activeButton, setActiveButton] = useState(0)
+  const [activeButton, setActiveButton] = useState(4)
   const [userLoggedIn, setUserLoggedIn] = useState(sessionStorage.length)
 
   // Custom hooks
@@ -94,12 +97,11 @@ export default function App() {
     return <SignUpForm userLoggedIn={userLoggedIn} setUserLoggedIn={setUserLoggedIn} />
   }
 
-  // BounceCards config
-  const bounceCardsImages = ["/barber1NoBg.png", "/barber2NoBg.png", "/barber3NoBg.png"]
-  const bounceCardsTransforms = [
-    "rotate(0deg) translate(-110px)",
-    "rotate(-5deg)",
-    "rotate(5deg) translate(110px)"
+  // CardStack config
+  const teamMembers = [
+    { name: "Giannis", role: "Senior Barber", image: "/barber1NoBg.png" },
+    { name: "Barbara", role: "Hair Stylist", image: "/barber2NoBg.png" },
+    { name: "Anna", role: "Color Specialist", image: "/barber3NoBg.png" }
   ]
 
   return (
@@ -147,20 +149,14 @@ export default function App() {
           />
           <div className="personnelCardsContainer">
             <h1>Meet the team</h1>
-            <BounceCards
-              className="custom-bounceCards"
-              images={bounceCardsImages}
-              animationDelay={1.2}
-              animationStagger={0}
-              easeType="elastic.out(2, 1)"
-              transformStyles={bounceCardsTransforms}
-              enableHover={true}
-            />
+            <CardStack items={teamMembers} />
           </div>
         </>
       )}
 
       {activeButton === 3 && <Recommendations />}
+
+      {activeButton === 4 && <UserSettings/>}
 
       {userLoggedIn && (
         <>
@@ -175,7 +171,7 @@ export default function App() {
             onTimeSelected={handleChatbotTimeSelected}
             onBookingComplete={handleChatbotBooking}
           />
-          <UserIcon logOutUser={logOutUser} />
+          <UserIcon setActiveButton={setActiveButton} logOutUser={logOutUser} />
         </>
       )}
     </>

@@ -19,6 +19,7 @@ export const getUser = async (req, res) => {
             success: true,
             message: 'Login successful',
             user: {
+                _id: user._id,
                 email: user.email,
                 name: user.name,
                 phone: user.phone
@@ -45,5 +46,31 @@ export const createUser = async (req, res) => {
         res.status(201).json(user)      //201 = created
     } catch (error) {
         res.status(500).json({ error: error.message });
+    }
+};
+
+export const updateUser = async (req, res) => {
+    try {
+        const { id } = req.params
+        const { name, email, phone } = req.body
+
+        const user = await User.findByIdAndUpdate(
+            id,
+            { name, email, phone },
+            { new: true }
+        )
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' })
+        }
+
+        res.json({
+            _id: user._id,
+            email: user.email,
+            name: user.name,
+            phone: user.phone
+        })
+    } catch (error) {
+        res.status(500).json({ error: error.message })
     }
 };
