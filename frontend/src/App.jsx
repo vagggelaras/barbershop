@@ -24,7 +24,7 @@ import UserIcon from "./UserSettings/UserIcon"
 import UserSettings from "./UserSettings/UserSettings"
 
 export default function App() {
-  const [activeButton, setActiveButton] = useState(4)
+  const [activeButton, setActiveButton] = useState(0)
   const [userLoggedIn, setUserLoggedIn] = useState(sessionStorage.length)
 
   // Custom hooks
