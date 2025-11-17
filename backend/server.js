@@ -13,7 +13,19 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// CORS configuration
+const corsOptions = {
+    origin: [
+        'http://localhost:5173',
+        'http://localhost:3000',
+        'https://barbershop-rosy-xi.vercel.app'
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 connectDB();
