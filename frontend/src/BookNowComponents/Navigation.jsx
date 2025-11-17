@@ -30,7 +30,6 @@ export default function Navigation(props){
                     <span></span>
                     <span></span>
                     <span></span>
-                    <span></span>
                 </button>
                 
                 <div className="navLogo">

@@ -117,6 +117,7 @@
 /* Responsive Design */
 @media (max-width: 1024px) {
     .confirmationContainer {
+        height: 80%;
         width: 80%;
         position: relative;
     }
@@ -137,6 +138,7 @@
 
 @media (max-width: 768px) {
     .confirmationContainer {
+        height: 90%;
         width: 90%;
         padding: 5%;
     }
@@ -176,6 +178,8 @@
     .confirmationContainer {
         width: 95%;
         height: 95%;
+        padding: 2%;
+        gap:0;
     }
 
     .confirmationTitle {
