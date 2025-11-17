@@ -6,6 +6,16 @@ export default function ServicesSection(props){
 
     const [servicesList, setServicesList] = useState([])
     const [touchedCard, setTouchedCard] = useState(null)
+    const [selectedCategory, setSelectedCategory] = useState('all')
+
+    const categories = [
+        { id: 'all', name: 'All' },
+        { id: 'Haircuts', name: 'Haircuts' },
+        { id: 'Color & Dye', name: 'Color & Dye' },
+        { id: 'Treatments', name: 'Treatments' },
+        { id: 'Styling', name: 'Styling' },
+        { id: 'Men\'s Services', name: 'Men\'s Services' }
+    ]
 
     useEffect(() => {
         const fetchServices = async () => {
@@ -41,14 +51,18 @@ export default function ServicesSection(props){
     }, [touchedCard])
 // console.log(servicesList)
 
+    const filteredServices = selectedCategory === 'all'
+        ? servicesList
+        : servicesList.filter(service => service.category === selectedCategory)
+
     function showServices() {
-        return servicesList.map((service, index) => {
+        return filteredServices.map((service, index) => {
             const isTouched = touchedCard === index
             const imgName = service.name.replace(/ /g, '').replace(/'/g, "")
             // console.log(imgName)
             return (
             <button
-                key={index}
+                key={service._id || index}
                 className={`serviceCard ${isTouched ? 'touched' : ''}`}
                 id={index}
                 onClick={e => handleCardClick(e, index)}
@@ -88,17 +102,31 @@ export default function ServicesSection(props){
     function selectServiceClicked(e, index) {
         const serviceIndex = index !== undefined ? index : e.target.id
         props.setServiceSelected(e.target.value)
-        props.setServiceDuration(servicesList[serviceIndex].duration)
+        props.setServiceDuration(filteredServices[serviceIndex].duration)
         // Reset touched state
         setTouchedCard(null)
     }
 
     return(
         <>
+            <div className="categoryTabs">
+                {categories.map(category => (
+                    <button
+                        key={category.id}
+                        className={`categoryTab ${selectedCategory === category.id ? 'active' : ''}`}
+                        onClick={() => {
+                            setSelectedCategory(category.id)
+                            setTouchedCard(null)
+                        }}
+                    >
+                        {category.name}
+                    </button>
+                ))}
+            </div>
             <section className="servicesContainer">
                 {showServices()}
             </section>
-            
+
         </>
     )
 

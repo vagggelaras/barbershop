@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react"
+import { useState } from "react"
 import Navigation from "./BookNowComponents/Navigation"
 import ServicesSection from "./BookNowComponents/ServicesSection"
 import BarbersSection from "./BookNowComponents/BarbersSection"
@@ -8,189 +8,99 @@ import Recap from "./BookNowComponents/Recap"
 import SignUpForm from './BookNowComponents/SignUpForm'
 
 import HomePageMain from './HomePageComponents/HomePageMain'
-
 import LightRays from './HomePageComponents/LightRays'
 import UserIcon from "./HomePageComponents/UserIcon"
-// import Threads from './HomePageComponents/Threads'
+import BounceCards from './HomePageComponents/BounceCards'
+import './HomePageStyles/BounceCards.css'
 
 import FloatingChatButton from './BookNowComponents/Chatbot/FloatingChatButton'
 import Recommendations from './RecommendationsComponents/Recommendations'
-import API_URL from './config'
+
+import useSmoothScroll from './hooks/useSmoothScroll'
+import useBookingData from './hooks/useBookingData'
+import useChatbotData from './hooks/useChatbotData'
 
 export default function App() {
-
-  const [activeButton, setActiveButton] = useState(1)
+  const [activeButton, setActiveButton] = useState(0)
   const [userLoggedIn, setUserLoggedIn] = useState(sessionStorage.length)
-  const [serviceSelected, setServiceSelected] = useState(null)
-  const [serviceDuration, setServiceDuration] = useState(null)
-  const [servicePrice, setServicePrice] = useState(null)
-  const [dateSelected, setDateSelected] = useState("")
-  const weekDay = useRef("")
-  const [barberSelected, setBarberSelected] = useState("")
-  const [timeSelected, setTimeSelected] = useState("")
 
-  function handleNavClick(number) {
-    setActiveButton(number)
-  }
+  // Custom hooks
+  useSmoothScroll(activeButton === 0, 800)
+  const { services, barbers, barbersData, dataLoading } = useChatbotData()
+  const {
+    serviceSelected, setServiceSelected,
+    serviceDuration, setServiceDuration,
+    servicePrice, setServicePrice,
+    dateSelected, setDateSelected,
+    barberSelected, setBarberSelected,
+    timeSelected, setTimeSelected,
+    weekDay,
+    resetAllSelected,
+    handleChatbotServiceSelected,
+    handleChatbotBarberSelected,
+    handleChatbotDateSelected,
+    handleChatbotTimeSelected,
+    handleChatbotBooking
+  } = useBookingData()
 
-  function resetAllSelected(){
-    setServiceSelected(null)
-    setBarberSelected(null)
-    setDateSelected(null)
-  }
+  const handleNavClick = (number) => setActiveButton(number)
 
-  function renderComponentInBookNow() {
-    if (dateSelected) return <Confirmation resetAllSelected={() => resetAllSelected()} setActiveButton={setActiveButton} setDateSelected={setDateSelected} dateSelected={dateSelected}barberSelected={barberSelected}serviceSelected={serviceSelected}serviceDuration={serviceDuration}servicePrice={servicePrice}weekDay={weekDay}timeSelected={timeSelected}/>
-    if (barberSelected) return <MonthDayHourSelection setBarberSelected={setBarberSelected} setDateSelected={setDateSelected} setTimeSelected={setTimeSelected} weekDay={weekDay} barberSelected={barberSelected} serviceDuration={serviceDuration} />
-    if (serviceSelected) return <BarbersSection setBarberSelected={setBarberSelected} setServiceSelected={setServiceSelected} serviceSelected={serviceSelected}/>
-    if (userLoggedIn) return <ServicesSection setServiceSelected={setServiceSelected} setServiceDuration={setServiceDuration} setServicePrice={setServicePrice} />
-    return <SignUpForm userLoggedIn={userLoggedIn} setUserLoggedIn={setUserLoggedIn} />
-  }
-
-  // State για services και barbers για chatbot
-  const [services, setServices] = useState([])
-  const [barbers, setBarbers] = useState([])
-  const [barbersData, setBarbersData] = useState([]) // Full data with services
-  const [dataLoading, setDataLoading] = useState(true)
-
-  // Fetch services και personnel μόνο μία φορά όταν φορτώνει η εφαρμογή
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch και τα δύο παράλληλα
-        const [servicesResponse, personnelResponse] = await Promise.all([
-          fetch(`${API_URL}/services`),
-          fetch(`${API_URL}/personnel`)
-        ])
-
-        const servicesData = await servicesResponse.json()
-        const personnelData = await personnelResponse.json()
-
-        // Παίρνουμε τα ονόματα των services
-        const serviceNames = servicesData.map(service => service.name)
-        setServices(serviceNames)
-
-        // Παίρνουμε τα ονόματα των ACTIVE barbers
-        const activeBarbers = personnelData.filter(person => person.isActive)
-        const barberNames = activeBarbers.map(person => person.name)
-        setBarbers(barberNames)
-
-        // Αποθηκεύουμε τα full data με τις υπηρεσίες κάθε barber
-        const barbersWithServices = activeBarbers.map(person => ({
-          name: person.name,
-          services: person.services || []
-        }))
-        setBarbersData(barbersWithServices)
-
-        setDataLoading(false)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-        setDataLoading(false)
-        // Fallback
-        setServices([
-          "Children's Haircut",
-          "Men's Haircut",
-          "Woman's Haircut"
-        ])
-        setBarbers(["Giannis", "Barbara"])
-      }
-    }
-
-    fetchData()
-  }, [])
-
-  // Progressive callbacks για chatbot - καλούνται καθώς συλλέγονται δεδομένα
-  const handleChatbotServiceSelected = async (serviceName) => {
-    console.log("Chatbot selected service:", serviceName)
-    try {
-      const response = await fetch(`${API_URL}/services`)
-      const servicesData = await response.json()
-      const selectedService = servicesData.find(
-        service => service.name.toLowerCase() === serviceName.toLowerCase()
-      )
-
-      setServiceSelected(serviceName)
-      setServiceDuration(selectedService?.duration || null)
-      setServicePrice(selectedService?.price || null)
-    } catch (error) {
-      console.error('Error setting service:', error)
-    }
-  }
-
-  const handleChatbotBarberSelected = (barberName) => {
-    console.log("Chatbot selected barber:", barberName)
-    setBarberSelected(barberName)
-  }
-
-  const handleChatbotDateSelected = (date) => {
-    console.log("Chatbot selected date:", date)
-    // Μετατροπή από YYYY-MM-DD σε DD-MM-YYYY
-    const [year, month, day] = date.split('-')
-    const formattedDate = `${day}-${month}-${year}`
-
-    // Υπολογισμός weekDay
-    const dateObj = new Date(date)
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-    weekDay.current = days[dateObj.getDay()]
-
-    setDateSelected(formattedDate)
-  }
-
-  const handleChatbotTimeSelected = (time) => {
-    console.log("Chatbot selected time:", time)
-    setTimeSelected(time)
-  }
-
-  // Handle booking completion από το chatbot
-  const handleChatbotBooking = async (bookingData) => {
-    console.log("handleChatbotBooking called with:", bookingData);
-    try {
-      // 1. Fetch το service για να πάρουμε το duration
-      const response = await fetch(`${API_URL}/services`)
-      const servicesData = await response.json()
-
-      const selectedService = servicesData.find(
-        service => service.name.toLowerCase() === bookingData.service.toLowerCase()
-      )
-
-      // 2. Μετατροπή ημερομηνίας από YYYY-MM-DD σε DD-MM-YYYY
-      const [year, month, day] = bookingData.date.split('-')
-      const formattedDate = `${day}-${month}-${year}`
-
-      // 3. Υπολογισμός weekDay από το date
-      const dateObj = new Date(bookingData.date)
-      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-      const dayName = days[dateObj.getDay()]
-
-      // 4. Set όλα τα state variables
-      setServiceSelected(bookingData.service)
-      setServiceDuration(selectedService?.duration || null)
-      setBarberSelected(bookingData.barber)
-      setDateSelected(formattedDate)
-      setTimeSelected(bookingData.time)
-      weekDay.current = dayName
-
-      console.log("Booking set:", {
-        service: bookingData.service,
-        barber: bookingData.barber,
-        date: bookingData.date,
-        time: bookingData.time,
-        duration: selectedService?.duration,
-        weekDay: dayName
-      })
-    } catch (error) {
-      console.error('Error setting booking data:', error)
-    }
-  }
-
-  function logOutUser(){
+  const logOutUser = () => {
     setActiveButton(0)
-    setBarberSelected(null)
-    setServiceSelected(null)
-    setDateSelected(null)
+    resetAllSelected()
     sessionStorage.clear()
     setUserLoggedIn(sessionStorage.length)
   }
+
+  const renderComponentInBookNow = () => {
+    if (dateSelected) return (
+      <Confirmation
+        resetAllSelected={resetAllSelected}
+        setActiveButton={setActiveButton}
+        setDateSelected={setDateSelected}
+        dateSelected={dateSelected}
+        barberSelected={barberSelected}
+        serviceSelected={serviceSelected}
+        serviceDuration={serviceDuration}
+        servicePrice={servicePrice}
+        weekDay={weekDay}
+        timeSelected={timeSelected}
+      />
+    )
+    if (barberSelected) return (
+      <MonthDayHourSelection
+        setBarberSelected={setBarberSelected}
+        setDateSelected={setDateSelected}
+        setTimeSelected={setTimeSelected}
+        weekDay={weekDay}
+        barberSelected={barberSelected}
+        serviceDuration={serviceDuration}
+      />
+    )
+    if (serviceSelected) return (
+      <BarbersSection
+        setBarberSelected={setBarberSelected}
+        setServiceSelected={setServiceSelected}
+        serviceSelected={serviceSelected}
+      />
+    )
+    if (userLoggedIn) return (
+      <ServicesSection
+        setServiceSelected={setServiceSelected}
+        setServiceDuration={setServiceDuration}
+        setServicePrice={setServicePrice}
+      />
+    )
+    return <SignUpForm userLoggedIn={userLoggedIn} setUserLoggedIn={setUserLoggedIn} />
+  }
+
+  // BounceCards config
+  const bounceCardsImages = ["/barber1NoBg.png", "/barber2NoBg.png", "/barber3NoBg.png"]
+  const bounceCardsTransforms = [
+    "rotate(0deg) translate(-110px)",
+    "rotate(-5deg)",
+    "rotate(5deg) translate(110px)"
+  ]
 
   return (
     <>
@@ -201,21 +111,26 @@ export default function App() {
         logOutUser={logOutUser}
       />
 
-      {activeButton === 1 ?
-        (<div className="bookingContainer">
-          <main>
-            {renderComponentInBookNow()}
-          </main>
-          
-        </div>)
-        : null
-      }
-      
-      {activeButton === 1 && serviceSelected && !dateSelected && <Recap serviceSelected={serviceSelected} barberSelected={barberSelected} dateSelected={dateSelected} timeSelected={timeSelected} weekDay={weekDay.current} />}
-      
-      {activeButton === 0 ?
+      {activeButton === 1 && (
         <>
-          {<HomePageMain setActiveButton={setActiveButton}/>}
+          {serviceSelected && !dateSelected && (
+            <Recap
+              serviceSelected={serviceSelected}
+              barberSelected={barberSelected}
+              dateSelected={dateSelected}
+              timeSelected={timeSelected}
+              weekDay={weekDay.current}
+            />
+          )}
+          <div className="bookingContainer">
+            <main>{renderComponentInBookNow()}</main>
+          </div>
+        </>
+      )}
+
+      {activeButton === 0 && (
+        <>
+          <HomePageMain setActiveButton={setActiveButton} />
           <LightRays
             raysOrigin="top-center"
             raysColor="#ffffffff"
@@ -225,39 +140,44 @@ export default function App() {
             fadeDistance={0.5}
             saturation={0.4}
             followMouse={true}
-            mouseInfluence={.03}
+            mouseInfluence={0.03}
             noiseAmount={0.05}
             distortion={0}
             className="custom-rays"
           />
+          <div className="personnelCardsContainer">
+            <h1>Meet the team</h1>
+            <BounceCards
+              className="custom-bounceCards"
+              images={bounceCardsImages}
+              animationDelay={1.2}
+              animationStagger={0}
+              easeType="elastic.out(2, 1)"
+              transformStyles={bounceCardsTransforms}
+              enableHover={true}
+            />
+          </div>
         </>
-        : null
-      }
+      )}
 
-      {activeButton === 3 ?
-        <Recommendations />
-        : null
-      }
+      {activeButton === 3 && <Recommendations />}
 
-      {userLoggedIn ? 
-      <>
-        <FloatingChatButton
-          services={services}
-          barbers={barbers}
-          barbersData={barbersData}
-          dataLoading={dataLoading}
-          onServiceSelected={handleChatbotServiceSelected}
-          onBarberSelected={handleChatbotBarberSelected}
-          onDateSelected={handleChatbotDateSelected}
-          onTimeSelected={handleChatbotTimeSelected}
-          onBookingComplete={handleChatbotBooking}
-        /> 
-        <UserIcon 
-          logOutUser={() => logOutUser()}
-        />
-      </>
-      : null}
-    
+      {userLoggedIn && (
+        <>
+          <FloatingChatButton
+            services={services}
+            barbers={barbers}
+            barbersData={barbersData}
+            dataLoading={dataLoading}
+            onServiceSelected={handleChatbotServiceSelected}
+            onBarberSelected={handleChatbotBarberSelected}
+            onDateSelected={handleChatbotDateSelected}
+            onTimeSelected={handleChatbotTimeSelected}
+            onBookingComplete={handleChatbotBooking}
+          />
+          <UserIcon logOutUser={logOutUser} />
+        </>
+      )}
     </>
   )
 }

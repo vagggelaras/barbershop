@@ -1,3 +1,7 @@
+html {
+  /* scroll snap handled by custom JS in App.jsx */
+}
+
 body {
   margin: 0;
   font-family: "Julius Sans One", sans-serif;
