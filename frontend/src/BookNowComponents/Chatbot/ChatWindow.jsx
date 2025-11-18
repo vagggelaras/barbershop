@@ -2,6 +2,7 @@ import { useState } from 'react';
 import MessageList from './MessageList';
 import ChatInput from './ChatInput';
 import { sendMessageToGemini, extractFunctionCall } from '../../services/geminiService';
+import './AIStyle.css';
 
 export default function ChatWindow({
     onClose,
@@ -171,11 +172,11 @@ export default function ChatWindow({
     };
 
     return (
-        <div style={styles.chatWindow}>
+        <div className="chatWindow">
             {/* Header */}
-            <div style={styles.header}>
+            <div className="chatHeader">
                 <span>💬 Chat Assistant</span>
-                <button onClick={onClose} style={styles.closeBtn}>✕</button>
+                <button onClick={onClose} className="closeBtn">✕</button>
             </div>
 
             {/* Messages */}
@@ -186,40 +187,3 @@ export default function ChatWindow({
         </div>
     );
 }
-
-const styles = {
-    chatWindow: {
-        position: 'fixed',
-        bottom: '90px',
-        right: '20px',
-        width: '350px',
-        height: '500px',
-        border: '1px solid #ccc',
-        borderRadius: '10px',
-        display: 'flex',
-        flexDirection: 'column',
-        background: 'white',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
-        zIndex: 1000
-    },
-    header: {
-        padding: '15px',
-        borderBottom: '1px solid #eee',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        fontWeight: 'bold',
-        background: '#1a1a1a',
-        color: 'white',
-        borderRadius: '10px 10px 0 0'
-    },
-    closeBtn: {
-        background: 'none',
-        border: 'none',
-        color: 'white',
-        fontSize: '24px',
-        cursor: 'pointer',
-        padding: '0',
-        lineHeight: '1'
-    }
-};

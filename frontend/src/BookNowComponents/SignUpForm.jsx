@@ -1,5 +1,5 @@
 import "../BookNowStyles/SignUpForm.css"
-import { useState} from "react"
+import { useState } from "react"
 import API_URL from '../config'
 
 import * as Components from "./SignUpComponents";
@@ -7,6 +7,7 @@ import * as Components from "./SignUpComponents";
 export default function SignUpForm(props){
 
     const [signIn, toggle] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false)
     const [formData, setFormData] = useState({
         email:'',
         name:'',
@@ -69,24 +70,52 @@ export default function SignUpForm(props){
                     createdAt: Date.now()
                 })
                 props.setUserLoggedIn(true)
+
+                // Αν είναι admin, redirect στο admin dashboard
+                if (loginData.user.role === 'admin' && props.onAdminLogin) {
+                    props.onAdminLogin()
+                }
             }
         } catch (error) {
             console.log('Error:', error)
         }
     }
 
-    const handleSignIn = async (e) => {
+    const handleLogIn = async (e) => {
         e.preventDefault()
         try {
+            // Φτιάχνουμε το payload - αν υπάρχει password (για admin), το στέλνουμε
+            const loginPayload = { email: formData.email };
+            if (formData.password) {
+                loginPayload.password = formData.password;
+            }
+
             const response = await fetch(`${API_URL}/users/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email: formData.email })
+                body: JSON.stringify(loginPayload)
             });
 
             const data = await response.json();
+            // console.log(data)
+
+            // Αν είναι admin και δεν έχει δώσει password ακόμα, εμφάνισε το password field
+            if(data.user && data.user.role === "admin" && !formData.password){
+                setIsAdmin(true)
+                return
+            }
+
+            // Αν είναι admin και έδωσε λάθος password
+            if(isAdmin && !data.success){
+                alert('Λάθος κωδικός! Δοκιμάστε ξανά.')
+                setFormData({
+                    ...formData,
+                    password: ''
+                })
+                return
+            }
 
             if (data.success) {
                 sessionStorage.setItem('user', JSON.stringify(data.user))
@@ -95,7 +124,13 @@ export default function SignUpForm(props){
                     email: '',
                     password: ''
                 })
+                setIsAdmin(false) // Reset το admin state
                 props.setUserLoggedIn(true)
+
+                // Αν είναι admin, redirect στο admin dashboard
+                if (data.user.role === 'admin' && props.onAdminLogin) {
+                    props.onAdminLogin()
+                }
             } else {
                 console.log('Δεν βρέθηκε χρήστης με αυτό το email')
             }
@@ -138,7 +173,7 @@ export default function SignUpForm(props){
             </Components.SignUpContainer>
 
             <Components.SignInContainer signingIn={signIn}>
-                <Components.Form onSubmit={handleSignIn}>
+                <Components.Form onSubmit={handleLogIn}>
                     <Components.Title>Log in</Components.Title>
                     <Components.Input
                         type="email"
@@ -147,6 +182,13 @@ export default function SignUpForm(props){
                         value={formData.email}
                         onChange={handleFormChange}
                     />
+                    {isAdmin ? <Components.Input
+                        type="password"
+                        placeholder="Password"
+                        name="password"
+                        // value={formData.email}
+                        onChange={handleFormChange}
+                    /> : null}
                     <Components.Button type="submit">Log In</Components.Button>
                 </Components.Form>
             </Components.SignInContainer>

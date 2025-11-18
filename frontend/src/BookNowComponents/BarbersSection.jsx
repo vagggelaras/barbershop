@@ -14,7 +14,7 @@ export default function BarbersSection(props){
                 const data = await response.json()
                 setPersonnelList(data)
             } catch (error) {
-                console.error('Error fetching closed days:', error)
+                console.error('Error fetching personnel:', error)
             }
         }
         fetchPersonnel()
