@@ -22,6 +22,8 @@ import useChatbotData from './hooks/useChatbotData'
 
 import UserIcon from "./UserSettings/UserIcon"
 import UserSettings from "./UserSettings/UserSettings"
+import MyAppointments from "./UserSettings/MyAppointments"
+import AdminDashboard from "./AdminComponents/AdminDashboard"
 
 export default function App() {
   const [activeButton, setActiveButton] = useState(0)
@@ -47,6 +49,10 @@ export default function App() {
   } = useBookingData()
 
   const handleNavClick = (number) => setActiveButton(number)
+
+  const handleAdminLogin = () => {
+    setActiveButton(5) // Admin Dashboard
+  }
 
   const logOutUser = () => {
     setActiveButton(0)
@@ -94,7 +100,7 @@ export default function App() {
         setServicePrice={setServicePrice}
       />
     )
-    return <SignUpForm userLoggedIn={userLoggedIn} setUserLoggedIn={setUserLoggedIn} />
+    return <SignUpForm userLoggedIn={userLoggedIn} setUserLoggedIn={setUserLoggedIn} onAdminLogin={handleAdminLogin} />
   }
 
   // CardStack config
@@ -106,14 +112,14 @@ export default function App() {
 
   return (
     <>
-      <Navigation
+      {!!(activeButton !== 5) && <Navigation
         onButtonClick={handleNavClick}
         activeButton={activeButton}
         userLoggedIn={userLoggedIn}
         logOutUser={logOutUser}
-      />
+      />}
 
-      {activeButton === 1 && (
+      {!!(activeButton === 1) && (
         <>
           {serviceSelected && !dateSelected && (
             <Recap
@@ -130,7 +136,7 @@ export default function App() {
         </>
       )}
 
-      {activeButton === 0 && (
+      {!!(activeButton === 0) && (
         <>
           <HomePageMain setActiveButton={setActiveButton} />
           <LightRays
@@ -154,13 +160,17 @@ export default function App() {
         </>
       )}
 
-      {activeButton === 3 && <Recommendations />}
+      {!!(activeButton === 3) && <Recommendations />}
 
-      {activeButton === 4 && <UserSettings/>}
+      {!!(activeButton === 4) && <UserSettings/>}
 
-      {userLoggedIn && (
+      {!!(activeButton === 5) && <AdminDashboard />}
+
+      {!!(activeButton === 6) && <MyAppointments />}
+
+      {!!userLoggedIn && (
         <>
-          <FloatingChatButton
+          {!!(activeButton!==5 && activeButton!==6) && <FloatingChatButton
             services={services}
             barbers={barbers}
             barbersData={barbersData}
@@ -170,8 +180,8 @@ export default function App() {
             onDateSelected={handleChatbotDateSelected}
             onTimeSelected={handleChatbotTimeSelected}
             onBookingComplete={handleChatbotBooking}
-          />
-          <UserIcon setActiveButton={setActiveButton} logOutUser={logOutUser} />
+          />}
+          <UserIcon setActiveButton={setActiveButton} logOutUser={logOutUser} activeButton={activeButton} />
         </>
       )}
     </>
