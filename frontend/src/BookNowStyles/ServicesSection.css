@@ -51,23 +51,33 @@
     padding: 5% 5%;
     overflow-y: scroll;
     border-radius: 0 0 12px 12px;
+    scroll-snap-type: y proximity;
+    scroll-behavior: smooth;
 }
 
 .servicesContainer::-webkit-scrollbar {
-    width: 8px;
+    width: 12px;
 }
 
 .servicesContainer::-webkit-scrollbar-track {
-    background: transparent;
+    background: linear-gradient(180deg, rgba(20, 20, 25, 0.95) 0%, rgba(30, 30, 40, 0.95) 100%);
+    border-radius: 10px;
 }
 
 .servicesContainer::-webkit-scrollbar-thumb {
-    background: #44444E;
-    border-radius: 4px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
 }
 
 .servicesContainer::-webkit-scrollbar-thumb:hover {
-    background: cream;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 1) 0%, rgba(118, 75, 162, 1) 100%);
+    box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
+}
+
+.servicesContainer::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(135deg, rgba(118, 75, 162, 1) 0%, rgba(102, 126, 234, 1) 100%);
 }
 
 .serviceCard{
@@ -93,6 +103,7 @@
     position: relative;
     border: 1px solid transparent;
     background-clip: padding-box;
+    scroll-snap-align: center;
 }
 
 .serviceCard::before {
