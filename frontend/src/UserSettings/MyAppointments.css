@@ -1,0 +1,217 @@
+.myAppointmentsContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    padding-top: 15vh;
+    min-height: 100vh;
+}
+
+.myAppointmentsContainer h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #1a1a1a;
+    text-align: center;
+}
+
+.appointmentsSection {
+    margin-bottom: 4rem;
+}
+
+.appointmentsSection h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    border-bottom: 3px solid #2c3e50;
+    padding-bottom: 0.5rem;
+}
+
+.appointmentsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.appointmentCard {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.appointmentCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.appointmentCard.upcoming {
+    border-left: 5px solid #2c3e50;
+}
+
+.appointmentCard.past {
+    border-left: 5px solid #95a5a6;
+    opacity: 0.85;
+}
+
+.appointmentHeader {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.appointmentCard.past .appointmentHeader {
+    background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+}
+
+.appointmentDate {
+    display: flex;
+    flex-direction: column;
+}
+
+.dateDay {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.dateWeekday {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-top: 0.25rem;
+}
+
+.appointmentTime {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: right;
+}
+
+.appointmentBody {
+    padding: 1.5rem;
+}
+
+.appointmentInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.infoRow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #2c3e50;
+}
+
+.infoRow .icon {
+    width: 20px;
+    height: 20px;
+    color: #2c3e50;
+    flex-shrink: 0;
+}
+
+.infoRow span {
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.infoRow strong {
+    margin-right: 0.25rem;
+}
+
+.cancelButton {
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    background: white;
+    color: #2c3e50;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cancelButton:hover:not(:disabled) {
+    background: #f8f9fa;
+    border-color: #2c3e50;
+    transform: scale(1.02);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cancelButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.completedBadge {
+    width: 100%;
+    padding: 0.875rem;
+    background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.emptyState {
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 12px;
+    padding: 3rem;
+    text-align: center;
+}
+
+.emptyState p {
+    font-size: 1.2rem;
+    color: #6c757d;
+    margin: 0;
+}
+
+.loadingMessage,
+.errorMessage {
+    text-align: center;
+    font-size: 1.3rem;
+    padding: 3rem;
+    color: #6c757d;
+}
+
+.errorMessage {
+    color: #e74c3c;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .myAppointmentsContainer {
+        padding: 2rem 1rem;
+    }
+
+    .myAppointmentsContainer h1 {
+        font-size: 2rem;
+    }
+
+    .appointmentsSection h2 {
+        font-size: 1.5rem;
+    }
+
+    .appointmentsGrid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .appointmentTime {
+        font-size: 1.5rem;
+    }
+
+    .dateDay {
+        font-size: 1.2rem;
+    }
+}
