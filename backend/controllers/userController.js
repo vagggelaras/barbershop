@@ -2,16 +2,42 @@ import User from '../models/User.js';
 
 export const getUser = async (req, res) => {
     try {
-        const { email } = req.body;
+        const { email, password } = req.body;
 
         const user = await User.findOne({email})
-        
+
         //user not found
         if (!user) {
             return res.status(404).json({
                 success: false,
                 message: 'User not found'
             })
+        }
+
+        // Αν ο χρήστης είναι admin, ελέγχουμε τον κωδικό
+        if (user.role === 'admin') {
+            // Αν δεν έχει σταλεί password, επιστρέφουμε τα στοιχεία του χρήστη χωρίς login
+            if (!password) {
+                return res.status(200).json({
+                    success: false,
+                    message: 'Password required for admin',
+                    user: {
+                        _id: user._id,
+                        email: user.email,
+                        name: user.name,
+                        phone: user.phone,
+                        role: user.role
+                    }
+                })
+            }
+
+            // Ελέγχουμε αν ο κωδικός είναι σωστός
+            if (user.password !== password) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Incorrect password'
+                })
+            }
         }
 
         //successful login
@@ -22,7 +48,8 @@ export const getUser = async (req, res) => {
                 _id: user._id,
                 email: user.email,
                 name: user.name,
-                phone: user.phone
+                phone: user.phone,
+                role: user.role
             }
           })
     } catch (error) {
