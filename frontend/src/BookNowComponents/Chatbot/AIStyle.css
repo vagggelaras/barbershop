@@ -29,8 +29,8 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     background: #808080;
     color: white;
@@ -128,5 +128,13 @@
     100% {
         --gradX: 50%;
         --gradY: 0%;
+    }
+}
+
+@media (max-width: 600px) {
+    .aiIcon{
+        top:1vh;
+        width: 42px;
+        height: 42px;
     }
 }

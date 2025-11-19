@@ -25,7 +25,7 @@ export default function FloatingChatButton({
 
     setIsChatOpen(false);
   };
-
+ 
   return (
     <>
       {isChatOpen ? (
