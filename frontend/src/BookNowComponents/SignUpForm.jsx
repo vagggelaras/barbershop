@@ -8,6 +8,7 @@ export default function SignUpForm(props){
 
     const [signIn, toggle] = useState(true);
     const [isAdmin, setIsAdmin] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
     const [formData, setFormData] = useState({
         email:'',
         name:'',
@@ -19,6 +20,11 @@ export default function SignUpForm(props){
 
     const handleFormChange = (e) => {
         const { name, value } = e.target;
+
+        // Clear error message when user starts typing
+        if (errorMessage) {
+            setErrorMessage('')
+        }
 
         // Για το phone field, επιτρέπουμε μόνο αριθμούς
         if (name === 'phone') {
@@ -37,6 +43,8 @@ export default function SignUpForm(props){
 
     const handleSignUp = async (e) => {
         e.preventDefault()
+        setErrorMessage('') // Clear any previous errors
+
         try {
             const response = await fetch(`${API_URL}/users`, {
                 method: 'POST',
@@ -46,6 +54,18 @@ export default function SignUpForm(props){
                 body: JSON.stringify(formData)
             })
             const data = await response.json()
+
+            // Check if user already exists
+            if (response.status === 409 || data.userExists) {
+                setErrorMessage('User with this email already exists. Please login instead.')
+                return
+            }
+
+            if (!data.success) {
+                setErrorMessage('Failed to create account. Please try again.')
+                return
+            }
+
             console.log('Success:', data)
 
             // Auto login after signup
@@ -78,6 +98,7 @@ export default function SignUpForm(props){
             }
         } catch (error) {
             console.log('Error:', error)
+            setErrorMessage('An error occurred. Please try again.')
         }
     }
 
@@ -145,6 +166,41 @@ export default function SignUpForm(props){
             <Components.SignUpContainer signingIn={signIn}>
                 <Components.Form onSubmit={handleSignUp}>
                     <Components.Title>Create Account</Components.Title>
+                    {errorMessage && (
+                        <div style={{
+                            color: '#ff4444',
+                            fontSize: '14px',
+                            marginBottom: '15px',
+                            textAlign: 'center',
+                            padding: '10px',
+                            backgroundColor: 'rgba(255, 68, 68, 0.1)',
+                            borderRadius: '5px',
+                            border: '1px solid rgba(255, 68, 68, 0.3)'
+                        }}>
+                            {errorMessage}
+                            {errorMessage.includes('already exists') && (
+                                <div style={{ marginTop: '10px' }}>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            toggle(true)
+                                            setErrorMessage('')
+                                        }}
+                                        style={{
+                                            background: 'transparent',
+                                            color: '#776262',
+                                            border: 'none',
+                                            textDecoration: 'underline',
+                                            cursor: 'pointer',
+                                            fontSize: '14px'
+                                        }}
+                                    >
+                                        Switch to Login
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
                     <Components.Input
                         type="text"
                         placeholder="Name"
