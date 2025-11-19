@@ -1,4 +1,5 @@
 import Appointments from '../models/Appointments.js';
+import { sendAppointmentConfirmation, sendAppointmentCancellation } from '../utils/emailService.js';
 
 export const specificBarberDateAppointments = async (req, res) => {
     try {
@@ -66,10 +67,26 @@ export const createAppointment = async (req, res) => {
 
         await newAppointment.save()
 
+        // Send confirmation email
+        const emailResult = await sendAppointmentConfirmation({
+            customerEmail: userEmail,
+            customerName: userName,
+            service: service,
+            barber: barberName,
+            date: date,
+            time: time
+        });
+
+        if (!emailResult.success) {
+            console.error('Failed to send confirmation email:', emailResult.error);
+            // Don't fail the appointment creation if email fails
+        }
+
         res.status(201).json({
             success: true,
             message: 'Appointment created successfully',
-            appointment: newAppointment
+            appointment: newAppointment,
+            emailSent: emailResult.success
         })
     } catch (error) {
         res.status(500).json({ error: error.message })
@@ -84,7 +101,24 @@ export const deleteAppointment = async (req, res) => {
             return res.status(404).json({ message: 'Το ραντεβού δεν βρέθηκε' });
         }
 
-        res.json({ message: 'Το ραντεβού διαγράφηκε επιτυχώς', deletedAppointment });
+        // Send cancellation email
+        const emailResult = await sendAppointmentCancellation({
+            customerEmail: deletedAppointment.userEmail,
+            customerName: deletedAppointment.userName,
+            service: deletedAppointment.service,
+            date: deletedAppointment.date,
+            time: deletedAppointment.time
+        });
+
+        if (!emailResult.success) {
+            console.error('Failed to send cancellation email:', emailResult.error);
+        }
+
+        res.json({
+            message: 'Το ραντεβού διαγράφηκε επιτυχώς',
+            deletedAppointment,
+            emailSent: emailResult.success
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
