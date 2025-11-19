@@ -100,9 +100,24 @@
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     /* Hide user icon on mobile - it will be in the navigation menu instead */
     .userIconContainer {
         display: none;
+    }
+
+    /* Show user icon on mobile when in admin dashboard */
+    .userIconContainer.show-on-mobile {
+        display: block;
+    }
+
+    .userIcon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .userIcon svg {
+        width: 28px;
+        height: 28px;
     }
 }

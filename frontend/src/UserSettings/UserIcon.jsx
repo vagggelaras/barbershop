@@ -36,7 +36,7 @@ export default function UserIcon(props){
     }
 
     return(
-        <div className='userIconContainer' ref={dropdownRef}>
+        <div className={`userIconContainer ${props.activeButton === 5 ? 'show-on-mobile' : ''}`} ref={dropdownRef}>
             <button
                 className='userIcon'
                 onClick={() => setDropdownOpen(!dropdownOpen)}
