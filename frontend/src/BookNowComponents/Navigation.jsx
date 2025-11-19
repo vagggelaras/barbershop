@@ -7,6 +7,10 @@ export default function Navigation(props){
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
 
+    // Check if user is admin
+    const storedUser = JSON.parse(sessionStorage.getItem('user') || '{}')
+    const isAdmin = storedUser.role === 'admin'
+
     useEffect(() => {
         const handleScroll = () => {
             // Detect if scrolled more than 50px
@@ -98,6 +102,14 @@ export default function Navigation(props){
                             </svg>
                             User Settings
                         </button>
+                        {isAdmin && (
+                            <button className="mobileMenuItem withIcon" onClick={() => handleMenuClick(5)}>
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                                {activeButton === 5 ? 'Homepage' : 'Admin Dashboard'}
+                            </button>
+                        )}
                         <button className="mobileMenuItem withIcon" onClick={handleLogout}>
                             <svg viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
