@@ -9,6 +9,7 @@
     justify-content: space-evenly;
     flex-direction: column;
     background: linear-gradient(to bottom, rgba(45, 45, 50, 0.95) 0%, rgba(216, 216, 216, 0.9) 10%, rgba(255, 255, 255, 0.9) 100%);
+    max-width: 100%;
 }
 
 .personnelCardsContainer h1 {
@@ -62,4 +63,41 @@
     font-size: 1.2rem;
     font-weight: 600;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Mobile Responsive Styles - All devices up to 767px */
+@media (max-width: 767px) {
+    .personnelCardsContainer {
+        padding: 2rem 1rem;
+        min-height: 100vh;
+        height: auto;
+        top: 0;
+        position: relative;
+        margin-top: 94vh;
+    }
+
+    .personnelCardsContainer h1 {
+        font-size: 2rem;
+        text-align: center;
+        padding: 0 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .bounceCardsContainer {
+        width: 100%;
+        max-width: 300px;
+        padding: 0 1rem;
+    }
+
+    .card {
+        width: 200px;
+    }
+
+    .barber-name {
+        padding: 15px 8px 8px;
+    }
+
+    .barber-name h3 {
+        font-size: 1rem;
+    }
 }

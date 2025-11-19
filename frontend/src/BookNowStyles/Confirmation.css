@@ -136,11 +136,13 @@
     }
 }
 
-@media (max-width: 768px) {
+/* Mobile Styles - All devices up to 767px */
+@media (max-width: 767px) {
     .confirmationContainer {
-        height: 90%;
-        width: 90%;
-        padding: 5%;
+        width: 95%;
+        height: 95%;
+        padding: 2%;
+        gap: 0;
     }
 
     .detailsWrapper {
@@ -149,41 +151,8 @@
     }
 
     .confirmationTitle {
-        font-size: 22px;
-        margin-top: 10px;
-    }
-
-    .detailsSection {
-        padding: 15px;
-    }
-
-    .detailsSection h3 {
-        font-size: 16px;
-    }
-
-    .detailItem .label,
-    .detailItem .value {
-        font-size: 13px;
-    }
-
-    .confirmButton {
-        width: 100%;
-        min-width: auto;
-        padding: 12px 20px;
-        font-size: 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    .confirmationContainer {
-        width: 95%;
-        height: 95%;
-        padding: 2%;
-        gap:0;
-    }
-
-    .confirmationTitle {
         font-size: 20px;
+        margin-top: 10px;
     }
 
     .detailsSection {
@@ -200,6 +169,8 @@
     }
 
     .confirmButton {
+        width: 100%;
+        min-width: auto;
         padding: 10px 18px;
         font-size: 14px;
     }

@@ -166,6 +166,10 @@ nav {
     }
 }
 
+.empty {
+    transition: opacity 0.3s ease;
+}
+
 /* Responsive Design */
 @media (max-width: 1400px) {
     nav {
@@ -216,80 +220,40 @@ nav {
     }
 }
 
-@media (max-width: 768px) {
+/* Mobile Styles - All devices up to 767px */
+@media (max-width: 767px) {
     nav {
-        width: 85%;
-        height: 8vh;
-        margin-top: 1.5vh;
-    }
-
-    .navLogo {
-        width: 30%;
-        font-size: 1rem;
-        padding-left: 2%;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .logoText {
-        font-size: 0.55rem;
-        letter-spacing: 1px;
-    }
-
-    .navMenu {
-        width: 70%;
-        gap: 0.8rem;
-        padding-right: 2%;
-    }
-
-    .navMenu>button {
-        font-size: 0.9rem;
-        padding: 0.4rem 1.2rem;
-        border-radius: 6px;
-    }
-}
-
-@media (max-width: 640px) {
-    nav {
-        width: 90%;
-        height: 5vh;
-    }
-
-    .navLogo {
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.9rem;
-    }
-
-    .logoText {
-        font-size: 0.5rem;
-    }
-
-    .navMenu {
-        gap: 0.5rem;
-    }
-
-    .navMenu>button {
-        font-size: 0.8rem;
-        padding: 0.4rem 1rem;
-        letter-spacing: 0.5px;
-    }
-}
-
-@media (max-width: 480px) {
-    nav {
-        width: 90%;
-        padding: 0.8rem 2%;
-        margin: auto;
-        margin-top: 1vh;
-        
+        width: 95%;
+        padding: 0.8rem 4%;
+        margin: 0;
+        top: 0;
+        left: 2.5%;
         justify-content: space-between;
-        position: absolute;
-        left:5%;
-        /* background: transparent; */
-        /* background-color: #2E2D32; */
-        /* border: 1px solid red;         */
+        position: sticky;
+        border-radius: 0 0 15px 15px;
+        margin-top: 0;
+        height: 60px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+        transition: all 0.3s ease;
+    }
+
+    /* When scrolled - hide logo and show only hamburger */
+    nav.scrolled {
+        height: 50px;
+        padding: 0.6rem 4%;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+    }
+
+    nav.scrolled .navLogo {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    nav.scrolled .empty {
+        opacity: 0;
+        pointer-events: none;
     }
 
     .navLogo {
@@ -299,52 +263,27 @@ nav {
         flex-direction: column;
         font-size: 0.85rem;
         gap: 0.3rem;
+        transition: all 0.3s ease;
+        width: auto;
+        padding: 0;
     }
 
-    /* .logoText {
-        display: none;
-    } */
+    .logoText {
+        font-size: 0.5rem;
+        letter-spacing: 1px;
+    }
 
     .navMenu {
-        width: 60%;
+        width: auto;
         gap: 0.4rem;
-        padding-right: 1%;
+        padding: 0;
+        justify-content: flex-end;
     }
 
     .navMenu>button {
         font-size: 0.7rem;
         padding: 0.35rem 0.8rem;
         border-radius: 5px;
-    }
-}
-
-@media (max-width: 375px) {
-    nav {
-        width: 98%;
-        flex-direction: column;
-        height: auto;
-        padding: 0.5rem;
-        gap: 0.5rem;
-    }
-
-    .navLogo {
-        width: 100%;
-        justify-content: center;
-        align-items: center;
-        padding: 0;
-        font-size: 1rem;
-    }
-
-    .navMenu {
-        width: 100%;
-        justify-content: space-evenly;
-        padding: 0;
-        gap: 0.5rem;
-    }
-
-    .navMenu>button {
-        font-size: 0.7rem;
-        padding: 0.4rem 0.7rem;
     }
 }
 
@@ -522,7 +461,7 @@ nav {
 }
 
 /* Mobile Responsive - Show Hamburger & Hide Desktop Menu */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     nav {
         justify-content: space-between;
     }

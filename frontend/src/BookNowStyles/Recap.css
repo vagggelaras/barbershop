@@ -45,11 +45,12 @@
     padding: 20px;
 }
 
-@media (max-width: 640px){
+/* Mobile Styles - All devices up to 767px */
+@media (max-width: 767px){
     .recapContainer{
         top:11vh
     }
-    
+
     .recapContainer>*{
         font-size: 0.7rem;
     }

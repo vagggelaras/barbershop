@@ -183,30 +183,13 @@
     }
 }
 
-@media (max-width: 768px) {
+/* Mobile Styles - All devices up to 767px */
+@media (max-width: 767px) {
     .personnelContainer {
         gap: 1.5rem;
         padding: 3% 2%;
     }
 
-    .barberCard {
-        width: 80%;
-        min-width: 240px;
-        height: 380px;
-        min-height: 360px;
-    }
-
-    .employeName {
-        font-size: 1.2rem;
-    }
-
-    .confirmOverlay {
-        font-size: 0.95rem;
-        padding: 0.85rem 1.8rem;
-    }
-}
-
-@media (max-width: 480px) {
     .barberCard {
         width: 90%;
         min-width: 220px;

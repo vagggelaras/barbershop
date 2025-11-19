@@ -31,6 +31,7 @@
     position: relative;
     width: fit-content;
     margin: 0 auto;
+    max-width: 100%;
 }
 
 .card-stack::before {
@@ -152,4 +153,56 @@
 .stack-controls button:hover {
     background: rgba(100, 100, 100, 0.4);
     transform: scale(1.1);
+}
+
+/* Mobile Layout - All devices up to 767px */
+@media (max-width: 767px) {
+    .card-stack {
+        grid-template: max-content max-content max-content max-content / 1fr;
+        grid-gap: 1em;
+        padding: 1em;
+    }
+
+    .card-stack::before {
+        grid-area: 1 / 1;
+        text-align: center;
+        width: 100%;
+        font-size: 1rem;
+        margin-bottom: 0.5em;
+    }
+
+    .card-stack article {
+        grid-template: max-content max-content max-content / 1fr;
+    }
+
+    .card-stack img {
+        grid-area: 2 / 1;
+        height: 18em;
+        margin: 0 auto;
+        translate: 0;
+    }
+
+    .card-stack h2 {
+        grid-area: 3 / 1;
+        text-align: center;
+        font-size: 1.8rem;
+        margin-top: 1em;
+    }
+
+    .card-stack em {
+        grid-area: 4 / 1;
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    .stack-controls {
+        grid-area: 5 / 1;
+        margin-top: 1.5em;
+        gap: 2em;
+    }
+
+    .stack-controls button {
+        width: 2.5em;
+        font-size: 1.5em;
+    }
 }

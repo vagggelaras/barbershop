@@ -1,10 +1,28 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import "../BookNowStyles/Navigation.css"
 
 export default function Navigation(props){
 
     const {onButtonClick, activeButton, userLoggedIn, logOutUser} = props
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const [isScrolled, setIsScrolled] = useState(false)
+
+    useEffect(() => {
+        const handleScroll = () => {
+            // Detect if scrolled more than 50px
+            if (window.scrollY > 50) {
+                setIsScrolled(true)
+            } else {
+                setIsScrolled(false)
+            }
+        }
+
+        window.addEventListener('scroll', handleScroll)
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+        }
+    }, [])
 
     const handleMenuClick = (number) => {
         onButtonClick(number)
@@ -20,7 +38,7 @@ export default function Navigation(props){
 
     return(
         <>
-            <nav>
+            <nav className={isScrolled ? 'scrolled' : ''}>
                 {/* Hamburger Button - Mobile Only */}
                 <button
                     className={`hamburger ${mobileMenuOpen ? 'active' : ''}`}

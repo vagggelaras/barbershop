@@ -312,10 +312,9 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
+/* Responsive Design - Mobile Styles up to 767px */
+@media (max-width: 767px) {
     .malakia {
-        /* padding-top: 140px; */
         position: relative;
         flex-direction: column;
     }
@@ -332,14 +331,6 @@
         font-size: 0.9rem;
         align-self: flex-start;
         order: -1;
-    }
-}
-
-@media (max-width: 768px) {
-
-    .datePickerContainer {
-        width: 95%;
-        height: 95%;
     }
 
     .mainContainer {
@@ -359,55 +350,8 @@
 
     .timeSlots {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
-    }
-
-    .monthPicker h2 {
-        font-size: 16px;
-    }
-
-    .footer {
-        flex-direction: row;
-        gap: 10px;
-        height: auto;
-        /* padding: 10px 0; */
-    }
-
-    .footer > button {
-        flex: 1;
-        padding: 14px 16px;
-        font-size: 15px;
-    }
-
-    .footer > div {
-        flex: 2;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .footer div span {
-        text-align: center;
-        font-size: 15px;
-        color: #E8E8E8;
-        font-weight: 600;
-    }
-
-    .footer div button {
-        width: 100%;
-        padding: 14px 16px;
-        font-size: 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    .datePickerContainer {
-        width: 95%;
-    }
-
-    .timeSlots {
         grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
     }
 
     .monthPicker button {
@@ -434,24 +378,29 @@
     }
 
     .footer {
-        margin-top: 1.5%;
+        position: absolute;
+        bottom: -6%;
         flex-direction: row;
         gap: 12px;
         width: 100%;
-        /* margin-left: 5%; */
-        /* padding: 12px 0; */
+        left: 0;
+        height: auto;
     }
 
     .footer>button {
+        background-color: #343336;
         padding: 2px 0px;
         font-size: 16px;
         border-radius: 8px;
+        flex: 1;
     }
 
     .footer > div {
         max-height: 40px;
         flex: 1;
         gap: 0;
+        display: flex;
+        flex-direction: column;
     }
 
     .footer div span {
@@ -465,25 +414,7 @@
         max-height: 40px;
         display: flex;
         align-items: center;
-        justify-content: center
+        justify-content: center;
+        width: 100%;
     }
 }
-
-/* @media (max-width: 430px) {
-
-    .footer > button {
-        padding: 2px 0px;
-        font-size: 16px;
-        border-radius: 8px;
-    }
-
-    .footer div button {
-        padding: 2px 0px;
-        font-size: 16px;
-        border-radius: 8px;
-        max-height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center
-    }
-} */
