@@ -9,9 +9,18 @@ export async function sendAppointmentConfirmation(appointmentData) {
     try {
         const { customerEmail, customerName, service, barber, date, time } = appointmentData;
 
+        // In development, send to your own email for testing
+        // In production, verify a domain and remove this override
+        const testingMode = process.env.NODE_ENV !== 'production';
+        const recipientEmail = testingMode ? 'vsoh77@gmail.com' : customerEmail;
+
+        if (testingMode && customerEmail !== 'vsoh77@gmail.com') {
+            console.log(`⚠️  TESTING MODE: Email for ${customerName} (${customerEmail}) redirected to vsoh77@gmail.com`);
+        }
+
         const { data, error } = await resend.emails.send({
             from: 'ZEN Hair & Beauty Spa <onboarding@resend.dev>', // Change this after domain verification
-            to: [customerEmail],
+            to: [recipientEmail],
             subject: 'Appointment Confirmation - ZEN Hair & Beauty Spa',
             html: `
                 <!DOCTYPE html>
@@ -168,9 +177,17 @@ export async function sendAppointmentCancellation(appointmentData) {
     try {
         const { customerEmail, customerName, service, date, time } = appointmentData;
 
+        // In development, send to your own email for testing
+        const testingMode = process.env.NODE_ENV !== 'production';
+        const recipientEmail = testingMode ? 'vsoh77@gmail.com' : customerEmail;
+
+        if (testingMode && customerEmail !== 'vsoh77@gmail.com') {
+            console.log(`⚠️  TESTING MODE: Cancellation email for ${customerName} (${customerEmail}) redirected to vsoh77@gmail.com`);
+        }
+
         const { data, error } = await resend.emails.send({
             from: 'ZEN Hair & Beauty Spa <onboarding@resend.dev>',
-            to: [customerEmail],
+            to: [recipientEmail],
             subject: 'Appointment Cancelled - ZEN Hair & Beauty Spa',
             html: `
                 <!DOCTYPE html>
