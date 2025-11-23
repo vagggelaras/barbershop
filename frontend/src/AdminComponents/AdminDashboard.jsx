@@ -7,6 +7,7 @@ export default function AdminDashboard() {
     const [appointments, setAppointments] = useState([])
     const [services, setServices] = useState([])
     const [personnel, setPersonnel] = useState([])
+    const [closedDays, setClosedDays] = useState([])
     const [loading, setLoading] = useState(true)
     const [editingService, setEditingService] = useState(null)
     const [editingPersonnel, setEditingPersonnel] = useState(null)
@@ -27,6 +28,7 @@ export default function AdminDashboard() {
         services: []
     })
     const [calendarMonth, setCalendarMonth] = useState(new Date())
+    const [closedDaysCalendarMonth, setClosedDaysCalendarMonth] = useState(new Date())
     const [selectedAppointmentDate, setSelectedAppointmentDate] = useState(() => {
         const today = new Date()
         const day = String(today.getDate()).padStart(2, '0')
@@ -56,8 +58,18 @@ export default function AdminDashboard() {
                 console.error('Error fetching personnel:', error)
             }
         }
+        const fetchClosedDays = async () => {
+            try {
+                const response = await fetch(`${API_URL}/closedDays`)
+                const data = await response.json()
+                setClosedDays(data)
+            } catch (error) {
+                console.error('Error fetching closed days:', error)
+            }
+        }
         fetchPersonnel()
         fetchServices()
+        fetchClosedDays()
     }, [])
 
     useEffect(() => {
@@ -658,6 +670,55 @@ export default function AdminDashboard() {
         </div>
     )
 
+    const handleAddClosedDay = async (dateStr) => {
+        try {
+            console.log('Adding closed day:', dateStr)
+            const response = await fetch(`${API_URL}/closedDays`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ date: dateStr })
+            })
+
+            const data = await response.json()
+            console.log('Response:', response.status, data)
+
+            if (response.status === 409) {
+                alert('Αυτή η ημερομηνία είναι ήδη κλειστή')
+                return
+            }
+
+            if (response.ok) {
+                setClosedDays([...closedDays, data.closedDay])
+                alert('Η ημέρα προστέθηκε ως κλειστή!')
+            } else {
+                alert(`Σφάλμα: ${data.message || 'Άγνωστο σφάλμα'}`)
+            }
+        } catch (error) {
+            console.error('Error adding closed day:', error)
+            alert(`Σφάλμα κατά την προσθήκη της κλειστής ημέρας: ${error.message}`)
+        }
+    }
+
+    const handleDeleteClosedDay = async (id) => {
+        if (!window.confirm('Είσαι σίγουρος ότι θέλεις να διαγράψεις αυτή την κλειστή ημέρα;')) return
+
+        try {
+            const response = await fetch(`${API_URL}/closedDays/${id}`, {
+                method: 'DELETE'
+            })
+
+            if (response.ok) {
+                setClosedDays(closedDays.filter(day => day._id !== id))
+                alert('Η κλειστή ημέρα διαγράφηκε επιτυχώς!')
+            }
+        } catch (error) {
+            console.error('Error deleting closed day:', error)
+            alert('Σφάλμα κατά τη διαγραφή της κλειστής ημέρας')
+        }
+    }
+
     const renderPersonnel = () => {
         const weekDayLabels = ['Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα', 'Κυ']
         const monthNames = ['Ιανουάριος', 'Φεβρουάριος', 'Μάρτιος', 'Απρίλιος', 'Μάιος', 'Ιούνιος', 'Ιούλιος', 'Αύγουστος', 'Σεπτέμβριος', 'Οκτώβριος', 'Νοέμβριος', 'Δεκέμβριος']
@@ -1009,6 +1070,120 @@ export default function AdminDashboard() {
         )
     }
 
+    const renderClosedDays = () => {
+        const weekDayLabels = ['Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα', 'Κυ']
+        const monthNames = ['Ιανουάριος', 'Φεβρουάριος', 'Μάρτιος', 'Απρίλιος', 'Μάιος', 'Ιούνιος', 'Ιούλιος', 'Αύγουστος', 'Σεπτέμβριος', 'Οκτώβριος', 'Νοέμβριος', 'Δεκέμβριος']
+
+        const generateClosedDaysCalendar = () => {
+            const daysInMonth = new Date(closedDaysCalendarMonth.getFullYear(), closedDaysCalendarMonth.getMonth() + 1, 0).getDate()
+            const firstDayOfMonth = new Date(closedDaysCalendarMonth.getFullYear(), closedDaysCalendarMonth.getMonth(), 1).getDay()
+            const adjustedFirstDay = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1
+
+            const days = []
+
+            for (let i = 0; i < adjustedFirstDay; i++) {
+                days.push(<div key={`empty-${i}`} className="cal-day empty"></div>)
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const currentDate = new Date(closedDaysCalendarMonth.getFullYear(), closedDaysCalendarMonth.getMonth(), day)
+                currentDate.setHours(0, 0, 0, 0)
+
+                const dayFormatted = String(day).padStart(2, '0')
+                const monthFormatted = String(closedDaysCalendarMonth.getMonth() + 1).padStart(2, '0')
+                const yearFormatted = closedDaysCalendarMonth.getFullYear()
+                const formattedDate = `${dayFormatted}-${monthFormatted}-${yearFormatted}`
+
+                const isClosedDay = closedDays.some(closedDay => closedDay.date === formattedDate)
+
+                const handleDayClick = () => {
+                    if (isClosedDay) {
+                        const closedDayObj = closedDays.find(cd => cd.date === formattedDate)
+                        handleDeleteClosedDay(closedDayObj._id)
+                    } else {
+                        handleAddClosedDay(formattedDate)
+                    }
+                }
+
+                days.push(
+                    <div
+                        key={day}
+                        className={`cal-day ${isClosedDay ? 'closed' : ''}`}
+                        onClick={handleDayClick}
+                    >
+                        {day}
+                    </div>
+                )
+            }
+
+            return days
+        }
+
+        return (
+            <div className="closed-days-section">
+                <div className="section-header">
+                    <h2>Κλειστές Ημέρες Μαγαζιού</h2>
+                </div>
+
+                <p style={{ color: 'rgba(255, 255, 255, 0.7)', marginBottom: '20px' }}>
+                    Πατήστε σε μια ημέρα για να την προσθέσετε ή αφαιρέσετε από τις κλειστές ημέρες.
+                </p>
+
+                <div className="closed-days-calendar">
+                    <div className="cal-month-picker">
+                        <button onClick={() => setClosedDaysCalendarMonth(prev => {
+                            const newDate = new Date(prev)
+                            newDate.setMonth(prev.getMonth() - 1)
+                            return newDate
+                        })}>{"<"}</button>
+                        <h3>{monthNames[closedDaysCalendarMonth.getMonth()]} {closedDaysCalendarMonth.getFullYear()}</h3>
+                        <button onClick={() => setClosedDaysCalendarMonth(prev => {
+                            const newDate = new Date(prev)
+                            newDate.setMonth(prev.getMonth() + 1)
+                            return newDate
+                        })}>{">"}</button>
+                    </div>
+                    <div className="cal-week-days">
+                        {weekDayLabels.map((day, idx) => (
+                            <p key={idx}>{day}</p>
+                        ))}
+                    </div>
+                    <div className="cal-days-grid">
+                        {generateClosedDaysCalendar()}
+                    </div>
+                </div>
+
+                {closedDays.length > 0 && (
+                    <div className="closed-days-list">
+                        <h3>Όλες οι Κλειστές Ημέρες ({closedDays.length})</h3>
+                        <div className="closed-days-badges">
+                            {closedDays
+                                .sort((a, b) => {
+                                    const [dayA, monthA, yearA] = a.date.split('-')
+                                    const [dayB, monthB, yearB] = b.date.split('-')
+                                    const dateA = new Date(yearA, monthA - 1, dayA)
+                                    const dateB = new Date(yearB, monthB - 1, dayB)
+                                    return dateA - dateB
+                                })
+                                .map(closedDay => (
+                                    <div key={closedDay._id} className="closed-day-badge">
+                                        <span>{closedDay.date}</span>
+                                        <button
+                                            onClick={() => handleDeleteClosedDay(closedDay._id)}
+                                            className="delete-badge-btn"
+                                            title="Διαγραφή"
+                                        >
+                                            ×
+                                        </button>
+                                    </div>
+                                ))}
+                        </div>
+                    </div>
+                )}
+            </div>
+        )
+    }
+
     return (
         <div className="admin-dashboard">
             <header className="admin-header">
@@ -1035,12 +1210,19 @@ export default function AdminDashboard() {
                 >
                     Προσωπικό
                 </button>
+                <button
+                    className={activeTab === 'closedDays' ? 'active' : ''}
+                    onClick={() => setActiveTab('closedDays')}
+                >
+                    Κλειστές Ημέρες
+                </button>
             </div>
 
             <main className="admin-content">
                 {activeTab === 'appointments' && renderAppointments()}
                 {activeTab === 'services' && renderServices()}
                 {activeTab === 'personnel' && renderPersonnel()}
+                {activeTab === 'closedDays' && renderClosedDays()}
             </main>
         </div>
     )

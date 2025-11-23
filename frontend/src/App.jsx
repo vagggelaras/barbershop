@@ -25,6 +25,8 @@ import UserSettings from "./UserSettings/UserSettings"
 import MyAppointments from "./UserSettings/MyAppointments"
 import AdminDashboard from "./AdminComponents/AdminDashboard"
 
+import DisplayServices from "./SettingsComponents/DisplayServices"
+
 export default function App() {
   const [activeButton, setActiveButton] = useState(0)
   const [userLoggedIn, setUserLoggedIn] = useState(sessionStorage.length)
@@ -112,29 +114,6 @@ export default function App() {
 
   return (
     <>
-      {!!(activeButton !== 5) && <Navigation
-        onButtonClick={handleNavClick}
-        activeButton={activeButton}
-        userLoggedIn={userLoggedIn}
-        logOutUser={logOutUser}
-      />}
-
-      {!!(activeButton === 1) && (
-        <>
-          {serviceSelected && !dateSelected && (
-            <Recap
-              serviceSelected={serviceSelected}
-              barberSelected={barberSelected}
-              dateSelected={dateSelected}
-              timeSelected={timeSelected}
-              weekDay={weekDay.current}
-            />
-          )}
-          <div className="bookingContainer">
-            <main>{renderComponentInBookNow()}</main>
-          </div>
-        </>
-      )}
 
       {!!(activeButton === 0) && (
         <>
@@ -159,6 +138,32 @@ export default function App() {
           </div>
         </>
       )}
+
+      {!!(activeButton !== 5) && <Navigation
+        onButtonClick={handleNavClick}
+        activeButton={activeButton}
+        userLoggedIn={userLoggedIn}
+        logOutUser={logOutUser}
+      />}
+
+      {!!(activeButton === 1) && (
+        <>
+          {serviceSelected && !dateSelected && (
+            <Recap
+              serviceSelected={serviceSelected}
+              barberSelected={barberSelected}
+              dateSelected={dateSelected}
+              timeSelected={timeSelected}
+              weekDay={weekDay.current}
+            />
+          )}
+          <div className="bookingContainer">
+            <main>{renderComponentInBookNow()}</main>
+          </div>
+        </>
+      )}
+
+      {!!(activeButton === 2) && (<DisplayServices/>)}
 
       {!!(activeButton === 3) && <Recommendations />}
 

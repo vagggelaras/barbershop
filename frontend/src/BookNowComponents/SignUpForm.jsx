@@ -104,6 +104,8 @@ export default function SignUpForm(props){
 
     const handleLogIn = async (e) => {
         e.preventDefault()
+        setErrorMessage('') // Clear any previous errors
+
         try {
             // Φτιάχνουμε το payload - αν υπάρχει password (για admin), το στέλνουμε
             const loginPayload = { email: formData.email };
@@ -130,7 +132,7 @@ export default function SignUpForm(props){
 
             // Αν είναι admin και έδωσε λάθος password
             if(isAdmin && !data.success){
-                alert('Λάθος κωδικός! Δοκιμάστε ξανά.')
+                setErrorMessage('Wrong password. Try again.')
                 setFormData({
                     ...formData,
                     password: ''
@@ -153,10 +155,16 @@ export default function SignUpForm(props){
                     props.onAdminLogin()
                 }
             } else {
-                console.log('Δεν βρέθηκε χρήστης με αυτό το email')
+                // Αν δεν βρέθηκε χρήστης ή άλλο πρόβλημα
+                if (response.status === 404) {
+                    setErrorMessage('There is no user with this email.')
+                } else {
+                    setErrorMessage('Σφάλμα κατά τη σύνδεση. Δοκιμάστε ξανά.')
+                }
             }
         } catch (error) {
             console.log('Σφάλμα: ' + error.message);
+            setErrorMessage('Σφάλμα κατά τη σύνδεση. Δοκιμάστε ξανά.')
         }
     }
 
@@ -231,6 +239,20 @@ export default function SignUpForm(props){
             <Components.SignInContainer signingIn={signIn}>
                 <Components.Form onSubmit={handleLogIn}>
                     <Components.Title>Log in</Components.Title>
+                    {errorMessage && (
+                        <div style={{
+                            color: '#ff4444',
+                            fontSize: '14px',
+                            marginBottom: '15px',
+                            textAlign: 'center',
+                            padding: '10px',
+                            backgroundColor: 'rgba(255, 68, 68, 0.1)',
+                            borderRadius: '5px',
+                            border: '1px solid rgba(255, 68, 68, 0.3)'
+                        }}>
+                            {errorMessage}
+                        </div>
+                    )}
                     <Components.Input
                         type="email"
                         placeholder="Email"

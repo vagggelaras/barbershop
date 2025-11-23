@@ -879,3 +879,98 @@ option{
         flex-direction: column;
     }
 }
+
+/* Closed Days Section */
+.closed-days-section {
+    width: 100%;
+}
+
+.closed-days-section h2 {
+    color: #1e3c72;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+.closed-days-calendar {
+    background: #1e3c72;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    color: white;
+}
+
+.closed-days-calendar .cal-day {
+    cursor: pointer !important;
+    user-select: none;
+}
+
+.closed-days-calendar .cal-day:hover:not(.empty) {
+    background: rgba(255, 255, 255, 0.2) !important;
+    transform: scale(1.05);
+}
+
+.closed-days-calendar .cal-month-picker h3 {
+    color: white;
+}
+
+.closed-days-calendar .cal-week-days p {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.closed-days-list {
+    margin-top: 2rem;
+}
+
+.closed-days-list h3 {
+    color: #1e3c72;
+    margin-bottom: 1rem;
+}
+
+.closed-days-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.closed-day-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #ff6b6b;
+    color: white;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.delete-badge-btn {
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    color: white;
+    font-size: 18px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.delete-badge-btn:hover {
+    background: rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
+}
+
+.cal-day.closed {
+    background: #ff6b6b !important;
+    color: white !important;
+    font-weight: bold;
+}
+
+.cal-day.past {
+    opacity: 0.4;
+    cursor: not-allowed !important;
+    pointer-events: none;
+}

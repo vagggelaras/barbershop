@@ -68,11 +68,47 @@ export const getAllUsers = async (req, res) => {
 
 export const createUser = async (req, res) => {
     try {
-        const user = new User(req.body)
-        await user.save()
-        res.status(201).json(user)      //201 = created
+        const { email, name, phone } = req.body;
+
+        // Check if user with this email already exists
+        const existingUser = await User.findOne({ email });
+
+        if (existingUser) {
+            return res.status(409).json({
+                success: false,
+                message: 'User with this email already exists',
+                userExists: true
+            });
+        }
+
+        // Create new user
+        const user = new User(req.body);
+        await user.save();
+
+        res.status(201).json({
+            success: true,
+            message: 'User created successfully',
+            user: {
+                _id: user._id,
+                email: user.email,
+                name: user.name,
+                phone: user.phone,
+                role: user.role
+            }
+        });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        // Handle duplicate key error from MongoDB
+        if (error.code === 11000) {
+            return res.status(409).json({
+                success: false,
+                message: 'User with this email already exists',
+                userExists: true
+            });
+        }
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
     }
 };
 

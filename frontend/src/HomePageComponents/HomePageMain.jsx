@@ -11,7 +11,7 @@ export default function HomePageMain(props){
                     <TextType
                         text={["Welcome to ZEN Hair & Beauty Spa", "Your Perfect Look Awaits", "Book Your Appointment Today"]}
                         as="p"
-                        typingSpeed={90}
+                        typingSpeed={30}
                         deletingSpeed={50}
                         pauseDuration={2000}
                         loop={true}

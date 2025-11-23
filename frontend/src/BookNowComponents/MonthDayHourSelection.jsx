@@ -74,6 +74,20 @@ export default function MonthDaySelection(props) {
         return true // Όλα τα slots είναι ελεύθερα
     })
 
+    // Φιλτράρισμα για να μην εμφανίζονται ώρες που έχουν περάσει (μόνο για σήμερα)
+    const now = new Date()
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    const availableTimeSlots_ = freeTimeSlots.filter(slot => {
+        // Αν η επιλεγμένη μέρα είναι σήμερα, φιλτράρουμε ώρες που έχουν περάσει
+        if (d && d.getTime() === today.getTime()) {
+            const currentHour = now.getHours() + (now.getMinutes() >= 30 ? 0.5 : 0)
+            return slot > currentHour
+        }
+        return true // Για μελλοντικές μέρες, δείχνουμε όλα τα ελεύθερα slots
+    })
+
     // Μετατροπή αριθμού σε string format (10 -> "10:00", 10.5 -> "10:30")
     function formatTimeSlot(slot) {
         const hour = Math.floor(slot)
@@ -247,7 +261,7 @@ export default function MonthDaySelection(props) {
                     onClick={handleDayClick}
                 >
                     <span className="day-number">{day}</span>
-                    {isSelected && !isDisabled && <span className="available-slots">{freeTimeSlots.length}</span>}
+                    {isSelected && !isDisabled && <span className="available-slots">{availableTimeSlots_.length}</span>}
                 </div>
             )
         }
@@ -285,7 +299,7 @@ export default function MonthDaySelection(props) {
                 </div>
                 <div className="timeSlotsSection">
                     <div className="timeSlots">
-                        {freeTimeSlots.map(slot => (
+                        {availableTimeSlots_.map(slot => (
                             <button
                                 key={slot}
                                 className={`timeSlot ${timeSelected_ === formatTimeSlot(slot) ? 'selected' : ''}`}
