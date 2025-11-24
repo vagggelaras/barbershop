@@ -4,6 +4,15 @@
 }
 
 .scissors-container canvas {
-    width: 100% !important;
+    width: 90% !important;
     height: 100% !important;
+}
+
+@media (max-width: 767px) {
+    .scissors-container{
+        position: absolute;
+        top:50%;
+        width: 50%;
+        height: 30vh;
+    }
 }

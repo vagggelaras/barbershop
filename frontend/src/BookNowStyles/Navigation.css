@@ -228,13 +228,15 @@ nav {
         margin: 0;
         top: 0;
         left: 2.5%;
-        justify-content: space-between;
-        position: sticky;
+        justify-content: flex-start;
+        position: fixed;
         border-radius: 0 0 15px 15px;
         margin-top: 0;
         height: 60px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
         transition: all 0.3s ease;
+        gap: 1rem;
+        z-index: 1000;
     }
 
     /* When scrolled - hide logo and show only hamburger */
@@ -299,10 +301,7 @@ nav {
     cursor: pointer;
     padding: 0;
     z-index: 1001;
-    /* position: absolute;
-    top: 50%;
-    left: 5%;
-    transform: translateY(-50%); */
+    order: -1;
 }
 
 .hamburger span {
@@ -468,6 +467,7 @@ nav {
 
     .hamburger {
         display: flex;
+        flex-shrink: 0;
     }
 
     .navMenu {
@@ -480,5 +480,6 @@ nav {
 
     .navLogo {
         width: auto;
+        flex-grow: 0;
     }
 }

@@ -5,11 +5,20 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
 }
 
 .light-rays-container canvas {
     display: block;
     width: 100%;
     height: 100%;
+}
+
+/* Mobile Styles - Ensure visibility on mobile */
+@media (max-width: 768px) {
+    .light-rays-container {
+        position: fixed;
+        z-index: 1;
+        height: 100vh;
+    }
 }
