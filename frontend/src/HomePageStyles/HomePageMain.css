@@ -116,7 +116,7 @@
 /* Responsive Design */
 @media (max-width: 767px) {
     .textContainer {
-        width: 95%;
+        width: 90%;
         justify-content: space-between;
     }
 
