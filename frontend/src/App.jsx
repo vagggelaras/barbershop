@@ -107,7 +107,7 @@ export default function App() {
 
   // CardStack config
   const teamMembers = [
-    { name: "Giannis", role: "Senior Barber", image: "/barber1NoBg.png" },
+    { name: "Antony", role: "Senior Barber", image: "/barber1NoBg.png" },
     { name: "Barbara", role: "Hair Stylist", image: "/barber2NoBg.png" },
     { name: "Anna", role: "Color Specialist", image: "/barber3NoBg.png" }
   ]
