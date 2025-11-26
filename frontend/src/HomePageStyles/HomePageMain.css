@@ -114,6 +114,20 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+    .homepage-text {
+        font-size: 3.5rem;
+        line-height: 1.3;
+    }
+}
+
+@media (max-width: 1000px) {
+    .homepage-text {
+        font-size: 3rem;
+        line-height: 1.3;
+    }
+}
+
 @media (max-width: 767px) {
     .textContainer {
         width: 90%;
@@ -129,7 +143,7 @@
         font-size: 1rem;
         padding: 0.6rem 1.5rem;
         letter-spacing: 1px;
-        bottom: 55%;
+        bottom: 50%;
     }
 
 }
