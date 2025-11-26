@@ -19,9 +19,9 @@ export async function sendAppointmentConfirmation(appointmentData) {
         }
 
         const { data, error } = await resend.emails.send({
-            from: 'ZEN Hair & Beauty Spa <onboarding@resend.dev>', // Change this after domain verification
+            from: 'BIW Nails & Hair Saloons <onboarding@resend.dev>', // Change this after domain verification
             to: [recipientEmail],
-            subject: 'Appointment Confirmation - ZEN Hair & Beauty Spa',
+            subject: 'Appointment Confirmation - BIW Nails & Hair Saloons',
             html: `
                 <!DOCTYPE html>
                 <html>
@@ -101,8 +101,8 @@ export async function sendAppointmentConfirmation(appointmentData) {
                 </head>
                 <body>
                     <div class="header">
-                        <h1>ZEN</h1>
-                        <p>Hair and Beauty Spa</p>
+                        <h1>BIW</h1>
+                        <p>Nails & Hair Saloons</p>
                     </div>
 
                     <div class="content">
@@ -147,8 +147,8 @@ export async function sendAppointmentConfirmation(appointmentData) {
                         </p>
 
                         <div class="footer">
-                            <p>Thank you for choosing ZEN Hair & Beauty Spa!</p>
-                            <p>Questions? Contact us at info@zenhairspa.com</p>
+                            <p>Thank you for choosing BIW Nails & Hair Saloons!</p>
+                            <p>Questions? Contact us at info@BIWnailshair.com</p>
                         </div>
                     </div>
                 </body>

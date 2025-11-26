@@ -22,11 +22,17 @@ console.log(serviceList)
     return(
         <div className="servicesDisplayContainer">
             <h1>Our <span style={{ color:"#ff6b35"}}>pallete</span> of expertise</h1>
-            <div className="displayContainer">
+            <br></br><br></br>
+            <h2>Plot Twist:<br/>
+                Our barbers are better with scissors
+                than with HTML tags.
+                Give us a little more time!</h2>
+
+            {/* <div className="displayContainer">
                 {serviceList && serviceList.map(service => {
                     return <div key={service._id} className="displayServiceCard"> {service.name}</div>
                 })}
-            </div>
+            </div> */}
         </div>
     )
 }

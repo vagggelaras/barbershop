@@ -131,10 +131,20 @@
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 767px) {
     .aiIcon{
-        top:1vh;
-        width: 42px;
-        height: 42px;
+        top: .6vh;
+        right: 6%;
+        width: 45px;
+        height: 45px;
+        z-index: 1001;
+        font-size: 0.85rem;
+    }
+
+    .chatWindow {
+        width: 90vw;
+        height: 70vh;
+        bottom: 80px;
+        right: 5vw;
     }
 }

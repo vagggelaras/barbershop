@@ -12,6 +12,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "animejs": "^4.2.2",
     "gsap": "^3.13.0",
     "jwt-decode": "^4.0.0",
     "meshline": "^3.3.1",

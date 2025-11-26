@@ -106,6 +106,11 @@ export default function SignUpForm(props){
         e.preventDefault()
         setErrorMessage('') // Clear any previous errors
 
+        // Set timeout για να δείξουμε alert αν αργεί η σύνδεση
+        const slowConnectionTimeout = setTimeout(() => {
+            alert('🛌 Our database is waking up... This might take a moment (free tier problems!)')
+        }, 5000)
+
         try {
             // Φτιάχνουμε το payload - αν υπάρχει password (για admin), το στέλνουμε
             const loginPayload = { email: formData.email };
@@ -122,6 +127,9 @@ export default function SignUpForm(props){
             });
 
             const data = await response.json();
+
+            // Clear το timeout αφού πήραμε response
+            clearTimeout(slowConnectionTimeout)
             // console.log(data)
 
             // Αν είναι admin και δεν έχει δώσει password ακόμα, εμφάνισε το password field
@@ -163,6 +171,8 @@ export default function SignUpForm(props){
                 }
             }
         } catch (error) {
+            // Clear το timeout και σε περίπτωση σφάλματος
+            clearTimeout(slowConnectionTimeout)
             console.log('Σφάλμα: ' + error.message);
             setErrorMessage('Σφάλμα κατά τη σύνδεση. Δοκιμάστε ξανά.')
         }

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Navigation from "./BookNowComponents/Navigation"
 import ServicesSection from "./BookNowComponents/ServicesSection"
 import BarbersSection from "./BookNowComponents/BarbersSection"
@@ -27,6 +27,8 @@ import AdminDashboard from "./AdminComponents/AdminDashboard"
 
 import DisplayServices from "./SettingsComponents/DisplayServices"
 
+import { animate, stagger } from 'animejs'
+
 export default function App() {
   const [activeButton, setActiveButton] = useState(0)
   const [userLoggedIn, setUserLoggedIn] = useState(sessionStorage.length)
@@ -49,6 +51,11 @@ export default function App() {
     handleChatbotTimeSelected,
     handleChatbotBooking
   } = useBookingData()
+
+  // Show welcome alert on first load
+  useEffect(() => {
+    alert("Αν έχεις δει το site αυτό μέσα από το βιογραφικό μου, για να δεις την πλήρη μου δουλειά κάνε login ως admin με email: vaggelis@gmail.com και κωδικό: 123")
+  }, [])
 
   const handleNavClick = (number) => setActiveButton(number)
 
@@ -133,7 +140,7 @@ export default function App() {
             className="custom-rays"
           />
           <div className="personnelCardsContainer">
-            <h1>Meet the team</h1>
+            <h1>meet the team</h1>
             <CardStack items={teamMembers} />
           </div>
         </>

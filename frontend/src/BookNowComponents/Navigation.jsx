@@ -55,7 +55,7 @@ export default function Navigation(props){
                 </button>
                 
                 <div className="navLogo">
-                    <p>BIW</p> <p className="logoText">Nails and Hair Saloons</p>
+                    <p>zen</p> <p className="logoText">Hair and beauty spa</p>
                 </div>
 
                 {/* Desktop Menu */}

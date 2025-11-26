@@ -9,7 +9,7 @@ export default function HomePageMain(props){
             <div className="homePageContainer">
                 <div className='textContainer'>
                     <TextType
-                        text={["Welcome to Black Is White nails and hair saloons", "Your Perfect Look Awaits", "Book Your Appointment Today"]}
+                        text={["Welcome to Zen Hair & beauty spa", "Your Perfect Look Awaits", "Book Your Appointment Today"]}
                         as="p"
                         typingSpeed={30}
                         deletingSpeed={50}
