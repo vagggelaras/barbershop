@@ -52,10 +52,10 @@ export default function App() {
     handleChatbotBooking
   } = useBookingData()
 
-  // Show welcome alert on first load
-  useEffect(() => {
-    alert("Αν έχεις δει το site αυτό μέσα από το βιογραφικό μου, για να δεις την πλήρη μου δουλειά κάνε login ως admin με email: vaggelis@gmail.com και κωδικό: 123")
-  }, [])
+  // // Show welcome alert on first load
+  // useEffect(() => {
+  //   alert("Αν έχεις δει το site αυτό μέσα από το βιογραφικό μου, για να δεις την πλήρη μου δουλειά κάνε login ως admin με email: vaggelis@gmail.com και κωδικό: 123")
+  // }, [])
 
   const handleNavClick = (number) => setActiveButton(number)
 
