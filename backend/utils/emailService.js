@@ -19,9 +19,9 @@ export async function sendAppointmentConfirmation(appointmentData) {
         }
 
         const { data, error } = await resend.emails.send({
-            from: 'BIW Nails & Hair Saloons <onboarding@resend.dev>', // Change this after domain verification
+            from: 'ZEN Hair & Beauty Spa <onboarding@resend.dev>', // Change this after domain verification
             to: [recipientEmail],
-            subject: 'Appointment Confirmation - BIW Nails & Hair Saloons',
+            subject: 'Appointment Confirmation - ZEN Hair & Beauty Spa!',
             html: `
                 <!DOCTYPE html>
                 <html>
@@ -101,8 +101,8 @@ export async function sendAppointmentConfirmation(appointmentData) {
                 </head>
                 <body>
                     <div class="header">
-                        <h1>BIW</h1>
-                        <p>Nails & Hair Saloons</p>
+                        <h1>ZEN</h1>
+                        <p>Hair & Beauty spa!</p>
                     </div>
 
                     <div class="content">
@@ -124,12 +124,16 @@ export async function sendAppointmentConfirmation(appointmentData) {
 
                             <div class="detail-row">
                                 <div class="detail-label">Date:</div>
-                                <div class="detail-value">${new Date(date).toLocaleDateString('el-GR', {
-                                    weekday: 'long',
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                })}</div>
+                                <div class="detail-value">${(() => {
+                                    const [day, month, year] = date.split('-');
+                                    const dateObj = new Date(year, month - 1, day);
+                                    return dateObj.toLocaleDateString('el-GR', {
+                                        weekday: 'long',
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric'
+                                    });
+                                })()}</div>
                             </div>
 
                             <div class="detail-row">
@@ -147,8 +151,8 @@ export async function sendAppointmentConfirmation(appointmentData) {
                         </p>
 
                         <div class="footer">
-                            <p>Thank you for choosing BIW Nails & Hair Saloons!</p>
-                            <p>Questions? Contact us at info@BIWnailshair.com</p>
+                            <p>Thank you for choosing ZEN Hair & Beauty Spa!</p>
+                            <p>Questions? Contact us at info@ZENhair&beauty.com</p>
                         </div>
                     </div>
                 </body>
@@ -225,7 +229,16 @@ export async function sendAppointmentCancellation(appointmentData) {
                     <div class="content">
                         <h2>Appointment Cancelled</h2>
                         <p>Hello ${customerName},</p>
-                        <p>Your appointment for <strong>${service}</strong> on <strong>${new Date(date).toLocaleDateString('el-GR')}</strong> at <strong>${time}</strong> has been cancelled.</p>
+                        <p>Your appointment for <strong>${service}</strong> on <strong>${(() => {
+                            const [day, month, year] = date.split('-');
+                            const dateObj = new Date(year, month - 1, day);
+                            return dateObj.toLocaleDateString('el-GR', {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            });
+                        })()}</strong> at <strong>${time}</strong> has been cancelled.</p>
                         <p>We hope to see you again soon! You can book a new appointment anytime on our website.</p>
                         <p style="margin-top: 30px; text-align: center; color: #777;">
                             Thank you,<br>

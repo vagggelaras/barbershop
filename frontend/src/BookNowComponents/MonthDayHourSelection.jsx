@@ -210,7 +210,7 @@ export default function MonthDaySelection(props) {
     function generateWeekDays(){
         return weekDay.map((day,index) => {
             return(
-                <p>{day}</p>
+                <p key={index}>{day}</p>
             )
         })
     }
@@ -249,7 +249,7 @@ export default function MonthDaySelection(props) {
                     const monthFormatted = String(currentDate.getMonth() + 1).padStart(2, '0')
                     const yearFormatted = currentDate.getFullYear()
                     const formattedDate = `${dayFormatted}-${monthFormatted}-${yearFormatted}`
-                    console.log(formattedDate)
+                    // console.log(formattedDate)
                     setD(currentDate)
                 }
             }
