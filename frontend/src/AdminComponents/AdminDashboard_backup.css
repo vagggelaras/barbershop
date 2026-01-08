@@ -1,0 +1,881 @@
+.admin-dashboard {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    padding: 2rem;
+}
+
+.admin-header {
+    text-align: center;
+    color: white;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.admin-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.admin-header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.admin-nav {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.admin-nav button {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.admin-nav button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.admin-nav button.active {
+    background: white;
+    color: #1e3c72;
+    border-color: white;
+    font-weight: bold;
+}
+
+.admin-content {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    height: auto;
+}
+
+.admin-content>*{
+    width: 100%;
+}
+
+.appointments-section h2,
+.services-section h2,
+.personnel-section h2 {
+    color: #1e3c72;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.admin-table th {
+    background: #1e3c72;
+    color: white;
+    padding: 1rem;
+    text-align: left;
+    font-weight: bold;
+}
+
+.admin-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.admin-table tr:hover {
+    background: #f5f5f5;
+}
+
+.delete-btn {
+    padding: 0.5rem 1rem;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+    background: #c82333;
+    transform: scale(1.05);
+}
+
+.services-grid,
+.personnel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.service-card,
+.personnel-card {
+    background-color: #21427C;
+    color: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover,
+.personnel-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.service-card h3,
+.personnel-card h3 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.service-card p,
+.personnel-card p {
+    margin: 0.5rem 0;
+    opacity: 0.9;
+}
+
+option{
+    background-color: #375387;
+}
+
+@media (max-width: 768px) {
+    .admin-dashboard {
+        padding: 1rem;
+    }
+
+    .admin-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .admin-nav {
+        flex-direction: column;
+    }
+
+    .admin-nav button {
+        width: 100%;
+    }
+
+    .admin-table {
+        font-size: 0.9rem;
+    }
+
+    .admin-table th,
+    .admin-table td {
+        padding: 0.5rem;
+    }
+
+    .services-grid,
+    .personnel-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Edit Service Styles */
+.edit-input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.edit-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.edit-input:focus {
+    outline: none;
+    border-color: white;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.edit-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.save-btn,
+.cancel-btn,
+.edit-btn {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.save-btn {
+    background: #28a745;
+    color: white;
+}
+
+.save-btn:hover {
+    background: #218838;
+    transform: scale(1.05);
+}
+
+.cancel-btn {
+    background: #6c757d;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background: #5a6268;
+    transform: scale(1.05);
+}
+
+.edit-btn {
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    margin-top: 1rem;
+}
+
+.edit-btn:hover {
+    background: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Personnel Section Styles */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.add-btn {
+    padding: 0.75rem 1.5rem;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+}
+
+.add-btn:hover {
+    background: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
+}
+
+.add-personnel-form {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.add-personnel-form h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    color: white;
+}
+
+.checkbox-group {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.services-selection,
+.days-off-selection {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+.services-selection h4,
+.days-off-selection h4 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.services-by-category {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.services-by-category::-webkit-scrollbar {
+    width: 8px;
+}
+
+.services-by-category::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.services-by-category::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+.services-by-category::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.category-group {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    border-left: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.category-group h5 {
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.service-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    margin: 0.25rem 0;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.service-checkbox:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.service-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Personnel Calendar Styles */
+.personnel-calendar {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cal-month-picker {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.cal-month-picker button {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: #E8E8E8;
+    transition: all 0.3s ease;
+}
+
+.cal-month-picker button:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.cal-month-picker h5 {
+    margin: 0;
+    color: #E8E8E8;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.cal-week-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.cal-week-days p {
+    margin: 0;
+    color: rgba(232, 232, 232, 0.6);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cal-days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    text-align: center;
+}
+
+.cal-day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 13px;
+    color: #E8E8E8;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: 36px;
+}
+
+.cal-day:hover:not(.empty) {
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.cal-day.selected {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    border-color: #dc3545;
+    font-weight: bold;
+    box-shadow: 0 0 20px rgba(220, 53, 69, 0.6), 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.cal-day.selected:hover {
+    background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+}
+
+.cal-day.empty {
+    background-color: transparent !important;
+    background: none;
+    cursor: default;
+    border: none;
+}
+
+.selected-dates-list {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    text-align: center;
+}
+
+.selected-dates-list small {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+}
+
+.days-off-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.date-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background: rgba(220, 53, 69, 0.2);
+    border: 1px solid rgba(220, 53, 69, 0.4);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+}
+
+.date-badge.more {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.personnel-photo {
+    width: 100%;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.personnel-photo img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Add Service Form Styles */
+.add-service-form {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.add-service-form h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    color: white;
+}
+
+/* Schedule View Styles */
+.schedule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.date-navigation {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(30, 60, 114, 0.1);
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+}
+
+.date-navigation button {
+    background: #1e3c72;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.date-navigation button:hover {
+    background: #2a5298;
+    transform: scale(1.1);
+}
+
+.selected-date {
+    font-weight: 600;
+    color: #1e3c72;
+    min-width: 250px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.schedule-view {
+    background: white;
+    border-radius: 10px;
+    overflow-x: auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-header {
+    display: flex;
+    border-bottom: 2px solid #1e3c72;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.barber-label-column {
+    width: 200px;
+    min-width: 200px;
+    padding: 1rem;
+    font-weight: bold;
+}
+
+.timeline-hours {
+    flex: 1;
+    position: relative;
+    min-width: 800px;
+    height: 100%;
+}
+
+.hour-marker {
+    position: absolute;
+    top: 0;
+    padding: 1rem 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+
+.barber-row {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+    min-height: 80px;
+    transition: background 0.2s ease;
+}
+
+.barber-row:hover {
+    background: #f8f9fa;
+}
+
+.barber-label {
+    width: 200px;
+    min-width: 200px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+    color: #1e3c72;
+    background: #f8f9fa;
+}
+
+.barber-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #1e3c72;
+}
+
+.timeline-track {
+    flex: 1;
+    position: relative;
+    min-width: 800px;
+}
+
+.hour-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: #e0e0e0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.appointment-block {
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    border-radius: 6px;
+    padding: 0.5rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    z-index: 5;
+}
+
+.appointment-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 6;
+}
+
+.appointment-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.85rem;
+    position: relative;
+}
+
+.appointment-content strong {
+    font-size: 0.9rem;
+}
+
+.apt-service {
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.apt-customer {
+    opacity: 0.9;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.apt-delete-btn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: rgba(220, 53, 69, 0.9);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.appointment-block:hover .apt-delete-btn {
+    opacity: 1;
+}
+
+.apt-delete-btn:hover {
+    background: #dc3545;
+    transform: scale(1.1);
+}
+
+.no-personnel {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .schedule-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .date-navigation {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .barber-label-column,
+    .barber-label {
+        width: 120px;
+        min-width: 120px;
+        font-size: 0.9rem;
+    }
+
+    .barber-avatar {
+        width: 30px;
+        height: 30px;
+    }
+
+    .appointment-content {
+        font-size: 0.75rem;
+    }
+}
+
+.personnel-info {
+    margin: 1rem 0;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.personnel-info strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.personnel-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0 0;
+}
+
+.personnel-info li {
+    padding: 0.25rem 0.5rem;
+    margin: 0.25rem 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    font-size: 0.9rem;
+}
+
+.personnel-info p {
+    margin: 0.5rem 0 0 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.card-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.card-buttons .edit-btn,
+.card-buttons .delete-btn {
+    flex: 1;
+    margin-top: 0;
+}
+
+@media (max-width: 768px) {
+    .section-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+
+    .add-btn {
+        width: 100%;
+    }
+
+    .card-buttons {
+        flex-direction: column;
+    }
+}

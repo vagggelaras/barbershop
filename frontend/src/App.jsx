@@ -25,9 +25,11 @@ import UserSettings from "./UserSettings/UserSettings"
 import MyAppointments from "./UserSettings/MyAppointments"
 import AdminDashboard from "./AdminComponents/AdminDashboard"
 
-import DisplayServices from "./SettingsComponents/DisplayServices"
+import DisplayServices from "./DisplayServicesComponents/DisplayServices"
 
 import { animate, stagger } from 'animejs'
+
+import Footer from "./FooterSection/Footer"
 
 export default function App() {
   const [activeButton, setActiveButton] = useState(0)
@@ -53,9 +55,9 @@ export default function App() {
   } = useBookingData()
 
   // Show welcome alert on first load
-  useEffect(() => {
-    alert("Αν έχεις δει το site αυτό μέσα από το βιογραφικό μου, για να δεις την πλήρη μου δουλειά κάνε login ως admin με email: vaggelis@gmail.com και κωδικό: 123")
-  }, [])
+  // useEffect(() => {
+  //   alert("Αν έχεις δει το site αυτό μέσα από το βιογραφικό μου, για να δεις την πλήρη μου δουλειά κάνε login ως admin με email: vaggelis@gmail.com και κωδικό: 123")
+  // }, [])
 
   const handleNavClick = (number) => setActiveButton(number)
 
@@ -196,6 +198,9 @@ export default function App() {
           <UserIcon setActiveButton={setActiveButton} logOutUser={logOutUser} activeButton={activeButton} />
         </>
       )}
+
+      {/* <Footer></Footer> */}
+
     </>
   )
 }
