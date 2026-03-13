@@ -7,6 +7,7 @@ export default function FloatingChatButton({
   barbers,
   barbersData,
   dataLoading,
+  onStartBooking,
   onServiceSelected,
   onBarberSelected,
   onDateSelected,
@@ -31,6 +32,7 @@ export default function FloatingChatButton({
       {isChatOpen ? (
         <ChatWindow
           onClose={() => setIsChatOpen(false)}
+          onStartBooking={onStartBooking}
           onServiceSelected={onServiceSelected}
           onBarberSelected={onBarberSelected}
           onDateSelected={onDateSelected}

@@ -6,6 +6,7 @@ import './AIStyle.css';
 
 export default function ChatWindow({
     onClose,
+    onStartBooking,
     onServiceSelected,
     onBarberSelected,
     onDateSelected,
@@ -76,6 +77,11 @@ export default function ChatWindow({
 
             // Καλούμε progressive callbacks για νέα δεδομένα
             if (functionCallData) {
+                // User θέλει να κάνει booking → πήγαινε στο Book Now (ServicesSection)
+                if (functionCallData.wants_to_book && onStartBooking) {
+                    onStartBooking();
+                }
+
                 // Έλεγχος αν έχουμε service και δεν το έχουμε ξανακαλέσει
                 if (functionCallData.service && !calledCallbacks.service && onServiceSelected) {
                     console.log("Calling onServiceSelected:", functionCallData.service);
@@ -131,22 +137,17 @@ export default function ChatWindow({
             }
 
             if (functionCallData?.complete) {
-                // ✅ Booking complete!
-                const completionMessage = {
+                // User confirmed → set booking data and navigate to Confirmation page
+                setMessages(prev => [...prev, {
                     id: Date.now() + 1,
                     role: 'bot',
-                    text: `Perfect! Your appointment is booked:\n\n📅 ${functionCallData.date}\n⏰${functionCallData.time}\n💇 ${functionCallData.service}\n👤 ${functionCallData.barber}`,
+                    text: `Taking you to the confirmation page...`,
                     timestamp: new Date()
-                };
+                }]);
 
-                setMessages(prev => [...prev, completionMessage]);
-
-                // Καλούμε την onBookingComplete μετά από 2 δευτερόλεπτα
-                console.log("Calling onBookingComplete with:", functionCallData);
                 setTimeout(() => {
-                    console.log("Executing onBookingComplete...");
                     onBookingComplete(functionCallData);
-                }, 2000);
+                }, 1500);
             } else {
                 // Progressive update ή συνηθισμένη απάντηση
                 const botResponse = {

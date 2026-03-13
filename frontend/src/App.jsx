@@ -189,11 +189,30 @@ export default function App() {
             barbers={barbers}
             barbersData={barbersData}
             dataLoading={dataLoading}
-            onServiceSelected={handleChatbotServiceSelected}
-            onBarberSelected={handleChatbotBarberSelected}
-            onDateSelected={handleChatbotDateSelected}
-            onTimeSelected={handleChatbotTimeSelected}
-            onBookingComplete={handleChatbotBooking}
+            onStartBooking={() => {
+              resetAllSelected()
+              setActiveButton(1)
+            }}
+            onServiceSelected={(serviceName) => {
+              handleChatbotServiceSelected(serviceName)
+              setActiveButton(1)
+            }}
+            onBarberSelected={(barberName) => {
+              handleChatbotBarberSelected(barberName)
+              setActiveButton(1)
+            }}
+            onDateSelected={(date) => {
+              handleChatbotDateSelected(date)
+              setActiveButton(1)
+            }}
+            onTimeSelected={(time) => {
+              handleChatbotTimeSelected(time)
+              setActiveButton(1)
+            }}
+            onBookingComplete={async (bookingData) => {
+              await handleChatbotBooking(bookingData)
+              setActiveButton(1)
+            }}
           />}
           <UserIcon setActiveButton={setActiveButton} logOutUser={logOutUser} activeButton={activeButton} />
         </>

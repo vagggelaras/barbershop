@@ -45,6 +45,8 @@ export const sendMessageToGemini = async (messages, services, barbers, barbersDa
   2. Barber (one of the above)
   3. Date (format: DD-MM-YYYY)
   4. Time (format: HH:MM)
+  5. After collecting ALL 4, show a short SUMMARY of the appointment and ask "Shall I confirm this appointment?"
+  6. Set complete:true ONLY when the user explicitly confirms (says yes, ok, sure, confirm, ναι, etc.)
 
   STRICT RULES (MUST FOLLOW):
   - Speak naturally and friendly in English
@@ -60,20 +62,26 @@ export const sendMessageToGemini = async (messages, services, barbers, barbersDa
 
   IMPORTANT FUNCTION CALLING RULES:
   - **ALWAYS** provide a text response along with your function call
+  - When user says YES to booking, call book_appointment(wants_to_book:true) AND ask "What service would you like?"
   - After each answer, call book_appointment with the data you collected AND ask the next question in your text response
   - Example: User says "haircut" → Call book_appointment(service:"Men's Haircut") AND respond with "Great! Which barber would you like?" (NO names listed!)
   - Pass only the fields you have collected so far
-  - When you have ALL 4 pieces of information, set complete:true
+  - When you have ALL 4 pieces of information, do NOT set complete:true yet. Instead show a summary and ask "Shall I confirm?"
+  - Set complete:true ONLY after the user explicitly confirms the booking
 
   RESPONSE FORMAT: Text response + function call together, ALWAYS!`;
 
         // ✨ Function declaration με dynamic services - ALL FIELDS OPTIONAL για progressive updates
         const bookAppointmentFunction = {
             name: 'book_appointment',
-            description: 'Reports booking progress. Call this EVERY TIME you collect new information (service, barber, date, or time). Set complete:true only when you have ALL 4 pieces.',
+            description: 'Reports booking progress. Call with wants_to_book:true when user wants to book. Then call EVERY TIME you collect new information. Set complete:true only after user confirms the final summary.',
             parameters: {
                 type: 'object',
                 properties: {
+                    wants_to_book: {
+                        type: 'boolean',
+                        description: 'Set to true when user says they want to book an appointment (before any details are collected)'
+                    },
                     service: {
                         type: 'string',
                         description: 'The service name (if collected)',
@@ -94,10 +102,10 @@ export const sendMessageToGemini = async (messages, services, barbers, barbersDa
                     },
                     complete: {
                         type: 'boolean',
-                        description: 'Set to true ONLY when you have ALL 4 pieces of information'
+                        description: 'Set to true ONLY after user explicitly confirms the booking summary'
                     }
                 },
-                required: [] // NO required fields - όλα optional για progressive updates
+                required: []
             }
     };
 
