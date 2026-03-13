@@ -4,12 +4,12 @@ A full-stack barbershop booking application with AI-powered chatbot assistant us
 
 ## Features
 
-- 📅 **Appointment Booking System** - Book appointments with preferred barbers
-- 🤖 **AI Chatbot Assistant** - Natural conversation booking powered by Google Gemini
-- 👥 **Personnel Management** - Manage barbers and their availability
-- 💇 **Service Management** - Define services, durations, and pricing
-- 🚫 **Closed Days Management** - Set shop holidays and closed days
-- ⏰ **Real-time Availability** - Check available time slots in real-time
+- **Appointment Booking System** - Book appointments with preferred barbers
+- **AI Chatbot Assistant** - Natural conversation booking powered by Google Gemini
+- **Personnel Management** - Manage barbers and their availability
+- **Service Management** - Define services, durations, and pricing
+- **Closed Days Management** - Set shop holidays and closed days
+- **Real-time Availability** - Check available time slots in real-time
 
 ## Tech Stack
 
@@ -192,3 +192,4 @@ This project is licensed under the ISC License.
 - The shop is closed on Sundays and Mondays
 - Operating hours: 9:00-20:00 (Wednesday until 14:00, Saturday until 16:00)
 - The chatbot automatically handles retry logic for API overload errors
+  
