@@ -45,6 +45,7 @@ export default function App() {
     dateSelected, setDateSelected,
     barberSelected, setBarberSelected,
     timeSelected, setTimeSelected,
+    chatbotDateObj,
     weekDay,
     resetAllSelected,
     handleChatbotServiceSelected,
@@ -95,6 +96,8 @@ export default function App() {
         weekDay={weekDay}
         barberSelected={barberSelected}
         serviceDuration={serviceDuration}
+        chatbotDate={chatbotDateObj}
+        chatbotTime={timeSelected}
       />
     )
     if (serviceSelected) return (

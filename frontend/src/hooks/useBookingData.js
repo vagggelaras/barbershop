@@ -8,6 +8,7 @@ export default function useBookingData() {
   const [dateSelected, setDateSelected] = useState("")
   const [barberSelected, setBarberSelected] = useState("")
   const [timeSelected, setTimeSelected] = useState("")
+  const [chatbotDateObj, setChatbotDateObj] = useState(null)
   const weekDay = useRef("")
 
   const resetAllSelected = () => {
@@ -39,19 +40,20 @@ export default function useBookingData() {
   }
 
   const handleChatbotDateSelected = (date) => {
-    console.log("Chatbot selected date:", date)
     const [year, month, day] = date.split('-')
-    const formattedDate = `${day}-${month}-${year}`
 
-    const dateObj = new Date(date)
+    const dateObj = new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
+    dateObj.setHours(0, 0, 0, 0)
+
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     weekDay.current = days[dateObj.getDay()]
 
-    setDateSelected(formattedDate)
+    // Μόνο αποθήκευση Date object για auto-select στο calendar
+    // ΔΕΝ καλούμε setDateSelected — αυτό θα το κάνει το handleChatbotBooking στο τέλος
+    setChatbotDateObj(dateObj)
   }
 
   const handleChatbotTimeSelected = (time) => {
-    console.log("Chatbot selected time:", time)
     setTimeSelected(time)
   }
 
@@ -105,6 +107,7 @@ export default function useBookingData() {
     setBarberSelected,
     timeSelected,
     setTimeSelected,
+    chatbotDateObj,
     weekDay,
     resetAllSelected,
     handleChatbotServiceSelected,

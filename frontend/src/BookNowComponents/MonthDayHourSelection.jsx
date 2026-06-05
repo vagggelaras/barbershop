@@ -95,6 +95,21 @@ export default function MonthDaySelection(props) {
         return `${String(hour).padStart(2, '0')}:${minutes}`
     }
 
+    // Όταν το chatbot επιλέξει ημερομηνία, auto-κλικ στη μέρα και navigate στο σωστό μήνα
+    useEffect(() => {
+        if (props.chatbotDate) {
+            setD(props.chatbotDate)
+            setCurrentMonth(new Date(props.chatbotDate.getFullYear(), props.chatbotDate.getMonth(), 1))
+        }
+    }, [props.chatbotDate])
+
+    // Όταν το chatbot επιλέξει ώρα, highlight το time slot
+    useEffect(() => {
+        if (props.chatbotTime) {
+            setTimeSelected_(props.chatbotTime)
+        }
+    }, [props.chatbotTime])
+
     useEffect(() => {
         const fetchClosedDays = async () => {
             try {

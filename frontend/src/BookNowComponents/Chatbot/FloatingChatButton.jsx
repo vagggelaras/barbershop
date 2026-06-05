@@ -2,6 +2,13 @@ import { useState } from 'react'
 import ChatWindow from './ChatWindow'
 import "./AIStyle.css"
 
+const INITIAL_MESSAGES = [{
+  id: 1,
+  role: 'bot',
+  text: 'Hello! Would you like to book an appointment?',
+  timestamp: new Date()
+}]
+
 export default function FloatingChatButton({
   services,
   barbers,
@@ -14,19 +21,18 @@ export default function FloatingChatButton({
   onTimeSelected,
   onBookingComplete
 }) {
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false)
+
+  // Persistent state — δεν χάνεται όταν κλείνει το chat
+  const [messages, setMessages] = useState(INITIAL_MESSAGES)
+  const [bookingStep, setBookingStep] = useState(null)
+  const [collectedData, setCollectedData] = useState({})
 
   const handleBookingComplete = (bookingData) => {
-    console.log("Booking completed:", bookingData);
+    if (onBookingComplete) onBookingComplete(bookingData)
+    setIsChatOpen(false)
+  }
 
-    // Καλούμε το callback από το App.jsx
-    if (onBookingComplete) {
-      onBookingComplete(bookingData);
-    }
-
-    setIsChatOpen(false);
-  };
- 
   return (
     <>
       {isChatOpen ? (
@@ -42,6 +48,12 @@ export default function FloatingChatButton({
           barbers={barbers}
           barbersData={barbersData}
           dataLoading={dataLoading}
+          messages={messages}
+          setMessages={setMessages}
+          bookingStep={bookingStep}
+          setBookingStep={setBookingStep}
+          collectedData={collectedData}
+          setCollectedData={setCollectedData}
         />
       ) : (
         <button
@@ -52,5 +64,5 @@ export default function FloatingChatButton({
         </button>
       )}
     </>
-  );
+  )
 }

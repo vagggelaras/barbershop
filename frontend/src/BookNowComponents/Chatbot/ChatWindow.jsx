@@ -1,8 +1,41 @@
 import { useState } from 'react';
 import MessageList from './MessageList';
 import ChatInput from './ChatInput';
-import { sendMessageToGemini, extractFunctionCall } from '../../services/geminiService';
+import { sendChatMessage, buildSystemPrompt } from '../../services/geminiService';
 import './AIStyle.css';
+
+// Validates extracted function data against current step and known values
+const validateFunctionData = (data, step, services, barbers) => {
+    if (!data) return null;
+
+    const valid = {};
+
+    if (data.wants_to_book) valid.wants_to_book = true;
+
+    switch (step) {
+        case null:
+            break;
+        case 'service':
+            if (data.service && services.includes(data.service)) valid.service = data.service;
+            break;
+        case 'barber':
+            if (data.barber && barbers.includes(data.barber)) valid.barber = data.barber;
+            break;
+        case 'date':
+            if (data.date && /^\d{4}-\d{2}-\d{2}$/.test(data.date)) valid.date = data.date;
+            break;
+        case 'time':
+            if (data.time && /^\d{1,2}:\d{2}$/.test(data.time)) valid.time = data.time;
+            break;
+        case 'confirm':
+            if (data.complete) valid.complete = true;
+            break;
+        default:
+            break;
+    }
+
+    return Object.keys(valid).length > 0 ? valid : null;
+};
 
 export default function ChatWindow({
     onClose,
@@ -15,158 +48,108 @@ export default function ChatWindow({
     services,
     barbers,
     barbersData,
-    dataLoading
+    dataLoading,
+    messages,
+    setMessages,
+    bookingStep,
+    setBookingStep,
+    collectedData,
+    setCollectedData
 }) {
-    // Όλα τα μηνύματα (bot + user)
-    const [messages, setMessages] = useState([
-        {
-            id: 1,
-            role: 'bot',
-            text: 'Hello! Would you like to book an appointment?',
-            timestamp: new Date()
-        }
-    ]);
-
-    // true = περιμένουμε απάντηση από Gemini
     const [isLoading, setIsLoading] = useState(false);
 
-    // Κρατάμε track τι έχουμε ήδη καλέσει για να μην ξανακαλέσουμε
-    const [calledCallbacks, setCalledCallbacks] = useState({
-        service: false,
-        barber: false,
-        date: false,
-        time: false
+    const addBotMessage = (text) => ({
+        id: Date.now() + 1,
+        role: 'bot',
+        text,
+        timestamp: new Date()
     });
 
-    // Όταν ο χρήστης στέλνει μήνυμα
     const handleSendMessage = async (userMessage) => {
-        // Ελέγχουμε αν έχουν φορτώσει τα data
         if (dataLoading) {
-            setMessages(prev => [...prev, {
-                id: Date.now(),
-                role: 'bot',
-                text: 'Please wait, loading data...',
-                timestamp: new Date()
-            }]);
+            setMessages(prev => [...prev, addBotMessage('Please wait, loading data...')]);
             return;
         }
 
-        // 1. Προσθήκη user message
-        const newUserMessage = {
-            id: Date.now(),
-            role: 'user',
-            text: userMessage,
-            timestamp: new Date()
-        }
-        setMessages(prev => [...prev, newUserMessage]);
+        const newUserMessage = { id: Date.now(), role: 'user', text: userMessage, timestamp: new Date() };
+        const updatedMessages = [...messages, newUserMessage];
+        setMessages(updatedMessages);
         setIsLoading(true);
 
         try {
-            // 2. Στείλε στο Gemini
-            const updatedMessages = [...messages, newUserMessage];
-            const response = await sendMessageToGemini(updatedMessages, services, barbers, barbersData);
+            const systemPrompt = buildSystemPrompt(bookingStep, collectedData, services, barbers, barbersData);
+            const { text, functionData } = await sendChatMessage(updatedMessages, systemPrompt, services, barbers);
 
-            // DEBUG: Δες τι επιστρέφει το Gemini
-            console.log("Gemini full response:", response);
-            console.log("Gemini response content:", JSON.stringify(response.candidates?.[0]?.content, null, 2));
-            console.log("Response parts:", response.candidates?.[0]?.content?.parts);
+            // Validate against current step — rejects hallucinated or out-of-order data
+            const validated = validateFunctionData(functionData, bookingStep, services, barbers);
 
-            // 3. Έλεγξε αν υπάρχει function call
-            const functionCallData = extractFunctionCall(response);
-            console.log("Extracted function call data:", functionCallData);
+            let nextStep = bookingStep;
+            let nextData = { ...collectedData };
 
-            // Καλούμε progressive callbacks για νέα δεδομένα
-            if (functionCallData) {
-                // User θέλει να κάνει booking → πήγαινε στο Book Now (ServicesSection)
-                if (functionCallData.wants_to_book && onStartBooking) {
-                    onStartBooking();
+            if (validated) {
+                if (validated.wants_to_book && bookingStep === null) {
+                    nextStep = 'service';
+                    if (onStartBooking) onStartBooking();
                 }
-
-                // Έλεγχος αν έχουμε service και δεν το έχουμε ξανακαλέσει
-                if (functionCallData.service && !calledCallbacks.service && onServiceSelected) {
-                    console.log("Calling onServiceSelected:", functionCallData.service);
-                    onServiceSelected(functionCallData.service);
-                    setCalledCallbacks(prev => ({ ...prev, service: true }));
+                if (validated.service && bookingStep === 'service') {
+                    nextData.service = validated.service;
+                    if (onServiceSelected) onServiceSelected(validated.service);
+                    nextStep = 'barber';
                 }
-
-                // Έλεγχος αν έχουμε barber και δεν το έχουμε ξανακαλέσει
-                if (functionCallData.barber && !calledCallbacks.barber && onBarberSelected) {
-                    console.log("Calling onBarberSelected:", functionCallData.barber);
-                    onBarberSelected(functionCallData.barber);
-                    setCalledCallbacks(prev => ({ ...prev, barber: true }));
+                if (validated.barber && bookingStep === 'barber') {
+                    nextData.barber = validated.barber;
+                    if (onBarberSelected) onBarberSelected(validated.barber);
+                    nextStep = 'date';
                 }
-
-                // Έλεγχος αν έχουμε date και δεν το έχουμε ξανακαλέσει
-                if (functionCallData.date && !calledCallbacks.date && onDateSelected) {
-                    console.log("Calling onDateSelected:", functionCallData.date);
-                    onDateSelected(functionCallData.date);
-                    setCalledCallbacks(prev => ({ ...prev, date: true }));
+                if (validated.date && bookingStep === 'date') {
+                    nextData.date = validated.date;
+                    if (onDateSelected) onDateSelected(validated.date);
+                    nextStep = 'time';
                 }
-
-                // Έλεγχος αν έχουμε time και δεν το έχουμε ξανακαλέσει
-                if (functionCallData.time && !calledCallbacks.time && onTimeSelected) {
-                    console.log("Calling onTimeSelected:", functionCallData.time);
-                    onTimeSelected(functionCallData.time);
-                    setCalledCallbacks(prev => ({ ...prev, time: true }));
+                if (validated.time && bookingStep === 'time') {
+                    nextData.time = validated.time;
+                    if (onTimeSelected) onTimeSelected(validated.time);
+                    nextStep = 'confirm';
+                }
+                if (validated.complete && bookingStep === 'confirm') {
+                    setMessages(prev => [...prev, newUserMessage, addBotMessage('Taking you to the confirmation page...')]);
+                    setIsLoading(false);
+                    setTimeout(() => onBookingComplete(nextData), 1500);
+                    return;
                 }
             }
 
-            // Εξαγωγή bot text response (μπορεί να είναι σε διαφορετικό part από το functionCall)
-            const parts = response.candidates?.[0]?.content?.parts || [];
-            const textPart = parts.find(part => part.text);
+            setBookingStep(nextStep);
+            setCollectedData(nextData);
 
-            // Αν δεν υπάρχει text αλλά υπάρχει functionCall, φτιάξε custom follow-up message
-            let botText = textPart?.text;
-
-            if (!botText && functionCallData && !functionCallData.complete) {
-                // Δημιουργία custom follow-up based on τι έχουμε ΗΔΗ συλλέξει (using calledCallbacks)
-                if (!calledCallbacks.service || (functionCallData.service && !calledCallbacks.barber)) {
-                    // Μόλις πήραμε service, ρώτα για barber
-                    botText = `Great! ${functionCallData.service || 'Service selected'}. Which barber would you like? (${barbers.join(', ')})`;
-                } else if (!calledCallbacks.date || (functionCallData.barber && !calledCallbacks.date)) {
-                    // Μόλις πήραμε barber, ρώτα για date
-                    botText = `Perfect! ${functionCallData.barber || 'Barber selected'}. What date would you like? (Format: DD-MM-YYYY, we're closed Sundays & Mondays)`;
-                } else if (!calledCallbacks.time || (functionCallData.date && !calledCallbacks.time)) {
-                    // Μόλις πήραμε date, ρώτα για time
-                    botText = `Got it! What time works for you? (9:00-20:00, Wed until 14:00, Sat until 16:00)`;
-                } else {
-                    botText = "Got it! ✓";
+            // Fallback contextual αν το model δεν έστειλε text (συμβαίνει όταν κάνει tool call)
+            let botText = text;
+            if (!botText) {
+                switch (nextStep) {
+                    case 'service':
+                        botText = 'What service would you like to book?';
+                        break;
+                    case 'barber':
+                        botText = `Great choice! Which barber would you like for your ${nextData.service}?`;
+                        break;
+                    case 'date':
+                        botText = `Perfect! What date works for you? (DD-MM-YYYY, closed Sundays & Mondays)`;
+                        break;
+                    case 'time':
+                        botText = `Got it! What time would you like? (9:00-20:00, Wed until 14:00, Sat until 16:00)`;
+                        break;
+                    case 'confirm':
+                        botText = `To confirm: ${nextData.service} with ${nextData.barber} on ${nextData.date} at ${nextData.time}. Shall I book this?`;
+                        break;
+                    default:
+                        botText = "I'm not sure I understood that. Could you rephrase?";
                 }
-            } else if (!botText) {
-                botText = "I'm sorry, I didn't understand that.";
             }
 
-            if (functionCallData?.complete) {
-                // User confirmed → set booking data and navigate to Confirmation page
-                setMessages(prev => [...prev, {
-                    id: Date.now() + 1,
-                    role: 'bot',
-                    text: `Taking you to the confirmation page...`,
-                    timestamp: new Date()
-                }]);
-
-                setTimeout(() => {
-                    onBookingComplete(functionCallData);
-                }, 1500);
-            } else {
-                // Progressive update ή συνηθισμένη απάντηση
-                const botResponse = {
-                    id: Date.now() + 1,
-                    role: 'bot',
-                    text: botText,
-                    timestamp: new Date()
-                };
-
-                setMessages(prev => [...prev, botResponse]);
-            }
+            setMessages(prev => [...prev, addBotMessage(botText)]);
         } catch (error) {
             console.error('Error:', error);
-            setMessages(prev => [...prev, {
-                id: Date.now() + 1,
-                role: 'bot',
-                text: 'Sorry, something went wrong. Please try again.',
-                timestamp: new Date()
-            }]);
+            setMessages(prev => [...prev, addBotMessage('Sorry, something went wrong. Please try again.')]);
         } finally {
             setIsLoading(false);
         }
@@ -174,16 +157,11 @@ export default function ChatWindow({
 
     return (
         <div className="chatWindow">
-            {/* Header */}
             <div className="chatHeader">
                 <span>💬 Chat Assistant</span>
                 <button onClick={onClose} className="closeBtn">✕</button>
             </div>
-
-            {/* Messages */}
             <MessageList messages={messages} isLoading={isLoading} />
-
-            {/* Input */}
             <ChatInput onSendMessage={handleSendMessage} disabled={isLoading} />
         </div>
     );

@@ -1,6 +1,24 @@
 import { useState, useRef } from 'react'
-import { GoogleGenAI } from "@google/genai"
+import Groq from 'groq-sdk'
 import "./Recommendations.css"
+
+const groq = new Groq({
+    apiKey: process.env.REACT_APP_GROQ_API_KEY,
+    dangerouslyAllowBrowser: true
+})
+
+const resizeImage = (dataUrl, maxSize) => new Promise((resolve) => {
+    const img = new Image()
+    img.onload = () => {
+        const scale = Math.min(1, maxSize / Math.max(img.width, img.height))
+        const canvas = document.createElement('canvas')
+        canvas.width = Math.round(img.width * scale)
+        canvas.height = Math.round(img.height * scale)
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height)
+        resolve(canvas.toDataURL('image/jpeg', 0.85))
+    }
+    img.src = dataUrl
+})
 
 export default function Recommendations() {
     const [selectedImage, setSelectedImage] = useState(null)
@@ -242,14 +260,13 @@ export default function Recommendations() {
         setError(null)
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.REACT_APP_GEMINI_API_KEY })
-
-            // Convert image to base64
             const reader = new FileReader()
 
             reader.onload = async () => {
                 try {
-                    const base64Data = reader.result.split(',')[1]
+                    // Resize εικόνα σε max 1024px για να αποφύγουμε το size limit
+                    const resizedBase64 = await resizeImage(reader.result, 1024)
+                    const base64Data = resizedBase64.split(',')[1]
 
                     const prompt = `Analyze this person's face shape. Look at the proportions of the face:
 - Forehead width
@@ -270,25 +287,24 @@ Respond with ONLY a JSON object in this exact format (no markdown, no extra text
 
 Be accurate and consider the actual bone structure, not hairstyle.`
 
-                    const response = await ai.models.generateContent({
-                        model: 'gemini-2.0-flash',
-                        contents: [
-                            {
-                                role: 'user',
-                                parts: [
-                                    { text: prompt },
-                                    {
-                                        inlineData: {
-                                            mimeType: selectedImage.type,
-                                            data: base64Data
-                                        }
+                    const response = await groq.chat.completions.create({
+                        model: 'meta-llama/llama-4-scout-17b-16e-instruct',
+                        messages: [{
+                            role: 'user',
+                            content: [
+                                { type: 'text', text: prompt },
+                                {
+                                    type: 'image_url',
+                                    image_url: {
+                                        url: `data:image/jpeg;base64,${base64Data}`
                                     }
-                                ]
-                            }
-                        ]
+                                }
+                            ]
+                        }],
+                        max_tokens: 100
                     })
 
-                    const textResponse = response.candidates?.[0]?.content?.parts?.[0]?.text
+                    const textResponse = response.choices?.[0]?.message?.content
                     // console.log('Gemini Response:', textResponse)
 
                     // Parse the JSON response
